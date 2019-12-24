@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html   lang="cz"
+        xmlns:th="http://www.thymeleaf.org"
+>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" type="text/css" href="style/main.css">
+
+    <!-- Material Design Lite -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <script defer src="https://code.getmdl.io/1.3.0/material.min.js"></script>
+    <link rel="stylesheet" href="https://code.getmdl.io/1.3.0/material.deep_purple-pink.min.css" />
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <title th:text="#{application.title}"></title>
+</head>
+<body>
+    <div class="mdl-layout mdl-js-layout">
+        <header class="mdl-layout__header mdl-layout__header--scroll">
+            <div class="mdl-layout__header-row">
+                <!-- Title -->
+                <span class="mdl-layout-title" th:text="#{navbar.title}"></span>
+                <!-- Add spacer, to align navigation to the right -->
+                <div class="mdl-layout-spacer"></div>
+                <!-- Navigation -->
+                <nav class="mdl-navigation">
+                    <a class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent" href="/login" th:text="#{login}"></a>
+                </nav>
+            </div>
+        </header>
+        <div class="mdl-layout__drawer">
+            <span class="mdl-layout-title" th:text="#{navbar.title}"></span>
+            <nav class="mdl-navigation">
+                <a class="mdl-navigation__link" href="/login" th:text="#{login}"></a>
+            </nav>
+        </div>
+        <main class="mdl-layout__content">
+            <div class="page-content">
+
+                <i class="material-icons welcome-image bounce">school</i>
+
+                <br />
+
+                <h2 style="margin-bottom: 10vh">Testování programovacích úloh</h2>
+                <p style="text-align: center;color: #aaa">
+                    Tato aplikace vznikla v rámci mé bakalářské práce.<br />
+                    Umožňuje vyhodnocování programovacích úloh <br />
+                    zadaných učitelem a vypracovaných studentem.
+                </p>
+
+            </div>
+        </main>
+    </div>
+</body>
+</html>
