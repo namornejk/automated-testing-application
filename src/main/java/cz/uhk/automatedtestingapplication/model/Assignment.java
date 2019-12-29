@@ -13,6 +13,9 @@ public class Assignment {
     @Column
     private String name;
 
+    @Column
+    private String assignmentDescription;
+
     @ManyToOne
     @JoinColumn
     private User creator;
@@ -24,14 +27,15 @@ public class Assignment {
     @JoinColumn
     private Exam exam;
 
-    public Assignment(String name, User creator, List<Project> projectList, Exam exam) {
+    public Assignment() {
+    }
+
+    public Assignment(String name, String assignmentDescription, User creator, List<Project> projectList, Exam exam) {
         this.name = name;
+        this.assignmentDescription = assignmentDescription;
         this.creator = creator;
         this.projectList = projectList;
         this.exam = exam;
-    }
-
-    public Assignment() {
     }
 
     public long getAssignment_id() {
@@ -72,5 +76,13 @@ public class Assignment {
 
     public void setExam(Exam exam) {
         this.exam = exam;
+    }
+
+    public String getAssignmentDescription() {
+        return assignmentDescription;
+    }
+
+    public void setAssignmentDescription(String assignmentDescription) {
+        this.assignmentDescription = assignmentDescription;
     }
 }

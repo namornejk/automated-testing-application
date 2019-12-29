@@ -2,6 +2,10 @@
   margin: 0 auto;
   text-align: center;
 }
+body {
+  background: #fafafa;
+  position: relative;
+}
 i.welcome-image {
   margin-top: 10vh;
   font-size: 150px;
@@ -74,5 +78,23 @@ i.welcome-image {
   60% {
     transform: translateY(-15px);
   }
+}
+.test-list {
+  margin: 20vh auto 50px;
+}
+.login-card {
+  margin: 20vh auto 50px;
+}
+.login-card form {
+  display: inline-block;
+}
+.none {
+  display: none;
+}
+.file_input {
+  float: left;
+}
+input.upload-file {
+  margin-top: 25px;
 }
 /*# sourceMappingURL=main.css.map */

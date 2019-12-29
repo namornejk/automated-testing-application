@@ -11,6 +11,12 @@ public class User {
     private long user_id;
 
     @Column
+    private String userName;
+
+    @Column
+    private String password;
+
+    @Column
     private String firstName;
 
     @Column
@@ -28,7 +34,12 @@ public class User {
     @OneToMany
     private List<Exam> examList;
 
-    public User(String firstName, String lastName, String role, List<Project> projectList, List<Assignment> assignmentList, List<Exam> examList) {
+    public User() {
+    }
+
+    public User(String userName, String password, String firstName, String lastName, String role, List<Project> projectList, List<Assignment> assignmentList, List<Exam> examList) {
+        this.userName = userName;
+        this.password = password;
         this.firstName = firstName;
         this.lastName = lastName;
         this.role = role;
@@ -36,10 +47,6 @@ public class User {
         this.assignmentList = assignmentList;
         this.examList = examList;
     }
-
-    public User() {
-    }
-
 
     public long getUser_id() {
         return user_id;
@@ -95,5 +102,21 @@ public class User {
 
     public void setExamList(List<Exam> examList) {
         this.examList = examList;
+    }
+
+    public String getUserName() {
+        return userName;
+    }
+
+    public void setUserName(String userName) {
+        this.userName = userName;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 }

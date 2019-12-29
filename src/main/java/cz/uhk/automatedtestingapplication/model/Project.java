@@ -1,6 +1,7 @@
 package cz.uhk.automatedtestingapplication.model;
 
 import javax.persistence.*;
+import java.util.Date;
 
 @Entity
 public class Project {
@@ -11,6 +12,9 @@ public class Project {
 
     @Column
     private String name;
+
+    @Column
+    private Date timeSent;
 
     @ManyToOne
     @JoinColumn
@@ -23,14 +27,15 @@ public class Project {
     @JoinColumn
     private Assignment assignment;
 
-    public Project(String name, User student, String result, Assignment assignment) {
+    public Project() {
+    }
+
+    public Project(String name, Date timeSent, User student, String result, Assignment assignment) {
         this.name = name;
+        this.timeSent = timeSent;
         this.student = student;
         this.result = result;
         this.assignment = assignment;
-    }
-
-    public Project() {
     }
 
     public long getProject_id() {
@@ -71,5 +76,13 @@ public class Project {
 
     public void setAssignment(Assignment assignment) {
         this.assignment = assignment;
+    }
+
+    public Date getTimeSent() {
+        return timeSent;
+    }
+
+    public void setTimeSent(Date timeSent) {
+        this.timeSent = timeSent;
     }
 }
