@@ -21,26 +21,18 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
             .withUser(users.username("tomas").password("tomas").roles("STUDENT"));
     }
 
+    /*@Override
+    protected void configure(HttpSecurity http) throws Exception {
+        http.authorizeRequests()
+                .anyRequest().authenticated()
+
+    }*/
+
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
-            .csrf().disable()
-            .authorizeRequests()
-                .antMatchers("/login")
-                .permitAll()
-                .anyRequest()
-                .authenticated()
-            .and()
-            .formLogin()
-                .loginPage("/login")
-                .permitAll();
-
-    }
-
-    /*@Override
-    protected void configure(HttpSecurity http) throws Exception {
-        http
                 .authorizeRequests()
+                    .antMatchers("/style/**", "/js/**", "/images/**").permitAll()
                     .antMatchers("/")
                     .permitAll()
                     .anyRequest().authenticated()
@@ -52,5 +44,5 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .and()
                     .logout()
                     .permitAll();
-    }*/
+    }
 }
