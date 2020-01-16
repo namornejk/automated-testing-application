@@ -6,11 +6,11 @@ import org.springframework.stereotype.Service;
 public class RolesFactory {
 
     public String getSTUDENT(){
-        return "student";
+        return "ROLE_STUDENT";
     }
 
     public String getTEACHER(){
-        return "teacher";
+        return "ROLE_TEACHER";
     }
 
 }

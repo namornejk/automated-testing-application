@@ -21,13 +21,6 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
             .withUser(users.username("tomas").password("tomas").roles("STUDENT"));
     }
 
-    /*@Override
-    protected void configure(HttpSecurity http) throws Exception {
-        http.authorizeRequests()
-                .anyRequest().authenticated()
-
-    }*/
-
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
@@ -40,6 +33,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                     .formLogin()
                     .loginPage("/login")
                     .loginProcessingUrl("/authenticateTheUser")
+                    .defaultSuccessUrl("/roleBasedSite")
                     .permitAll()
                 .and()
                     .logout()

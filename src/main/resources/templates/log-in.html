@@ -8,6 +8,7 @@
 
     <!-- Custom CSS -->
     <link rel="stylesheet" type="text/css" href="style/main.css">
+    <link rel="stylesheet" type="text/css" href="style/login.css">
 
     <!-- Material Design Lite -->
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
@@ -17,69 +18,35 @@
     <title th:text="#{application.title}"></title>
 </head>
 <body>
-    <div th:if="${param.error}">
-        Invalid username and password.
-    </div>
-    <div th:if="${param.logout}">
-        You have been logged out.
-    </div>
-    <form action="@{/login}" method="post">
-        <div><label> User Name : <input type="text" name="username"/> </label></div>
-        <div><label> Password: <input type="password" name="password"/> </label></div>
-        <div><label> Password: <input type="hidden" name="role" value="teacher"/> </label></div>
-        <div><input type="submit" value="Sign In"/></div>
-    </form>
-
-
-
-
-
-
     <div class="mdl-layout mdl-js-layout">
-        <header class="mdl-layout__header mdl-layout__header--scroll">
-            <div class="mdl-layout__header-row">
-                <!-- Title -->
-                <span class="mdl-layout-title" th:text="#{navbar.title}"></span>
-                <!-- Add spacer, to align navigation to the right -->
-                <div class="mdl-layout-spacer"></div>
-                <!-- Navigation -->
-                <nav class="mdl-navigation">
-                    <a class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent" href="/login" th:text="#{login}"></a>
-                </nav>
-            </div>
-        </header>
-        <div class="mdl-layout__drawer">
-            <span class="mdl-layout-title" th:text="#{navbar.title}"></span>
-            <nav class="mdl-navigation">
-                <a class="mdl-navigation__link" href="/login" th:text="#{login}"></a>
-            </nav>
-        </div>
         <main class="mdl-layout__content">
             <div class="page-content">
 
-                <div class="demo-card-wide mdl-card mdl-shadow--2dp login-card" style="min-height: auto">
-                    <div class="mdl-card__title">
-                        <h2 class="mdl-card__title-text">Role</h2>
-                    </div>
-                    <div class="mdl-card__supporting-text">
-                        Vyberte pod jakou rolí si přejete vystupovat.
-                    </div>
-                    <div class="mdl-card__actions mdl-card--border">
-                        <form action="/login" method="POST">
-                            <button class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect">
-                                <input type="hidden" name="role" value="teacher"/>
-                                Teacher
-                            </button>
-                        </form>
-
-                        <form action="/login" method="POST">
-                            <button class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect">
-                                <input type="hidden" name="role" value="student"/>
-                                Student
-                            </button>
-                        </form>
-                    </div>
+                <div th:if="${param.error}">
+                    Invalid username and password.
                 </div>
+                <div th:if="${param.logout}">
+                    You have been logged out.
+                </div>
+
+                <form th:action="@{/authenticateTheUser}" method="post">
+
+                    <div class="demo-card-wide mdl-card mdl-shadow--2dp login-card">
+                        <div class="mdl-card__title">
+                            <h2 class="mdl-card__title-text">Přihlášení</h2>
+                        </div>
+                        <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                            <input class="mdl-textfield__input" type="text" name="username">
+                            <label class="mdl-textfield__label">Jméno</label>
+                        </div>
+                        <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                            <input class="mdl-textfield__input" type="password" name="password">
+                            <label class="mdl-textfield__label">Heslo</label>
+                        </div>
+                        <input class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent" type="submit" value="Přihlásit se">
+                    </div>
+
+                </form>
 
             </div>
         </main>
