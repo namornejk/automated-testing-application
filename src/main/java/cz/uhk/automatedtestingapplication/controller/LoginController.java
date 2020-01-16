@@ -8,6 +8,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import javax.servlet.http.HttpServletResponse;
+
 @Controller
 public class LoginController {
 
@@ -19,34 +21,42 @@ public class LoginController {
 
     private String currentRole;
 
-    @RequestMapping("/login")
-    public String roleLogIn(){
-        System.out.println(projectDao.findAll().toString());
-        return "role-log-in";
+    @RequestMapping(value = "/")
+    public String home(){
+        return "index";
+    }
+
+    @RequestMapping(value = "/login")
+    public String login(){
+        return "log-in";
     }
 
     @RequestMapping(value = "/login", method = RequestMethod.POST)
-    public String roleLogInHandler(@RequestParam String role){
-
+    public String loginHandler(@RequestParam String role){
+        System.out.println("logInHandler");
         if(role.equals(rolesFactory.getSTUDENT())){
+            System.out.println("student");
             this.currentRole = rolesFactory.getSTUDENT();
             return "test-list";
         }
         else if(role.equals(rolesFactory.getTEACHER())) {
+            System.out.println("teacher");
+
             this.currentRole = rolesFactory.getTEACHER();
-            return "teacher-menu";
+
+            return "test-list";
         }
-        else
-            return "role-log-in";
+        System.out.println("else");
+        return "log-in";
 
     }
 
-    @RequestMapping("/test-list")
+    @RequestMapping(value = "/test-list")
     public String testList(){
         return "test-list";
     }
 
-    @RequestMapping("/create-project")
+    @RequestMapping(value = "/create-project")
     public String createProject(){
         return "create-project";
     }
