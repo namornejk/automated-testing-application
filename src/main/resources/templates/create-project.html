@@ -27,14 +27,18 @@
             <div class="mdl-layout-spacer"></div>
             <!-- Navigation -->
             <nav class="mdl-navigation">
-                <a class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent" href="/login" th:text="#{login}"></a>
+                <form th:action="@{/perform_logout}" th:method="post" >
+                    <button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent"><span th:text="#{logout}"></span></button>
+                </form>
             </nav>
         </div>
     </header>
     <div class="mdl-layout__drawer">
         <span class="mdl-layout-title" th:text="#{navbar.title}"></span>
         <nav class="mdl-navigation">
-            <a class="mdl-navigation__link" href="/login" th:text="#{login}"></a>
+            <form th:action="@{/perform_logout}" th:method="post" >
+                <input class="mdl-navigation__link" type="submit" th:value="#{logout}">
+            </form>
         </nav>
     </div>
     <main class="mdl-layout__content">

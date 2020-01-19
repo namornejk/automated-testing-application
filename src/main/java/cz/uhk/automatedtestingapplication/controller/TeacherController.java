@@ -1,14 +1,17 @@
 package cz.uhk.automatedtestingapplication.controller;
 
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.GetMapping;
 
-@Controller(value = "/teacher/*")
+@Controller
+@Secured("ROLE_TEACHER")
 public class TeacherController {
 
-    @RequestMapping(value = "teacherMenu")
-    public String teacherMenu(){
-        return "teacher-menu";
+    @GetMapping("teacherTestList")
+    public String testList(){
+        System.out.println("Teacher test list.");
+        return "test-list";
     }
 
 }

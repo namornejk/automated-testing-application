@@ -1,6 +1,27 @@
 body {
   background-color: #EEEEEE;
 }
+@keyframes slideInFromTop {
+  0% {
+    transform: translateY(-100%);
+  }
+  100% {
+    transform: translateY(0);
+  }
+}
+.param-message {
+  margin: 20px auto;
+  padding: 10px;
+  animation: 1s ease-out 0s 1 slideInFromTop;
+}
+.error-message {
+  background-color: #ff4081;
+  color: white;
+}
+.logout-message {
+  background-color: mediumslateblue;
+  color: white;
+}
 .login-card {
   margin: 20vh auto 50px;
   padding: 30px;
