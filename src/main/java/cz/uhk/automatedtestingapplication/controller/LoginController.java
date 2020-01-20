@@ -32,21 +32,36 @@ public class LoginController {
     @RequestMapping(value = "/db")
     public String databaseInit(){
 
-        User user = new User("test", "$2y$12$qeaMBcDIgeqk0oq7U5dke.lwyobQvfwKBXiDBVvhGPqZWVjd978gC");
-        Role role = new Role("TEACHER");
+                                             //password: aaa
+        User u1 = new User("bruno", "$2y$12$KJyTJr0X1btaLzq1BQmTtebN.HmSd5BCJHmt9Ecqg0E5xTJmNAbjy");
+        Role r1 = new Role("TEACHER");
+                                             //password: aaa
+        User u2 = new User("tomas", "$2y$12$FQ2ej666Ce94SuCPslmD6u/ipxyOcYSRK4LRp7334UHlm9ZC6./JG");
+        Role r2 = new Role("STUDENT");
 
-        List<Role> roles = new ArrayList<>();
-        roles.add(role);
-        List<User> users = new ArrayList<>();
-        users.add(user);
+        List<Role> roles1 = new ArrayList<>();
+        roles1.add(r1);
+        List<User> users1 = new ArrayList<>();
+        users1.add(u1);
 
-        role.setUsers(users);
-        user.setRoles(roles);
+        List<Role> roles2 = new ArrayList<>();
+        roles2.add(r2);
+        List<User> users2 = new ArrayList<>();
+        users2.add(u2);
 
-        userDao.save(user);
-        roleDao.save(role);
+        r1.setUsers(users1);
+        u1.setRoles(roles1);
 
-        return "index";
+        r2.setUsers(users2);
+        u2.setRoles(roles2);
+
+        userDao.save(u1);
+        roleDao.save(r1);
+
+        userDao.save(u2);
+        roleDao.save(r2);
+
+        return "redirect:/";
     }
 
     @RequestMapping(value = "/login")

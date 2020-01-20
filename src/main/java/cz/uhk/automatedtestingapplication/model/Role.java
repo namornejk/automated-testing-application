@@ -1,8 +1,5 @@
 package cz.uhk.automatedtestingapplication.model;
 
-import org.hibernate.annotations.Generated;
-import org.hibernate.annotations.GeneratorType;
-
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.util.List;
@@ -15,22 +12,23 @@ public class Role {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    @Column
-    private String rolename;
+    @Column(unique = true)
+    @NotNull
+    private String name;
 
-    @ManyToMany(targetEntity = User.class)
+    @ManyToMany(targetEntity = User.class, cascade=CascadeType.ALL)
     private List<User> users;
 
     public Role() {
     }
 
-    public Role(String rolename){
-        this.rolename = rolename;
+    public Role(String name){
+        this.name = name;
     }
 
-    public Role(Long id, String rolename, List<User> users) {
+    public Role(Long id, String name, List<User> users) {
         this.id = id;
-        this.rolename = rolename;
+        this.name = name;
         this.users = users;
     }
 
@@ -42,12 +40,12 @@ public class Role {
         this.id = id;
     }
 
-    public String getRoleame() {
-        return rolename;
+    public String getName() {
+        return name;
     }
 
-    public void setRolename(String rolename) {
-        this.rolename = rolename;
+    public void setName(String name) {
+        this.name = name;
     }
 
     public List<User> getUsers() {
@@ -57,4 +55,5 @@ public class Role {
     public void setUsers(List<User> users) {
         this.users = users;
     }
+
 }

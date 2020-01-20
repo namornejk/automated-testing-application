@@ -12,10 +12,12 @@ public class User {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    @Column
+    @Column(unique = true)
+    @NotNull
     private String username;
 
     @Column
+    @NotNull
     private String password;
 
     @Column
@@ -24,7 +26,8 @@ public class User {
     @Column
     private String lastName;
 
-    @ManyToMany(mappedBy="users", targetEntity = Role.class)
+    @ManyToMany(mappedBy="users", fetch = FetchType.EAGER, cascade=CascadeType.ALL, targetEntity = Role.class)
+    @NotNull
     private List<Role> roles;
 
     @OneToMany

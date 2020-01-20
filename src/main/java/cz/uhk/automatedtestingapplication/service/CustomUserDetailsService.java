@@ -22,9 +22,6 @@ public class CustomUserDetailsService implements UserDetailsService {
         if(user == null)
             throw new UsernameNotFoundException("User 404");
 
-        System.out.println("CustomUserDetailsService: user found by username");
-        System.out.println("Username: " + user.getUsername() + ", Password: " + user.getPassword());
-
         return new UserPrincipal(user);
     }
 
