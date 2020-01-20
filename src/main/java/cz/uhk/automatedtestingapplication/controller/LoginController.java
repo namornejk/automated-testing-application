@@ -32,7 +32,7 @@ public class LoginController {
     @RequestMapping(value = "/db")
     public String databaseInit(){
 
-        User user = new User("test", "test");
+        User user = new User("test", "$2y$12$qeaMBcDIgeqk0oq7U5dke.lwyobQvfwKBXiDBVvhGPqZWVjd978gC");
         Role role = new Role("TEACHER");
 
         List<Role> roles = new ArrayList<>();
