@@ -1,17 +1,19 @@
 package cz.uhk.automatedtestingapplication.model;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.util.List;
 
 @Entity
+@Table(name = "Users")
 public class User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private long user_id;
+    private Long id;
 
     @Column
-    private String userName;
+    private String username;
 
     @Column
     private String password;
@@ -22,8 +24,8 @@ public class User {
     @Column
     private String lastName;
 
-    @Column
-    private String role;
+    @ManyToMany(mappedBy="users", targetEntity = Role.class)
+    private List<Role> roles;
 
     @OneToMany
     private List<Project> projectList;
@@ -37,23 +39,29 @@ public class User {
     public User() {
     }
 
-    public User(String userName, String password, String firstName, String lastName, String role, List<Project> projectList, List<Assignment> assignmentList, List<Exam> examList) {
-        this.userName = userName;
+    public User(String username, String password){
+        this.username = username;
+        this.password = password;
+    }
+
+    public User(Long id, String username, String password, String firstName, String lastName, List<Role> roles, List<Project> projectList, List<Assignment> assignmentList, List<Exam> examList) {
+        this.id = id;
+        this.username = username;
         this.password = password;
         this.firstName = firstName;
         this.lastName = lastName;
-        this.role = role;
+        this.roles = roles;
         this.projectList = projectList;
         this.assignmentList = assignmentList;
         this.examList = examList;
     }
 
-    public long getUser_id() {
-        return user_id;
+    public Long getId() {
+        return id;
     }
 
-    public void setUser_id(long user_id) {
-        this.user_id = user_id;
+    public void setId(Long id){
+        this.id = id;
     }
 
     public String getFirstName() {
@@ -72,12 +80,12 @@ public class User {
         this.lastName = lastName;
     }
 
-    public String getRole() {
-        return role;
+    public List<Role> getRoles() {
+        return roles;
     }
 
-    public void setRole(String role) {
-        this.role = role;
+    public void setRoles(List<Role> roles) {
+        this.roles = roles;
     }
 
     public List<Project> getProjectList() {
@@ -104,12 +112,12 @@ public class User {
         this.examList = examList;
     }
 
-    public String getUserName() {
-        return userName;
+    public String getUsername() {
+        return username;
     }
 
-    public void setUserName(String userName) {
-        this.userName = userName;
+    public void setUsername(String userName) {
+        this.username = username;
     }
 
     public String getPassword() {

@@ -1,13 +1,18 @@
 package cz.uhk.automatedtestingapplication.configuration;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.authentication.AuthenticationProvider;
+import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.core.userdetails.User;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.crypto.password.NoOpPasswordEncoder;
 
 @Configuration
 @EnableWebSecurity
@@ -16,13 +21,25 @@ import org.springframework.security.core.userdetails.User;
         jsr250Enabled = true)
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
-    @Override
+    @Autowired
+    private UserDetailsService customUserDetailsService;
+
+    /*@Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
         User.UserBuilder users = User.withDefaultPasswordEncoder();
 
         auth.inMemoryAuthentication()
-            .withUser(users.username("bruno").password("bruno").roles("TEACHER"))
-            .withUser(users.username("tomas").password("tomas").roles("STUDENT"));
+                .withUser(users.username("bruno").password("bruno").roles("TEACHER"))
+                .withUser(users.username("tomas").password("tomas").roles("STUDENT"));
+    }*/
+
+    @Bean
+    public AuthenticationProvider authenticationProvider(){
+        DaoAuthenticationProvider provider = new DaoAuthenticationProvider();
+        provider.setUserDetailsService(customUserDetailsService);
+        provider.setPasswordEncoder(NoOpPasswordEncoder.getInstance());
+
+        return provider;
     }
 
     @Override
@@ -30,9 +47,11 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         http
                 .csrf().disable()
                 .authorizeRequests()
-                    .antMatchers("/style/**", "/js/**", "/images/**").permitAll()
-                    .antMatchers("/")
-                    .permitAll()
+                    .antMatchers("/css/**", "/js/**", "/images/**").permitAll()
+                    .antMatchers("/").permitAll()
+                    .antMatchers("/db").permitAll()
+                    .antMatchers("/teacher/**").hasRole("TEACHER")
+                    .antMatchers("/student/**").hasRole("STUDENT")
                     .anyRequest().authenticated()
                 .and()
                     .formLogin()
