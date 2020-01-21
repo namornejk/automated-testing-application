@@ -1,0 +1,30 @@
+.landing .left-panel {
+  float: left;
+  width: 40%;
+  padding-top: 25vh;
+}
+.landing .left-panel .float-right {
+  float: right;
+  width: 70%;
+}
+.landing .left-panel .float-right h2 {
+  margin-bottom: 30px;
+  text-align: left;
+  font-size: 30px;
+}
+.landing .left-panel .float-right p {
+  text-align: left;
+  font-weight: 100;
+  line-height: 1.5;
+}
+.landing .right-panel {
+  float: right;
+  width: 60%;
+}
+.landing .right-panel img {
+  max-width: 100%;
+  margin-top: -5vh;
+  height: 80vh;
+  transform: rotate(-1deg);
+}
+/*# sourceMappingURL=index.css.map */
