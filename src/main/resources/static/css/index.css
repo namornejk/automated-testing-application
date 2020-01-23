@@ -1,3 +1,31 @@
+@font-face {
+  font-family: 'Quicksand';
+  font-style: normal;
+  font-weight: 300;
+  font-display: swap;
+  src: url(https://fonts.gstatic.com/s/quicksand/v19/6xK-dSZaM9iE8KbpRA_LJ3z8mH9BOJvgkKEo58i-xw.ttf) format('truetype');
+}
+@font-face {
+  font-family: 'Quicksand';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url(https://fonts.gstatic.com/s/quicksand/v19/6xK-dSZaM9iE8KbpRA_LJ3z8mH9BOJvgkP8o58i-xw.ttf) format('truetype');
+}
+@font-face {
+  font-family: 'Quicksand';
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url(https://fonts.gstatic.com/s/quicksand/v19/6xK-dSZaM9iE8KbpRA_LJ3z8mH9BOJvgkBgv58i-xw.ttf) format('truetype');
+}
+body {
+  background: #eaedf2 url("/images/gray_shape.png");
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-attachment: fixed;
+}
 .landing .left-panel {
   float: left;
   width: 40%;
@@ -21,8 +49,8 @@
   float: right;
   width: 60%;
 }
-.landing .right-panel img {
-  max-width: 100%;
+.landing .right-panel svg {
+  max-width: 95%;
   margin-top: -5vh;
   height: 80vh;
   transform: rotate(-1deg);

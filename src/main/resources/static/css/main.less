@@ -14,26 +14,18 @@
   font-family: @quicksand;
 }
 
-body {
-  background: @super-light-gray url("gray_shape.png");
-  background-position: center;
-  background-repeat: no-repeat;
-  background-size: cover;
-  background-attachment: fixed;
-}
-
 a {
   text-decoration: none;
 }
 
 nav {
   padding: 40px 40px;
+  overflow: overlay;
 
   ul {
     list-style-type: none;
     margin: 0;
     padding: 0;
-    overflow: hidden;
     text-transform: uppercase;
 
     li {
@@ -56,14 +48,15 @@ nav {
       padding: 10px 20px;
       border: 0;
       border-radius: 2px;
-      cursor: pointer;
-      transition: ease-out 0.5s;
+      font-size: 10px;
       letter-spacing: 4px;
+      transition: ease-out 0.5s;
     }
 
     .logging-button:hover {
       transition: ease-out 0.5s;
-      background-color: @dark-gray;
+      background-color: @light-gray;
+      color: @dark-gray;
     }
   }
 }

@@ -25,24 +25,17 @@
   color: #3f3d56;
   font-family: 'Quicksand';
 }
-body {
-  background: #eaedf2 url("gray_shape.png");
-  background-position: center;
-  background-repeat: no-repeat;
-  background-size: cover;
-  background-attachment: fixed;
-}
 a {
   text-decoration: none;
 }
 nav {
   padding: 40px 40px;
+  overflow: overlay;
 }
 nav ul {
   list-style-type: none;
   margin: 0;
   padding: 0;
-  overflow: hidden;
   text-transform: uppercase;
 }
 nav ul li {
@@ -62,13 +55,14 @@ nav ul .logging-button {
   padding: 10px 20px;
   border: 0;
   border-radius: 2px;
-  cursor: pointer;
-  transition: ease-out 0.5s;
+  font-size: 10px;
   letter-spacing: 4px;
+  transition: ease-out 0.5s;
 }
 nav ul .logging-button:hover {
   transition: ease-out 0.5s;
-  background-color: #3f3d56;
+  background-color: #c6c9d1;
+  color: #3f3d56;
 }
 /* ---- old css ---- */
 .test-list {

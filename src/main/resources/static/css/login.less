@@ -1,5 +1,14 @@
+@import url('https://fonts.googleapis.com/css?family=Quicksand:300,400,700&display=swap&subset=latin-ext');
+
+@quicksand: 'Quicksand';
+
+@super-light-gray: #eaedf2;
+@light-gray: #c6c9d1;
+@dark-gray: #3f3d56;
+@purple: #6c63ff;
+
 body {
-  background-color: #EEEEEE;
+  background-color: @light-gray;
 }
 
 @keyframes slideInFromTop {
@@ -15,6 +24,8 @@ body {
   margin: 20px auto;
   padding: 10px;
 
+  width: 40%;
+
   animation: 1s ease-out 0s 1 slideInFromTop;
 }
 
@@ -29,12 +40,50 @@ body {
 }
 
 .login-card {
-  margin: 20vh auto 50px;
-  padding: 30px;
+  text-align: center;
+  width: 35%;
+  margin-top: 10vh;
+  border-radius: 2px;
+  font-size: 20px;
 
-  min-height: auto;
+  h2 {
+    padding-bottom: 20px;
+  }
 
-  form {
-    display: inline-block;
+  svg {
+    width: 90%;
+    max-height: 150px;
+    padding-bottom: 20px;
+  }
+
+  .form-field {
+    width: 100%;
+    margin: 25px 0;
+    padding: 10px 0;
+    background-color: @super-light-gray;
+    border: 0;
+    border-radius: 2px;
+    font-size: 20px;
+  }
+
+  input.logging-button {
+    width: 50%;
+    min-width: fit-content;
+    padding: 15px 25px;
+    margin: 25px 0;
+    color: white;
+    background-color: @purple;
+    border: 0;
+    border-radius: 2px;
+    font-size: 15px;
+    letter-spacing: 4px;
+    cursor: pointer;
+    transition: ease-out 0.5s;
+  }
+
+  input.logging-button:hover {
+    transition: ease-out 0.5s;
+    background-color: @light-gray;
+    color: @dark-gray;
   }
 }
