@@ -20,7 +20,35 @@
   src: url(https://fonts.gstatic.com/s/quicksand/v19/6xK-dSZaM9iE8KbpRA_LJ3z8mH9BOJvgkBgv58i-xw.ttf) format('truetype');
 }
 body {
-  background-color: #c6c9d1;
+  background-color: white;
+}
+.relative-container {
+  position: relative;
+}
+nav {
+  position: relative;
+  z-index: 3;
+}
+.absolute-image-container {
+  z-index: 1;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 100%;
+  height: 100vh;
+}
+.absolute-image-container img.left {
+  position: absolute;
+  bottom: 20px;
+  left: 0px;
+  width: 33%;
+  margin: 0;
+}
+.absolute-image-container img.right {
+  position: absolute;
+  bottom: 20px;
+  right: 0px;
+  width: 38%;
 }
 @keyframes slideInFromTop {
   0% {
@@ -43,6 +71,9 @@ body {
 .logout-message {
   background-color: mediumslateblue;
   color: white;
+}
+.page-content {
+  z-index: 2;
 }
 .login-card {
   text-align: center;
@@ -67,24 +98,5 @@ body {
   border: 0;
   border-radius: 2px;
   font-size: 20px;
-}
-.login-card input.logging-button {
-  width: 50%;
-  min-width: fit-content;
-  padding: 15px 25px;
-  margin: 25px 0;
-  color: white;
-  background-color: #6c63ff;
-  border: 0;
-  border-radius: 2px;
-  font-size: 15px;
-  letter-spacing: 4px;
-  cursor: pointer;
-  transition: ease-out 0.5s;
-}
-.login-card input.logging-button:hover {
-  transition: ease-out 0.5s;
-  background-color: #c6c9d1;
-  color: #3f3d56;
 }
 /*# sourceMappingURL=login.css.map */

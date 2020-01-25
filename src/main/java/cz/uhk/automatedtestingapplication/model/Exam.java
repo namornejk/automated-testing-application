@@ -15,6 +15,9 @@ public class Exam {
     private String name;
 
     @Column
+    private String description;
+
+    @Column
     private String path;
 
     @ManyToOne
@@ -24,7 +27,12 @@ public class Exam {
     @OneToMany(mappedBy = "exam", cascade = CascadeType.ALL)
     private List<Assignment> assignmentList;
 
-    public Exam(String name, String path, User creator, List<Assignment> assignmentList) {
+    public Exam(String name, String description){
+        this.name = name;
+        this.description = description;
+    }
+
+    public Exam(String name, String description, String path, User creator, List<Assignment> assignmentList) {
         this.name = name;
         this.path = path;
         this.creator = creator;
@@ -32,6 +40,14 @@ public class Exam {
     }
 
     public Exam() {
+    }
+
+    public String getDescription(){
+        return description;
+    }
+
+    public void setDescription(String description){
+        this.description = description;
     }
 
     public long getExam_id() {

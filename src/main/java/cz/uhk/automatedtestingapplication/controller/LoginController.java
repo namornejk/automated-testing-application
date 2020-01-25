@@ -1,7 +1,10 @@
 package cz.uhk.automatedtestingapplication.controller;
 
+import cz.uhk.automatedtestingapplication.configuration.UserPrincipal;
+import cz.uhk.automatedtestingapplication.dao.ExamDao;
 import cz.uhk.automatedtestingapplication.dao.RoleDao;
 import cz.uhk.automatedtestingapplication.dao.UserDao;
+import cz.uhk.automatedtestingapplication.model.Exam;
 import cz.uhk.automatedtestingapplication.model.Role;
 import cz.uhk.automatedtestingapplication.model.User;
 import cz.uhk.automatedtestingapplication.service.RolesFactory;
@@ -13,6 +16,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+import java.security.Principal;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -29,13 +33,16 @@ public class LoginController {
     @Autowired
     private RoleDao roleDao;
 
-    @RequestMapping(value = "/db")
-    public String databaseInit(){
+    @Autowired
+    private ExamDao examDao;
 
-                                             //password: aaa
+    @RequestMapping(value = "/login")
+    public String login(){
+
+        //password: aaa
         User u1 = new User("bruno", "$2y$12$KJyTJr0X1btaLzq1BQmTtebN.HmSd5BCJHmt9Ecqg0E5xTJmNAbjy");
         Role r1 = new Role("TEACHER");
-                                             //password: aaa
+        //password: aaa
         User u2 = new User("tomas", "$2y$12$FQ2ej666Ce94SuCPslmD6u/ipxyOcYSRK4LRp7334UHlm9ZC6./JG");
         Role r2 = new Role("STUDENT");
 
@@ -61,11 +68,6 @@ public class LoginController {
         userDao.save(u2);
         roleDao.save(r2);
 
-        return "redirect:/";
-    }
-
-    @RequestMapping(value = "/login")
-    public String login(){
         return "log-in";
     }
 

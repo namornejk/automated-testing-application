@@ -8,69 +8,76 @@
     <link rel="icon" th:href="@{/images/icons/check.png}" type="image/icon type">
 
     <!-- Custom CSS -->
-    <link rel="stylesheet" type="text/css" href="/css/main.css">
+    <link rel="stylesheet" type="text/css" th:href="@{/css/main.css}">
+    <link rel="stylesheet" type="text/css" th:href="@{/css/test-list.css}">
 
-    <!-- Material Design Lite -->
-    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
-    <script defer src="https://code.getmdl.io/1.3.0/material.min.js"></script>
-    <link rel="stylesheet" href="https://code.getmdl.io/1.3.0/material.deep_purple-pink.min.css" />
-    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <title th:text="#{application.title}"></title>
 </head>
 <body>
-<div class="mdl-layout mdl-js-layout">
-    <header class="mdl-layout__header mdl-layout__header--scroll">
-        <div class="mdl-layout__header-row">
-            <!-- Title -->
-            <span class="mdl-layout-title" th:text="#{navbar.title}"></span>
-            <!-- Add spacer, to align navigation to the right -->
-            <div class="mdl-layout-spacer"></div>
-            <!-- Navigation -->
-            <nav class="mdl-navigation">
-                <form th:action="@{/perform_logout}" th:method="post" >
-                    <button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent"><span th:text="#{logout}"></span></button>
+    <nav>
+        <ul>
+            <li>
+                <a class="nav-title" th:href="@{/}" th:text="#{navbar.title}"></a>
+            </li>
+            <li class="nav-right">
+                <a class="logging-button" th:href="@{/perform_logout}" th:text="#{logout}"></a>
+            </li>
+        </ul>
+    </nav>
+
+    <div class="page-content">
+
+        <div class="collaps-card">
+            <div class="collapsible">
+                <div class="collapsible-padding">
+                    <h3 th:text="#{test-list.createNewExam}"></h3>
+                    <img src="/images/icons/arrow.png" >
+                    <div style="clear: both"></div>
+                </div>
+            </div>
+            <div class="collapsible-content">
+                <form th:action="@{/teacher/create-exam}" th:method="post">
+                    <label th:text="#{test-list.examNameLable}"></label><br>
+                    <input type="text" th:placeholder="#{test-list.examNamePlaceholder}" th:name="name"><br>
+                    <label th:text="#{test-list.examDescriptionLable}"></label><br>
+                    <input type="text" th:placeholder="#{test-list.examDescriptionPlaceholder}" th:name="description"><br>
+
+                    <input class="btn" type="submit" th:value="#{test-list.create}">
                 </form>
-            </nav>
+            </div>
         </div>
-    </header>
-    <div class="mdl-layout__drawer">
-        <span class="mdl-layout-title" th:text="#{navbar.title}"></span>
-        <nav class="mdl-navigation">
-            <form th:action="@{/perform_logout}" th:method="post" >
-                <input class="mdl-navigation__link" type="submit" th:value="#{logout}">
-            </form>
-        </nav>
+
+        <div class="exam-list">
+            <ul>
+                <li th:each="exam : ${exams}">
+                    <div class="left">
+                        <h3 th:text="${exam.name}"></h3>
+                        <p th:text="${exam.description}"></p>
+                    </div>
+                    <div class="right">
+                        <a class="btn" th:href="@{../examDetail}" th:text="#{test-list.select}"></a>
+                    </div>
+                    <div style="clear: both"></div>
+                </li>
+            </ul>
+        </div>
     </div>
-    <main class="mdl-layout__content">
-        <div class="page-content">
 
-            <form th:action="@{/createProject}" method="post">
-                <table class="mdl-data-table mdl-js-data-table mdl-shadow--2dp test-list">
-                    <thead>
-                    <tr>
-                        <th>Název testu</th>
-                        <th></th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    <tr>
-                        <td>PRO1-27-4-B1</td>
-                        <td><a class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent" href="/create-project">Vybrat</a></td>
-                    </tr>
-                    <tr>
-                        <td>PRO1-27-4-B2</td>
-                        <td><a class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent" href="/create-project">Vybrat</a></td>
-                    </tr>
-                    <tr>
-                        <td>PRO2-14-5-B1</td>
-                        <td><a class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent" href="/create-project" >Vybrat</a></td>
-                    </tr>
-                    </tbody>
-                </table>
-            </form>
+    <script>
+        var coll = document.getElementsByClassName("collapsible");
+        var i;
 
-        </div>
-    </main>
-</div>
+        for (i = 0; i < coll.length; i++) {
+            coll[i].addEventListener("click", function() {
+                this.classList.toggle("active");
+                var content = this.nextElementSibling;
+                if (content.style.maxHeight){
+                    content.style.maxHeight = null;
+                } else {
+                    content.style.maxHeight = content.scrollHeight + "px";
+                }
+            });
+        }
+    </script>
 </body>
 </html>

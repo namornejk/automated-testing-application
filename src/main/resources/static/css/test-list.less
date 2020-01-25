@@ -1,0 +1,94 @@
+@import url('https://fonts.googleapis.com/css?family=Quicksand:300,400,700&display=swap&subset=latin-ext');
+
+@quicksand: 'Quicksand';
+
+@super-light-gray: #eaedf2;
+@light-gray: #c6c9d1;
+@dark-gray: #3f3d56;
+@purple: #6c63ff;
+
+.collaps-card {
+  background-color: white;
+}
+
+.collapsible {
+  color: white;
+  cursor: pointer;
+  width: 100%;
+  border-radius: 2px;
+  text-align: left;
+  outline: none;
+}
+
+.collapsible-padding {
+  padding: 40px;
+}
+
+.collapsible-content {
+  text-align: left;
+  width: 100%;
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.2s ease-out;
+}
+
+h3 {
+  font-size: 30px;
+  letter-spacing: 4px;
+  font-weight: 400;
+}
+
+.collapsible {
+  h3 {
+    float: left;
+    display: inline-block;
+    text-align: left;
+  }
+
+  img {
+    float: right;
+    margin-top: 10px;
+    display: inline-block;
+    text-align: right;
+    width: 30px;
+  }
+}
+
+.exam-list {
+  background-color: white;
+  border-radius: 2px;
+
+  ul {
+    list-style: none;
+    padding: 0;
+    margin: 20px 0 40px 0;
+    text-align: left;
+
+    li {
+      padding: 40px;
+
+      .left {
+        float: left;
+
+        h3 {
+          text-align: left;
+        }
+
+        p {
+          margin-top: 10px;
+          text-align: left;
+        }
+      }
+
+      .right {
+        float: right;
+        margin-top: 20px;
+        box-sizing: border-box;
+
+        button {
+          margin-top: 20px;
+        }
+      }
+    }
+  }
+}

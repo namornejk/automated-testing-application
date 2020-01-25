@@ -25,8 +25,31 @@
   color: #3f3d56;
   font-family: 'Quicksand';
 }
+body {
+  background-color: #eaedf2;
+}
+.page-content {
+  width: 75%;
+}
 a {
   text-decoration: none;
+}
+.btn {
+  padding: 15px 25px;
+  margin: 25px 0;
+  color: white;
+  background-color: #6c63ff;
+  border: 0;
+  border-radius: 2px;
+  font-size: 15px;
+  letter-spacing: 4px;
+  cursor: pointer;
+  transition: ease-out 0.5s;
+}
+.btn:hover {
+  transition: ease-out 0.5s;
+  background-color: #c6c9d1;
+  color: #3f3d56;
 }
 nav {
   padding: 40px 40px;
