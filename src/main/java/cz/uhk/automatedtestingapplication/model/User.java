@@ -26,7 +26,7 @@ public class User {
     @Column
     private String lastName;
 
-    @ManyToMany(mappedBy="users", fetch = FetchType.EAGER, cascade=CascadeType.ALL, targetEntity = Role.class)
+    @ManyToMany(mappedBy="users", fetch = FetchType.EAGER, targetEntity = Role.class)
     @NotNull
     private List<Role> roles;
 

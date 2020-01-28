@@ -15,6 +15,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.security.Principal;
 import java.util.ArrayList;
@@ -33,11 +34,9 @@ public class LoginController {
     @Autowired
     private RoleDao roleDao;
 
-    @Autowired
-    private ExamDao examDao;
-
     @RequestMapping(value = "/login")
     public String login(){
+/*
 
         //password: aaa
         User u1 = new User("bruno", "$2y$12$KJyTJr0X1btaLzq1BQmTtebN.HmSd5BCJHmt9Ecqg0E5xTJmNAbjy");
@@ -67,6 +66,7 @@ public class LoginController {
 
         userDao.save(u2);
         roleDao.save(r2);
+*/
 
         return "log-in";
     }

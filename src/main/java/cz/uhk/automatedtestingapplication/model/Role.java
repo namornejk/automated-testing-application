@@ -16,7 +16,7 @@ public class Role {
     @NotNull
     private String name;
 
-    @ManyToMany(targetEntity = User.class, cascade=CascadeType.ALL)
+    @ManyToMany(targetEntity = User.class)
     private List<User> users;
 
     public Role() {

@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html   lang="cz"
+        xmlns:th="http://www.thymeleaf.org"
+>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" th:href="@{/images/icons/check.png}" type="image/icon type">
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" type="text/css" th:href="@{/css/main.css}">
+    <link rel="stylesheet" type="text/css" th:href="@{/css/test-list.css}">
+
+    <title th:text="#{application.title}"></title>
+</head>
+<body>
+<nav>
+    <ul>
+        <li>
+            <a class="nav-title" th:href="@{/}" th:text="#{navbar.title}"></a>
+        </li>
+        <li class="nav-right">
+            <a class="logging-button" th:href="@{/perform_logout}" th:text="#{logout}"></a>
+        </li>
+    </ul>
+</nav>
+
+<div class="page-content">
+    <div class="collaps-card">
+        <div class="collapsible">
+            <div class="collapsible-padding">
+                <h3 th:text="#{assignment-list.createNewAssignment}"></h3>
+                <img src="/images/icons/arrow.png" >
+                <div style="clear: both"></div>
+            </div>
+        </div>
+        <div class="collapsible-content">
+            <div class="collapsible-padding">
+                <form th:action="@{/teacher/create-assignment}" th:method="post">
+                    <p th:text="#{assignment-list.assignmentNameLable}"></p>
+                    <input class="form-field" type="text" th:placeholder="#{assignment-list.assignmentNamePlaceholder}" th:name="name"><br>
+                    <p th:text="#{assignment-list.assignmentDescriptionLable}"></p>
+                    <input class="form-field" type="text" th:placeholder="#{assignment-list.assignmentDescriptionPlaceholder}" th:name="description"><br>
+
+                    <input class="btn" type="submit" th:value="#{assignment-list.create}">
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div class="exam-list">
+        <ul>
+            <li th:each="exam : ${exams}">
+                <div class="left">
+                    <h3 th:text="${exam.name}"></h3>
+                    <p th:text="${exam.description}"></p>
+                </div>
+                <div class="right">
+                    <a class="btn" th:href="@{../examDetail}" th:text="#{assignment-list.select}"></a>
+                </div>
+                <div style="clear: both"></div>
+            </li>
+        </ul>
+    </div>
+</div>
+
+<script>
+    var coll = document.getElementsByClassName("collapsible");
+    var i;
+
+    for (i = 0; i < coll.length; i++) {
+        coll[i].addEventListener("click", function() {
+            this.classList.toggle("active");
+            var content = this.nextElementSibling;
+            if (content.style.maxHeight){
+                content.style.maxHeight = null;
+            } else {
+                content.style.maxHeight = content.scrollHeight + "px";
+            }
+        });
+    }
+</script>
+</body>
+</html>

@@ -26,6 +26,9 @@
     </nav>
 
     <div class="page-content">
+        <form th:action="@{/teacher/db}" th:method="post">
+            <input class="btn" type="submit" value="Vložit test data">
+        </form>
 
         <div class="collaps-card">
             <div class="collapsible">
@@ -36,14 +39,16 @@
                 </div>
             </div>
             <div class="collapsible-content">
-                <form th:action="@{/teacher/create-exam}" th:method="post">
-                    <label th:text="#{test-list.examNameLable}"></label><br>
-                    <input type="text" th:placeholder="#{test-list.examNamePlaceholder}" th:name="name"><br>
-                    <label th:text="#{test-list.examDescriptionLable}"></label><br>
-                    <input type="text" th:placeholder="#{test-list.examDescriptionPlaceholder}" th:name="description"><br>
+                <div class="collapsible-padding">
+                    <form th:action="@{/teacher/create-exam}" th:method="post">
+                        <p th:text="#{test-list.examNameLable}"></p>
+                        <input class="form-field" type="text" th:placeholder="#{test-list.examNamePlaceholder}" th:name="name"><br>
+                        <p th:text="#{test-list.examDescriptionLable}"></p>
+                        <input class="form-field" type="text" th:placeholder="#{test-list.examDescriptionPlaceholder}" th:name="description"><br>
 
-                    <input class="btn" type="submit" th:value="#{test-list.create}">
-                </form>
+                        <input class="btn" type="submit" th:value="#{test-list.create}">
+                    </form>
+                </div>
             </div>
         </div>
 

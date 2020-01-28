@@ -24,12 +24,13 @@ public class Exam {
     @JoinColumn
     private User creator;
 
-    @OneToMany(mappedBy = "exam", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "exam")
     private List<Assignment> assignmentList;
 
-    public Exam(String name, String description){
+    public Exam(String name, String description, User creator){
         this.name = name;
         this.description = description;
+        this.creator = creator;
     }
 
     public Exam(String name, String description, String path, User creator, List<Assignment> assignmentList) {
