@@ -9,13 +9,13 @@ public class Assignment {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private long assignment_id;
+    private Long id;
 
     @Column
     private String name;
 
     @Column
-    private String assignmentDescription;
+    private String description;
 
     @ManyToOne
     @JoinColumn
@@ -31,20 +31,28 @@ public class Assignment {
     public Assignment() {
     }
 
-    public Assignment(String name, String assignmentDescription, User creator, List<Project> projectList, Exam exam) {
+    public Assignment(String name, String description, User creator, Exam exam){
         this.name = name;
-        this.assignmentDescription = assignmentDescription;
+        this.description = description;
+        this.creator = creator;
+        this.exam = exam;
+    }
+
+    public Assignment(Long id, String name, String description, User creator, List<Project> projectList, Exam exam) {
+        this.id = id;
+        this.name = name;
+        this.description = description;
         this.creator = creator;
         this.projectList = projectList;
         this.exam = exam;
     }
 
-    public long getAssignment_id() {
-        return assignment_id;
+    public Long getId() {
+        return id;
     }
 
-    public void setAssignment_id(long assignment_id) {
-        this.assignment_id = assignment_id;
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getName() {
@@ -79,11 +87,11 @@ public class Assignment {
         this.exam = exam;
     }
 
-    public String getAssignmentDescription() {
-        return assignmentDescription;
+    public String getDescription() {
+        return description;
     }
 
-    public void setAssignmentDescription(String assignmentDescription) {
-        this.assignmentDescription = assignmentDescription;
+    public void setDescription(String description) {
+        this.description = description;
     }
 }

@@ -9,7 +9,7 @@ public class Exam {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private long exam_id;
+    private Long id;
 
     @Column
     private String name;
@@ -33,7 +33,8 @@ public class Exam {
         this.creator = creator;
     }
 
-    public Exam(String name, String description, String path, User creator, List<Assignment> assignmentList) {
+    public Exam(Long id, String name, String description, String path, User creator, List<Assignment> assignmentList) {
+        this.id = id;
         this.name = name;
         this.path = path;
         this.creator = creator;
@@ -51,12 +52,12 @@ public class Exam {
         this.description = description;
     }
 
-    public long getExam_id() {
-        return exam_id;
+    public Long getId() {
+        return id;
     }
 
-    public void setExam_id(long exam_id) {
-        this.exam_id = exam_id;
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getName() {

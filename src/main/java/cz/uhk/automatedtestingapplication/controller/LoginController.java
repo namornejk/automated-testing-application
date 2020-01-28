@@ -13,6 +13,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -34,9 +35,8 @@ public class LoginController {
     @Autowired
     private RoleDao roleDao;
 
-    @RequestMapping(value = "/login")
+    @GetMapping("/login")
     public String login(){
-/*
 
         //password: aaa
         User u1 = new User("bruno", "$2y$12$KJyTJr0X1btaLzq1BQmTtebN.HmSd5BCJHmt9Ecqg0E5xTJmNAbjy");
@@ -66,12 +66,11 @@ public class LoginController {
 
         userDao.save(u2);
         roleDao.save(r2);
-*/
 
         return "log-in";
     }
 
-    @RequestMapping(value = "/roleBasedSite")
+    @RequestMapping("/roleBasedSite")
     public String loginHandler(){
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         Collection<GrantedAuthority> authorityList = (Collection<GrantedAuthority>) authentication.getAuthorities();
@@ -91,14 +90,9 @@ public class LoginController {
         return "log-in";
     }
 
-    @RequestMapping(value = "/createProject")
+    @GetMapping("/createProject")
     public String createProject(){
         return "create-project";
-    }
-
-    @RequestMapping(value = "/createProject", method = RequestMethod.POST)
-    public String createProjectHandler(){
-        return "test-list";
     }
 
 }

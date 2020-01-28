@@ -36,12 +36,14 @@
         </div>
         <div class="collapsible-content">
             <div class="collapsible-padding">
-                <form th:action="@{/teacher/create-assignment}" th:method="post">
+                <form th:action="@{/teacher/create-assignment}" th:method="post" enctype="multipart/form-data">
                     <p th:text="#{assignment-list.assignmentNameLable}"></p>
                     <input class="form-field" type="text" th:placeholder="#{assignment-list.assignmentNamePlaceholder}" th:name="name"><br>
                     <p th:text="#{assignment-list.assignmentDescriptionLable}"></p>
                     <input class="form-field" type="text" th:placeholder="#{assignment-list.assignmentDescriptionPlaceholder}" th:name="description"><br>
-
+                    <p th:text="#{assignment-list.interface}"></p>
+                    <input type="file" th:name="file"/>
+                    <input type="hidden" th:name="examId" th:value="${examId}">
                     <input class="btn" type="submit" th:value="#{assignment-list.create}">
                 </form>
             </div>
@@ -50,13 +52,15 @@
 
     <div class="exam-list">
         <ul>
-            <li th:each="exam : ${exams}">
+            <li th:each="assignment : ${assignments}">
                 <div class="left">
-                    <h3 th:text="${exam.name}"></h3>
-                    <p th:text="${exam.description}"></p>
+                    <h3 th:text="${assignment.name}"></h3>
+                    <p th:text="${assignment.description}"></p>
                 </div>
                 <div class="right">
-                    <a class="btn" th:href="@{../examDetail}" th:text="#{assignment-list.select}"></a>
+                    <a class="btn" th:href="@{../deleteAssignment/{examId}/{assignmentId}
+                                                                  (examId=${examId}, assignmentId=${assignment.id})}"
+                       th:text="#{assignment-list.delete}"></a>
                 </div>
                 <div style="clear: both"></div>
             </li>

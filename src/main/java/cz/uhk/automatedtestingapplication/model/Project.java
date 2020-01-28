@@ -9,7 +9,7 @@ public class Project {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private long project_id;
+    private Long id;
 
     @Column
     private String name;
@@ -31,7 +31,8 @@ public class Project {
     public Project() {
     }
 
-    public Project(String name, Date timeSent, User student, String result, Assignment assignment) {
+    public Project(Long id, String name, Date timeSent, User student, String result, Assignment assignment) {
+        this.id = id;
         this.name = name;
         this.timeSent = timeSent;
         this.student = student;
@@ -39,12 +40,12 @@ public class Project {
         this.assignment = assignment;
     }
 
-    public long getProject_id() {
-        return project_id;
+    public Long getId() {
+        return id;
     }
 
-    public void setProject_id(long project_id) {
-        this.project_id = project_id;
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getName() {
