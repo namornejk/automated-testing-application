@@ -16,7 +16,6 @@ import org.springframework.web.multipart.MultipartFile;
 import java.security.Principal;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 @Controller
 @RequestMapping("/teacher")
@@ -47,6 +46,11 @@ public class TeacherController {
         return "redirect:/teacher/teacherTestList";
     }
 
+    @GetMapping("/mainWindow")
+    public String showMainWindow(){
+        return "main-window";
+    }
+
     @GetMapping("/teacherTestList")
     public String showTestList(Model model){
         List<Exam> exams = examDao.findAll();
@@ -67,12 +71,11 @@ public class TeacherController {
 
         examDao.save(e);
 
-        //return "redirect:/teacher/teacherTestList";
-        return "redirect:teacherAssignmentList/" + e.getId();
+        return "redirect:assignmentList/" + e.getId();
     }
 
-    @RequestMapping("/teacherAssignmentList/{examId}")
-    public String showTeacherAssignmentList(@PathVariable("examId") long examId, Model model){
+    @RequestMapping("/assignmentList/{examId}")
+    public String showAssignmentList(@PathVariable("examId") long examId, Model model){
         ArrayList<Assignment> assignments = assignmentDao.findByExamId(examId);
 
         model.addAttribute("assignments", assignments);
@@ -100,7 +103,7 @@ public class TeacherController {
         assignmentDao.save(assignment);
         fileService.uploadFile(file);
 
-        return "redirect:/teacher/teacherAssignmentList/" + examId;
+        return "redirect:/teacher/assignmentList/" + examId;
     }
 
     @GetMapping("/deleteAssignment/{examId}/{assignmentId}")
@@ -113,11 +116,35 @@ public class TeacherController {
                 ?? asi v AssignmentSerivice v metodě deleteById kde se bude volat metoda deleteRelatedFiles ??
          */
 
-        return "redirect:/teacher/teacherAssignmentList/" + examId;
+        return "redirect:/teacher/assignmentList/" + examId;
     }
 
-    @GetMapping("/examDetail")
-    public String showExamDetail(){
+    @GetMapping("/examDetail/{examId}")
+    public String showExamDetail(@PathVariable("examId") long examId, Model model){
+        Exam exam = examDao.findById(examId).get();
+        model.addAttribute("exam", exam);
         return "exam-detail";
+    }
+
+    @GetMapping("/activateExam/{examId}")
+    public String activateExamHandler(@PathVariable("examId") long examId){
+        Exam exam = examDao.getOne(examId);
+
+        if(exam.getIsActivated()){
+            exam.setIsActivated(false);
+        } else {
+            exam.setIsActivated(true);
+        }
+
+        examDao.save(exam);
+
+        return "redirect:/teacher/examDetail/" + examId;
+    }
+
+    @GetMapping("/deleteExam/{examId}")
+    public String deleteExamHandler(@PathVariable("examId") long examId){
+        examDao.deleteById(examId);
+
+        return "redirect:/teacher/teacherTestList";
     }
 }

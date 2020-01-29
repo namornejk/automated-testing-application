@@ -60,7 +60,8 @@
                         <p th:text="${exam.description}"></p>
                     </div>
                     <div class="right">
-                        <a class="btn" th:href="@{../examDetail}" th:text="#{test-list.select}"></a>
+                        <a class="btn" th:href="@{/teacher/examDetail/{examId}(examId=${exam.id})}"
+                           th:text="#{test-list.select}"></a>
                     </div>
                     <div style="clear: both"></div>
                 </li>

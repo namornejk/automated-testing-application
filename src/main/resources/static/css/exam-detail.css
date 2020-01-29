@@ -1,0 +1,57 @@
+@font-face {
+  font-family: 'Quicksand';
+  font-style: normal;
+  font-weight: 300;
+  font-display: swap;
+  src: url(https://fonts.gstatic.com/s/quicksand/v19/6xK-dSZaM9iE8KbpRA_LJ3z8mH9BOJvgkKEo58i-xw.ttf) format('truetype');
+}
+@font-face {
+  font-family: 'Quicksand';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url(https://fonts.gstatic.com/s/quicksand/v19/6xK-dSZaM9iE8KbpRA_LJ3z8mH9BOJvgkP8o58i-xw.ttf) format('truetype');
+}
+@font-face {
+  font-family: 'Quicksand';
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url(https://fonts.gstatic.com/s/quicksand/v19/6xK-dSZaM9iE8KbpRA_LJ3z8mH9BOJvgkBgv58i-xw.ttf) format('truetype');
+}
+.page-content h1,
+.page-content p {
+  text-align: left;
+}
+.page-content h1 {
+  margin-left: -5px;
+  font-size: 80px;
+  font-weight: 300;
+}
+.page-content p {
+  letter-spacing: 5px;
+  margin-bottom: 50px;
+}
+.action-cards {
+  width: 100%;
+  margin-top: 50px;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  justify-content: space-between;
+  align-items: flex-start;
+  align-content: stretch;
+}
+.action-cards a {
+  margin: 0;
+  padding: 30px;
+  border-radius: 2px;
+  background-color: #3f3d56;
+  color: #eaedf2;
+  transition: ease-out 0.5s;
+}
+.action-cards a:hover {
+  background-color: #ff4081;
+  transition: ease-out 0.5s;
+}
+/*# sourceMappingURL=exam-detail.css.map */

@@ -19,39 +19,29 @@
   font-display: swap;
   src: url(https://fonts.gstatic.com/s/quicksand/v19/6xK-dSZaM9iE8KbpRA_LJ3z8mH9BOJvgkBgv58i-xw.ttf) format('truetype');
 }
-body {
-  background: #eaedf2 url("/images/gray_shape.png");
-  background-position: center;
-  background-repeat: no-repeat;
-  background-size: cover;
-  background-attachment: fixed;
+.main-window-content-padding {
+  padding-top: 10vh;
 }
-.landing .left-panel {
+.user-management {
+  width: 50%;
   float: left;
-  width: 50%;
-  padding-top: 25vh;
 }
-.landing .left-panel .float-right {
+.user-management h3 {
+  margin-left: -30%;
+}
+.user-management svg {
   width: 100%;
+  margin: 50px 0 0 0;
 }
-.landing .left-panel .float-right h2 {
-  margin-bottom: 30px;
-  text-align: left;
-  font-size: 30px;
-}
-.landing .left-panel .float-right p {
-  text-align: left;
-  font-weight: 100;
-  line-height: 1.5;
-}
-.landing .right-panel {
-  float: right;
+.work-place {
   width: 50%;
+  float: right;
 }
-.landing .right-panel svg {
-  max-width: 95%;
-  margin-top: -5vh;
-  height: 80vh;
-  transform: rotate(-1deg);
+.work-place h3 {
+  margin-left: 30%;
 }
-/*# sourceMappingURL=index.css.map */
+.work-place svg {
+  width: 100%;
+  margin: 40px 0 0 30px;
+}
+/*# sourceMappingURL=main-window.css.map */

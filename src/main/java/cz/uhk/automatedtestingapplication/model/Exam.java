@@ -18,7 +18,10 @@ public class Exam {
     private String description;
 
     @Column
-    private String path;
+    private String fileName;
+
+    @Column
+    private Boolean isActivated;
 
     @ManyToOne
     @JoinColumn
@@ -31,12 +34,15 @@ public class Exam {
         this.name = name;
         this.description = description;
         this.creator = creator;
+        this.isActivated = false;
     }
 
-    public Exam(Long id, String name, String description, String path, User creator, List<Assignment> assignmentList) {
+    public Exam(Long id, String name, String description, String fileName, Boolean isActivated, User creator, List<Assignment> assignmentList) {
         this.id = id;
         this.name = name;
-        this.path = path;
+        this.description = description;
+        this.fileName = fileName;
+        this.isActivated = isActivated;
         this.creator = creator;
         this.assignmentList = assignmentList;
     }
@@ -68,12 +74,20 @@ public class Exam {
         this.name = name;
     }
 
-    public String getPath() {
-        return path;
+    public String getFileName() {
+        return fileName;
     }
 
-    public void setPath(String path) {
-        this.path = path;
+    public void setFileName(String fileName) {
+        this.fileName = fileName;
+    }
+
+    public Boolean getIsActivated(){
+        return isActivated;
+    }
+
+    public void setIsActivated(Boolean isActivated){
+        this.isActivated = isActivated;
     }
 
     public User getCreator() {

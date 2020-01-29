@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html   lang="cz"
+        xmlns:th="http://www.thymeleaf.org"
+>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" th:href="@{/images/icons/check.png}" type="image/icon type">
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" type="text/css" th:href="@{/css/main.css}">
+    <link rel="stylesheet" type="text/css" th:href="@{/css/exam-detail.css}">
+
+    <title th:text="#{application.title}"></title>
+</head>
+<body>
+    <nav>
+        <ul>
+            <li>
+                <a class="nav-title" th:href="@{/}" th:text="#{navbar.title}"></a>
+            </li>
+            <li class="nav-right">
+                <a class="btn logging-button" th:href="@{/login}" th:text="#{login}"></a>
+            </li>
+        </ul>
+    </nav>
+
+    <div class="page-content">
+        <h1 th:text="${exam.name}"></h1>
+        <p th:text="${exam.description}"></p>
+        <form th:action="@{/teacher/activateExam/{examId}(examId=${exam.id})}">
+            <button class="btn" th:text="${exam.isActivated} ? #{exam-detail.deactivate} : #{exam-detail.activate}">Aktivovat</button>
+        </form>
+
+        <div class="action-cards">
+            <a th:href="@{/teacher/assignmentList/{examId}(examId=${exam.id})}">Seznam zadání</a>
+            <a href="#">Seznam projektů</a>
+            <a href="#">Přidat studenta</a>
+            <a th:href="@{/teacher/deleteExam/{examId}(examId=${exam.id})}" th:attr="onclick='return confirm(\'' + #{exam-detail.confirmDeleteDialog} + '\');'">Odebrat tuto zkoušku</a>
+        </div>
+    </div>
+</body>
+</html>

@@ -13,4 +13,9 @@ public class StudentController {
         return "test-list";
     }
 
+    @GetMapping("/createProject")
+    public String createProject(){
+        return "create-project";
+    }
+
 }

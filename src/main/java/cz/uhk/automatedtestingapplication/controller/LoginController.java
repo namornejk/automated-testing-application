@@ -1,10 +1,7 @@
 package cz.uhk.automatedtestingapplication.controller;
 
-import cz.uhk.automatedtestingapplication.configuration.UserPrincipal;
-import cz.uhk.automatedtestingapplication.dao.ExamDao;
 import cz.uhk.automatedtestingapplication.dao.RoleDao;
 import cz.uhk.automatedtestingapplication.dao.UserDao;
-import cz.uhk.automatedtestingapplication.model.Exam;
 import cz.uhk.automatedtestingapplication.model.Role;
 import cz.uhk.automatedtestingapplication.model.User;
 import cz.uhk.automatedtestingapplication.service.RolesFactory;
@@ -15,10 +12,6 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
-
-import java.security.Principal;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -83,16 +76,11 @@ public class LoginController {
                 return "redirect:/student/studentTestList";
             }
             else if(role.equals(rolesFactory.getTEACHER())) {
-                return "redirect:/teacher/teacherTestList";
+                return "redirect:/teacher/mainWindow";
             }
         }
 
         return "log-in";
-    }
-
-    @GetMapping("/createProject")
-    public String createProject(){
-        return "create-project";
     }
 
 }
