@@ -17,10 +17,13 @@
 <nav>
     <ul>
         <li>
-            <a class="nav-title" th:href="@{/}" th:text="#{navbar.title}"></a>
+            <a class="nav-title" th:href="@{/teacher/mainWindow}" th:text="#{navbar.title}"></a>
         </li>
         <li class="nav-right">
-            <a class="logging-button" th:href="@{/perform_logout}" th:text="#{logout}"></a>
+            <a class="nav-link" th:href="@{/teacher/teacherTestList}" th:text="#{navbar.teacherTestList}"></a>
+            <span>|</span>
+            <a class="nav-link" th:href="@{/teacher/examDetail/{examId}(examId=${examId})}" th:text="#{navbar.assignmentDetail}"></a>
+            <a class="logging-button" th:href="@{/perform_logout}" th:text="#{navbar.logout}"></a>
         </li>
     </ul>
 </nav>

@@ -3,21 +3,21 @@
   font-style: normal;
   font-weight: 300;
   font-display: swap;
-  src: url(https://fonts.gstatic.com/s/quicksand/v19/6xK-dSZaM9iE8KbpRA_LJ3z8mH9BOJvgkKEo58i-xw.ttf) format('truetype');
+  src: url(https://fonts.gstatic.com/s/quicksand/v20/6xK-dSZaM9iE8KbpRA_LJ3z8mH9BOJvgkKEo58i-xw.ttf) format('truetype');
 }
 @font-face {
   font-family: 'Quicksand';
   font-style: normal;
   font-weight: 400;
   font-display: swap;
-  src: url(https://fonts.gstatic.com/s/quicksand/v19/6xK-dSZaM9iE8KbpRA_LJ3z8mH9BOJvgkP8o58i-xw.ttf) format('truetype');
+  src: url(https://fonts.gstatic.com/s/quicksand/v20/6xK-dSZaM9iE8KbpRA_LJ3z8mH9BOJvgkP8o58i-xw.ttf) format('truetype');
 }
 @font-face {
   font-family: 'Quicksand';
   font-style: normal;
   font-weight: 700;
   font-display: swap;
-  src: url(https://fonts.gstatic.com/s/quicksand/v19/6xK-dSZaM9iE8KbpRA_LJ3z8mH9BOJvgkBgv58i-xw.ttf) format('truetype');
+  src: url(https://fonts.gstatic.com/s/quicksand/v20/6xK-dSZaM9iE8KbpRA_LJ3z8mH9BOJvgkBgv58i-xw.ttf) format('truetype');
 }
 * {
   margin: 0 auto;
@@ -33,6 +33,12 @@ body {
 }
 a {
   text-decoration: none;
+}
+.float-right {
+  float: right;
+}
+.float-left {
+  float: left;
 }
 .btn {
   padding: 15px 25px;
@@ -53,7 +59,6 @@ a {
 }
 nav {
   padding: 40px 40px;
-  overflow: overlay;
 }
 nav ul {
   list-style-type: none;
@@ -65,7 +70,17 @@ nav ul li {
   float: left;
 }
 nav ul li.nav-right {
+  position: relative;
+  top: 5px;
   float: right;
+}
+nav ul li.nav-right .nav-link {
+  font-size: 10px;
+  letter-spacing: 4px;
+  margin: 0 5px;
+}
+nav ul li.nav-right span {
+  font-weight: lighter;
 }
 nav ul .nav-title {
   font-size: 30px;
@@ -75,6 +90,7 @@ nav ul .nav-title {
 nav ul .logging-button {
   color: white;
   background-color: #6c63ff;
+  margin-left: 15px;
   padding: 10px 20px;
   border: 0;
   border-radius: 2px;
@@ -87,17 +103,7 @@ nav ul .logging-button:hover {
   background-color: #c6c9d1;
   color: #3f3d56;
 }
-/* ---- old css ---- */
-.test-list {
-  margin: 20vh auto 50px;
-}
-.none {
-  display: none;
-}
-.file_input {
-  float: left;
-}
-input.upload-file {
-  margin-top: 25px;
+.collaps-card {
+  margin-top: 50px;
 }
 /*# sourceMappingURL=main.css.map */

@@ -28,9 +28,9 @@ public class LoginController {
     @Autowired
     private RoleDao roleDao;
 
-    @GetMapping("/login")
+   @GetMapping("/login")
     public String login(){
-
+/*
         //password: aaa
         User u1 = new User("bruno", "$2y$12$KJyTJr0X1btaLzq1BQmTtebN.HmSd5BCJHmt9Ecqg0E5xTJmNAbjy");
         Role r1 = new Role("TEACHER");
@@ -58,7 +58,7 @@ public class LoginController {
         roleDao.save(r1);
 
         userDao.save(u2);
-        roleDao.save(r2);
+        roleDao.save(r2);*/
 
         return "log-in";
     }

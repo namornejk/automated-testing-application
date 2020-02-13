@@ -17,25 +17,40 @@
     <nav>
         <ul>
             <li>
-                <a class="nav-title" th:href="@{/}" th:text="#{navbar.title}"></a>
+                <a class="nav-title" th:href="@{/teacher/mainWindow}" th:text="#{navbar.title}"></a>
             </li>
             <li class="nav-right">
-                <a class="btn logging-button" th:href="@{/login}" th:text="#{login}"></a>
+                <a class="nav-link" th:href="@{/teacher/teacherTestList}">Seznam zkoušek</a>
+                <a class="btn logging-button" th:href="@{/login}" th:text="#{navbar.logout}"></a>
             </li>
         </ul>
     </nav>
 
     <div class="page-content">
-        <h1 th:text="${exam.name}"></h1>
-        <p th:text="${exam.description}"></p>
-        <form th:action="@{/teacher/activateExam/{examId}(examId=${exam.id})}">
-            <button class="btn" th:text="${exam.isActivated} ? #{exam-detail.deactivate} : #{exam-detail.activate}">Aktivovat</button>
-        </form>
+        <div class="top-section">
+            <div class="float-left">
+                <h1 th:text="${exam.name}"></h1>
+                <p th:text="${exam.description}"></p>
+
+                <form class="exam-password" th:action="@{/teacher/setExamPassword/{examId}(examId=${exam.id})}" th:method="POST">
+                    <label th:text="#{exam-detail.examPasswordLabel}"></label>
+                    <input class="form-field" type="text" name="examPassword" th:placeholder="#{exam-detail.examPassword}" th:value="${exam.password}" >
+                    <button class="btn-sm" th:text="#{exam-detail.setExamPassword}"></button>
+                </form>
+            </div>
+
+            <div class="float-right">
+                <form th:action="@{/teacher/activateExam/{examId}(examId=${exam.id})}">
+                    <button class="btn-activate" th:classappend="${exam.isActivated ? 'activated' : 'deactivated'}" th:text="${exam.isActivated} ? #{exam-detail.deactivate} : #{exam-detail.activate}"></button>
+                </form>
+            </div>
+
+            <div style="clear: both"></div>
+        </div>
 
         <div class="action-cards">
             <a th:href="@{/teacher/assignmentList/{examId}(examId=${exam.id})}">Seznam zadání</a>
-            <a href="#">Seznam projektů</a>
-            <a href="#">Přidat studenta</a>
+            <a href="#">Odevzdané</a>
             <a th:href="@{/teacher/deleteExam/{examId}(examId=${exam.id})}" th:attr="onclick='return confirm(\'' + #{exam-detail.confirmDeleteDialog} + '\');'">Odebrat tuto zkoušku</a>
         </div>
     </div>

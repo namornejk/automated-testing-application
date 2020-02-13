@@ -8,8 +8,17 @@
 @purple: #6c63ff;
 
 .page-content {
-  h1, p {
+
+  .top-section {
+    margin: 70px 0 100px 0;
+  }
+
+  h1, p, .exam-password {
     text-align: left;
+  }
+
+  p, .exam-password {
+    margin-top: 15px;
   }
 
   h1 {
@@ -20,33 +29,82 @@
 
   p {
     letter-spacing: 5px;
-    margin-bottom: 50px;
   }
-}
 
-.action-cards {
-  width: 100%;
-  margin-top: 50px;
+  .exam-password {
+    input {
+      padding: 5px;
+      margin-left: 20px;
+      border: none;
+      border-radius: 3px;
+    }
 
-  display: flex;
-  flex-direction: row;
-  flex-wrap: nowrap;
-  justify-content: space-between;
-  align-items: flex-start;
-  align-content: stretch;
+    .btn-sm {
+      position: relative;
+      top: -1px;
+      padding: 7px 15px;
+      margin-left: 20px;
+      color: white;
+      background-color: @purple;
+      border: 0;
+      border-radius: 2px;
+      font-size: 10px;
+      letter-spacing: 4px;
+      cursor: pointer;
+      transition: ease-out 0.5s;
+    }
+  }
 
-  a {
-    margin: 0;
-    padding: 30px;
-    border-radius: 2px;
-    background-color: @dark-gray;
-    color: @super-light-gray;
-
+  .btn-activate {
+    margin-top: 10px;
+    font-weight: bold;
+    color: white;
+    border: none;
+    border-radius: 100%;
+    width: 150px;
+    height: 150px;
+    cursor: pointer;
     transition: ease-out 0.5s;
   }
 
-  a:hover {
+  .activated {
     background-color: #ff4081;
+  }
+
+  .deactivated {
+    background-color: @purple;
+  }
+
+  .btn-sm:hover, .btn-activate:hover {
     transition: ease-out 0.5s;
+    background-color: @light-gray;
+    color: @dark-gray;
+  }
+
+  .action-cards {
+    width: 100%;
+    margin-top: 50px;
+
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    justify-content: space-between;
+    align-items: flex-start;
+    align-content: stretch;
+
+    a {
+      margin: 0;
+      padding: 30px;
+      border-radius: 2px;
+      background-color: @dark-gray;
+      color: @super-light-gray;
+
+      transition: ease-out 0.5s;
+    }
+
+    a:hover {
+      background-color: #ff4081;
+      transition: ease-out 0.5s;
+    }
   }
 }

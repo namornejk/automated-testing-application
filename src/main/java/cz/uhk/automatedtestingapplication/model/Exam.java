@@ -23,6 +23,9 @@ public class Exam {
     @Column
     private Boolean isActivated;
 
+    @Column
+    private String password;
+
     @ManyToOne
     @JoinColumn
     private User creator;
@@ -37,12 +40,18 @@ public class Exam {
         this.isActivated = false;
     }
 
-    public Exam(Long id, String name, String description, String fileName, Boolean isActivated, User creator, List<Assignment> assignmentList) {
+    public Exam(String name, String description, User creator, String password){
+        this(name, description, creator);
+        this.password = password;
+    }
+
+    public Exam(Long id, String name, String description, String fileName, Boolean isActivated, String password, User creator, List<Assignment> assignmentList) {
         this.id = id;
         this.name = name;
         this.description = description;
         this.fileName = fileName;
         this.isActivated = isActivated;
+        this.password = password;
         this.creator = creator;
         this.assignmentList = assignmentList;
     }
@@ -88,6 +97,22 @@ public class Exam {
 
     public void setIsActivated(Boolean isActivated){
         this.isActivated = isActivated;
+    }
+
+    public Boolean getActivated() {
+        return isActivated;
+    }
+
+    public void setActivated(Boolean activated) {
+        isActivated = activated;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 
     public User getCreator() {

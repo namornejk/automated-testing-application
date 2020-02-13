@@ -62,12 +62,12 @@ public class TeacherController {
 
     @RequestMapping("/create-exam")
     public String createExamHandler(@RequestParam("name") String name, @RequestParam("description") String description,
-                                    Principal principal){
+                                    @RequestParam("examPassword") String examPassword, Principal principal){
 
         String username = principal.getName();
         User user = userDao.findByUsername(username);
 
-        Exam e = new Exam(name, description, user);
+        Exam e = new Exam(name, description, user, examPassword.equals("") == true ? "123" : examPassword);
 
         examDao.save(e);
 
@@ -96,7 +96,7 @@ public class TeacherController {
         String username = principal.getName();
         User user = userDao.findByUsername(username);
 
-        Exam exam = (Exam)examDao.findById(examId).get();
+        Exam exam = examDao.findById(examId).get();
 
         Assignment assignment = new Assignment(name, description, user, exam);
 
@@ -146,5 +146,17 @@ public class TeacherController {
         examDao.deleteById(examId);
 
         return "redirect:/teacher/teacherTestList";
+    }
+
+    @PostMapping("/setExamPassword/{examId}")
+    public String setExamPasswordHandler(@PathVariable("examId") long examId,
+                                         @RequestParam("examPassword") String examPassword){
+        Exam exam = examDao.getOne(examId);
+
+        exam.setPassword(examPassword);
+
+        examDao.save(exam);
+
+        return "redirect:/teacher/examDetail/" + examId;
     }
 }

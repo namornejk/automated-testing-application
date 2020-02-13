@@ -3,25 +3,33 @@
   font-style: normal;
   font-weight: 300;
   font-display: swap;
-  src: url(https://fonts.gstatic.com/s/quicksand/v19/6xK-dSZaM9iE8KbpRA_LJ3z8mH9BOJvgkKEo58i-xw.ttf) format('truetype');
+  src: url(https://fonts.gstatic.com/s/quicksand/v20/6xK-dSZaM9iE8KbpRA_LJ3z8mH9BOJvgkKEo58i-xw.ttf) format('truetype');
 }
 @font-face {
   font-family: 'Quicksand';
   font-style: normal;
   font-weight: 400;
   font-display: swap;
-  src: url(https://fonts.gstatic.com/s/quicksand/v19/6xK-dSZaM9iE8KbpRA_LJ3z8mH9BOJvgkP8o58i-xw.ttf) format('truetype');
+  src: url(https://fonts.gstatic.com/s/quicksand/v20/6xK-dSZaM9iE8KbpRA_LJ3z8mH9BOJvgkP8o58i-xw.ttf) format('truetype');
 }
 @font-face {
   font-family: 'Quicksand';
   font-style: normal;
   font-weight: 700;
   font-display: swap;
-  src: url(https://fonts.gstatic.com/s/quicksand/v19/6xK-dSZaM9iE8KbpRA_LJ3z8mH9BOJvgkBgv58i-xw.ttf) format('truetype');
+  src: url(https://fonts.gstatic.com/s/quicksand/v20/6xK-dSZaM9iE8KbpRA_LJ3z8mH9BOJvgkBgv58i-xw.ttf) format('truetype');
+}
+.page-content .top-section {
+  margin: 70px 0 100px 0;
 }
 .page-content h1,
-.page-content p {
+.page-content p,
+.page-content .exam-password {
   text-align: left;
+}
+.page-content p,
+.page-content .exam-password {
+  margin-top: 15px;
 }
 .page-content h1 {
   margin-left: -5px;
@@ -30,9 +38,51 @@
 }
 .page-content p {
   letter-spacing: 5px;
-  margin-bottom: 50px;
 }
-.action-cards {
+.page-content .exam-password input {
+  padding: 5px;
+  margin-left: 20px;
+  border: none;
+  border-radius: 3px;
+}
+.page-content .exam-password .btn-sm {
+  position: relative;
+  top: -1px;
+  padding: 7px 15px;
+  margin-left: 20px;
+  color: white;
+  background-color: #6c63ff;
+  border: 0;
+  border-radius: 2px;
+  font-size: 10px;
+  letter-spacing: 4px;
+  cursor: pointer;
+  transition: ease-out 0.5s;
+}
+.page-content .btn-activate {
+  margin-top: 10px;
+  font-weight: bold;
+  color: white;
+  border: none;
+  border-radius: 100%;
+  width: 150px;
+  height: 150px;
+  cursor: pointer;
+  transition: ease-out 0.5s;
+}
+.page-content .activated {
+  background-color: #ff4081;
+}
+.page-content .deactivated {
+  background-color: #6c63ff;
+}
+.page-content .btn-sm:hover,
+.page-content .btn-activate:hover {
+  transition: ease-out 0.5s;
+  background-color: #c6c9d1;
+  color: #3f3d56;
+}
+.page-content .action-cards {
   width: 100%;
   margin-top: 50px;
   display: flex;
@@ -42,7 +92,7 @@
   align-items: flex-start;
   align-content: stretch;
 }
-.action-cards a {
+.page-content .action-cards a {
   margin: 0;
   padding: 30px;
   border-radius: 2px;
@@ -50,7 +100,7 @@
   color: #eaedf2;
   transition: ease-out 0.5s;
 }
-.action-cards a:hover {
+.page-content .action-cards a:hover {
   background-color: #ff4081;
   transition: ease-out 0.5s;
 }

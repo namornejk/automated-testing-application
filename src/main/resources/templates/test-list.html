@@ -17,10 +17,10 @@
     <nav>
         <ul>
             <li>
-                <a class="nav-title" th:href="@{/}" th:text="#{navbar.title}"></a>
+                <a class="nav-title" th:href="@{/teacher/mainWindow}" th:text="#{navbar.title}"></a>
             </li>
             <li class="nav-right">
-                <a class="logging-button" th:href="@{/perform_logout}" th:text="#{logout}"></a>
+                <a class="logging-button" th:href="@{/perform_logout}" th:text="#{navbar.logout}"></a>
             </li>
         </ul>
     </nav>
@@ -45,6 +45,8 @@
                         <input class="form-field" type="text" th:placeholder="#{test-list.examNamePlaceholder}" th:name="name"><br>
                         <p th:text="#{test-list.examDescriptionLable}"></p>
                         <input class="form-field" type="text" th:placeholder="#{test-list.examDescriptionPlaceholder}" th:name="description"><br>
+                        <p th:text="#{test-list.examPassword}"></p>
+                        <input class="form-field" type="text" th:placeholder="#{test-list.examDescriptionPlaceholder}" th:name="examPassword"><br>
 
                         <input class="btn" type="submit" th:value="#{test-list.create}">
                     </form>
