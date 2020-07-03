@@ -2,11 +2,16 @@ package cz.uhk.automatedtestingapplication.controller;
 
 import cz.uhk.automatedtestingapplication.dao.AssignmentDao;
 import cz.uhk.automatedtestingapplication.dao.ExamDao;
+import cz.uhk.automatedtestingapplication.dao.ProjectDao;
 import cz.uhk.automatedtestingapplication.dao.UserDao;
 import cz.uhk.automatedtestingapplication.model.Assignment;
 import cz.uhk.automatedtestingapplication.model.Exam;
+import cz.uhk.automatedtestingapplication.model.Project;
 import cz.uhk.automatedtestingapplication.model.User;
-import cz.uhk.automatedtestingapplication.service.FileService;
+import cz.uhk.automatedtestingapplication.service.FileSystemManagementService;
+import org.joda.time.DateTime;
+import org.joda.time.format.DateTimeFormatter;
+import org.joda.time.format.ISODateTimeFormat;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -22,7 +27,7 @@ import java.util.List;
 public class TeacherController {
 
     @Autowired
-    private FileService fileService;
+    private FileSystemManagementService fileSystemManagementService;
 
     @Autowired
     private ExamDao examDao;
@@ -31,8 +36,12 @@ public class TeacherController {
     private AssignmentDao assignmentDao;
 
     @Autowired
+    private ProjectDao projectDao;
+
+    @Autowired
     private UserDao userDao;
 
+    // Metoda vytvořená pouze pro vložení testovacích dat do databáze
     @RequestMapping("/db")
     public String db(Principal principal){
         String username = principal.getName();
@@ -86,23 +95,36 @@ public class TeacherController {
 
     @PostMapping("/create-assignment")
     public String createAssignmentHandler(@RequestParam("examId") long examId,
-                                          @RequestParam("name") String name,
-                                          @RequestParam("description") String description,
+                                          @RequestParam("name") String assignmentName,
+                                          @RequestParam("description") String assignmentDescription,
                                           @RequestParam("file") MultipartFile file,
                                           Principal principal){
 
         //TODO - Dodělat vytváření adresářové struktury
 
-        String username = principal.getName();
-        User user = userDao.findByUsername(username);
+        String fileName = file.getOriginalFilename();
+        String extension = "";
+        int i = fileName.lastIndexOf('.');
 
-        Exam exam = examDao.findById(examId).get();
+        if (i > 0) extension = fileName.substring(i+1);
 
-        Assignment assignment = new Assignment(name, description, user, exam);
+        if(extension.contains("zip")){
+            String username = principal.getName();
+            User user = userDao.findByUsername(username);
 
-        assignmentDao.save(assignment);
-        fileService.uploadFile(file);
+            Exam exam = examDao.findById(examId).get();
 
+            Assignment assignment = new Assignment(assignmentName, assignmentDescription, user, exam);
+
+            DateTime dt = new DateTime();
+            DateTimeFormatter fmt = ISODateTimeFormat.dateTime();
+
+            Project project = new Project(assignmentName, fmt.print(dt), user, assignment);
+
+            assignmentDao.save(assignment);
+            projectDao.save(project);
+            fileSystemManagementService.uploadOriginalProject(examId, assignment.getId(), assignmentName, file);
+        }
         return "redirect:/teacher/assignmentList/" + examId;
     }
 
@@ -159,4 +181,5 @@ public class TeacherController {
 
         return "redirect:/teacher/examDetail/" + examId;
     }
+
 }

@@ -1,7 +1,6 @@
 package cz.uhk.automatedtestingapplication.model;
 
 import javax.persistence.*;
-import java.util.Date;
 
 @Entity
 @Table(name = "Projects")
@@ -15,11 +14,11 @@ public class Project {
     private String name;
 
     @Column
-    private Date timeSent;
+    private String dateTime;
 
     @ManyToOne
     @JoinColumn
-    private User student;
+    private User user;
 
     @Column
     private String result;
@@ -31,11 +30,17 @@ public class Project {
     public Project() {
     }
 
-    public Project(Long id, String name, Date timeSent, User student, String result, Assignment assignment) {
-        this.id = id;
+    public Project(String name, String dateTime, User user, Assignment assignment) {
         this.name = name;
-        this.timeSent = timeSent;
-        this.student = student;
+        this.dateTime = dateTime;
+        this.user = user;
+        this.assignment = assignment;
+    }
+
+    public Project(String name, String dateTime, User user, String result, Assignment assignment) {
+        this.name = name;
+        this.dateTime = dateTime;
+        this.user = user;
         this.result = result;
         this.assignment = assignment;
     }
@@ -56,12 +61,12 @@ public class Project {
         this.name = name;
     }
 
-    public User getStudent() {
-        return student;
+    public User getUser() {
+        return user;
     }
 
-    public void setStudent(User student) {
-        this.student = student;
+    public void setUser(User user) {
+        this.user = user;
     }
 
     public String getResult() {
@@ -80,11 +85,11 @@ public class Project {
         this.assignment = assignment;
     }
 
-    public Date getTimeSent() {
-        return timeSent;
+    public String getDateTime() {
+        return dateTime;
     }
 
-    public void setTimeSent(Date timeSent) {
-        this.timeSent = timeSent;
+    public void setDateTime(String dateTime) {
+        this.dateTime = dateTime;
     }
 }

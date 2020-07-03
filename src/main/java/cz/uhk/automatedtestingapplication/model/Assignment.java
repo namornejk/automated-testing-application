@@ -38,8 +38,7 @@ public class Assignment {
         this.exam = exam;
     }
 
-    public Assignment(Long id, String name, String description, User creator, List<Project> projectList, Exam exam) {
-        this.id = id;
+    public Assignment(String name, String description, User creator, List<Project> projectList, Exam exam) {
         this.name = name;
         this.description = description;
         this.creator = creator;

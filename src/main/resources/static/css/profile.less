@@ -1,0 +1,113 @@
+@import url('https://fonts.googleapis.com/css?family=Quicksand:300,400,700&display=swap&subset=latin-ext');
+
+@quicksand: 'Quicksand';
+
+@super-light-gray: #eaedf2;
+@light-gray: #c6c9d1;
+@dark-gray: #3f3d56;
+@purple: #6c63ff;
+
+* {
+  margin: 0 auto;
+  text-align: center;
+  color: @dark-gray;
+  font-family: @quicksand;
+}
+
+body {
+  background-color: @super-light-gray;
+}
+
+.page-content {
+  width: 75%;
+}
+
+a {
+  text-decoration: none;
+}
+
+.float-right {
+  float: right;
+}
+
+.float-left {
+  float: left;
+}
+
+.btn {
+  padding: 15px 25px;
+  margin: 25px 0;
+  color: white;
+  background-color: @purple;
+  border: 0;
+  border-radius: 2px;
+  font-size: 15px;
+  letter-spacing: 4px;
+  cursor: pointer;
+  transition: ease-out 0.5s;
+}
+
+.btn:hover {
+  transition: ease-out 0.5s;
+  background-color: @light-gray;
+  color: @dark-gray;
+}
+
+nav {
+  padding: 40px 40px;
+
+  ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    text-transform: uppercase;
+
+    li {
+      float: left;
+    }
+
+    li.nav-right {
+      position: relative;
+      top: 5px;
+      float: right;
+
+      .nav-link {
+        font-size: 10px;
+        letter-spacing: 4px;
+        margin: 0 5px;
+      }
+
+      span {
+        font-weight: lighter;
+      }
+    }
+
+    .nav-title {
+      font-size: 30px;
+      font-weight: 300;
+      letter-spacing: 5px;
+    }
+
+    .logging-button {
+      color: white;
+      background-color: @purple;
+      margin-left: 15px;
+      padding: 10px 20px;
+      border: 0;
+      border-radius: 2px;
+      font-size: 10px;
+      letter-spacing: 4px;
+      transition: ease-out 0.5s;
+    }
+
+    .logging-button:hover {
+      transition: ease-out 0.5s;
+      background-color: @light-gray;
+      color: @dark-gray;
+    }
+  }
+}
+
+.collaps-card {
+  margin-top: 50px;
+}

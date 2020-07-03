@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html   lang="cz"
+        xmlns:th="http://www.thymeleaf.org"
+>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" th:href="@{/images/icons/check.png}" type="image/icon type">
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" type="text/css" th:href="@{/css/main.css}">
+    <link rel="stylesheet" type="text/css" th:href="@{/css/profile.css}">
+
+    <title th:text="#{application.title}"></title>
+</head>
+<body>
+    <nav>
+        <ul>
+            <li>
+                <a class="nav-title" th:href="@{/teacher/mainWindow}" th:text="#{navbar.title}"></a>
+            </li>
+            <li class="nav-right">
+                <a class="nav-link" th:href="@{/roleBasedSite}" >Domů</a>
+                <a class="logging-button" th:href="@{/perform_logout}" th:text="#{navbar.logout}"></a>
+            </li>
+        </ul>
+    </nav>
+
+    <div class="page-content">
+        <div class="error-message param-message" th:if="${param.error}">
+            Passwords are not the same !
+        </div>
+
+        <h2>Profil</h2>
+        <form th:action="@{/editProfile}" method="post">
+            <label>Username: </label>
+            <span th:text="${user.username}"></span>
+            <br/>
+            <label>Jméno</label>
+            <input class="" type="text" name="firstName" th:value="${user.firstName}">
+            <br/>
+            <label>Příjmení</label>
+            <input class="" type="text" name="lastName" th:value="${user.lastName}">
+            <br/>
+            <label>Heslo</label>
+            <input class="" type="password" name="password" >
+            <br/>
+            <label>Opakuj heslo</label>
+            <input class="" type="password" name="password2" >
+            <br/>
+            <button class="btn" th:text="Uložit"></button>
+        </form>
+    </div>
+</body>
+</html>

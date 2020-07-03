@@ -45,8 +45,7 @@ public class Exam {
         this.password = password;
     }
 
-    public Exam(Long id, String name, String description, String fileName, Boolean isActivated, String password, User creator, List<Assignment> assignmentList) {
-        this.id = id;
+    public Exam(String name, String description, String fileName, Boolean isActivated, String password, User creator, List<Assignment> assignmentList) {
         this.name = name;
         this.description = description;
         this.fileName = fileName;

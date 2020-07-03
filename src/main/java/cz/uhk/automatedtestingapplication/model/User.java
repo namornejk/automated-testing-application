@@ -47,8 +47,7 @@ public class User {
         this.password = password;
     }
 
-    public User(Long id, String username, String password, String firstName, String lastName, List<Role> roles, List<Project> projectList, List<Assignment> assignmentList, List<Exam> examList) {
-        this.id = id;
+    public User(String username, String password, String firstName, String lastName, List<Role> roles, List<Project> projectList, List<Assignment> assignmentList, List<Exam> examList) {
         this.username = username;
         this.password = password;
         this.firstName = firstName;
