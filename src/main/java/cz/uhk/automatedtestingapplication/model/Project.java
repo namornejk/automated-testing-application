@@ -1,6 +1,9 @@
 package cz.uhk.automatedtestingapplication.model;
 
+import cz.uhk.automatedtestingapplication.model.testResult.Testsuite;
+
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
 @Table(name = "Projects")
@@ -11,38 +14,56 @@ public class Project {
     private Long id;
 
     @Column
-    private String name;
+    private String name;    // studentFirstName_studentSecondName_assignmentName.zip
 
     @Column
     private String dateTime;
 
     @ManyToOne
-    @JoinColumn
+    @JoinColumn(name = "user_id")
     private User user;
 
-    @Column
-    private String result;
-
     @ManyToOne
-    @JoinColumn
+    @JoinColumn(name = "assignment_id")
     private Assignment assignment;
+
+    @OneToMany(mappedBy = "project", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<Testsuite> testsuiteList;
 
     public Project() {
     }
 
-    public Project(String name, String dateTime, User user, Assignment assignment) {
+    public Project(String name, String dateTime) {
         this.name = name;
         this.dateTime = dateTime;
-        this.user = user;
-        this.assignment = assignment;
     }
 
-    public Project(String name, String dateTime, User user, String result, Assignment assignment) {
+    public Project(String name, String dateTime, User user) {
         this.name = name;
         this.dateTime = dateTime;
         this.user = user;
-        this.result = result;
-        this.assignment = assignment;
+    }
+
+    public int getNumberOfProjectListSuccessfullTests(){
+        if(this.testsuiteList != null) {
+            int successfullTests = 0;
+            for (Testsuite t : this.getTestsuiteList()) {
+                successfullTests += t.getSuccessfullTests();
+            }
+            return successfullTests;
+        }
+        return 9;
+    }
+
+    public int getNumberOfProjectListTests(){
+        if(this.testsuiteList != null) {
+            int count = 0;
+            for (Testsuite t : this.getTestsuiteList()) {
+                count += t.getTests();
+            }
+            return count;
+        }
+        return 10;
     }
 
     public Long getId() {
@@ -61,28 +82,12 @@ public class Project {
         this.name = name;
     }
 
-    public User getUser() {
-        return user;
+    public List<Testsuite> getTestsuiteList() {
+        return testsuiteList;
     }
 
-    public void setUser(User user) {
-        this.user = user;
-    }
-
-    public String getResult() {
-        return result;
-    }
-
-    public void setResult(String result) {
-        this.result = result;
-    }
-
-    public Assignment getAssignment() {
-        return assignment;
-    }
-
-    public void setAssignment(Assignment assignment) {
-        this.assignment = assignment;
+    public void setTestsuiteList(List<Testsuite> testsuiteList) {
+        this.testsuiteList = testsuiteList;
     }
 
     public String getDateTime() {
@@ -91,5 +96,21 @@ public class Project {
 
     public void setDateTime(String dateTime) {
         this.dateTime = dateTime;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
+    public Assignment getAssignment() {
+        return assignment;
+    }
+
+    public void setAssignment(Assignment assignment) {
+        this.assignment = assignment;
     }
 }

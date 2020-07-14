@@ -61,7 +61,7 @@
                     <p th:text="${assignment.description}"></p>
                 </div>
                 <div class="right">
-                    <a class="btn" th:href="@{../deleteAssignment/{examId}/{assignmentId}
+                    <a class="btn btn-del" th:href="@{../deleteAssignment/{examId}/{assignmentId}
                                                                   (examId=${examId}, assignmentId=${assignment.id})}"
                        th:text="#{assignment-list.delete}"></a>
                 </div>

@@ -18,32 +18,20 @@ public class Assignment {
     private String description;
 
     @ManyToOne
-    @JoinColumn
-    private User creator;
-
-    @OneToMany
-    private List<Project> projectList;
-
-    @ManyToOne
-    @JoinColumn
+    @JoinColumn(name = "exam_id")
     private Exam exam;
+
+    @OneToMany(mappedBy = "assignment", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<Project> projectList;
 
     public Assignment() {
     }
 
-    public Assignment(String name, String description, User creator, Exam exam){
+    public Assignment(String name, String description, Exam exam, List<Project> projectList) {
         this.name = name;
         this.description = description;
-        this.creator = creator;
         this.exam = exam;
-    }
-
-    public Assignment(String name, String description, User creator, List<Project> projectList, Exam exam) {
-        this.name = name;
-        this.description = description;
-        this.creator = creator;
         this.projectList = projectList;
-        this.exam = exam;
     }
 
     public Long getId() {
@@ -62,14 +50,6 @@ public class Assignment {
         this.name = name;
     }
 
-    public User getCreator() {
-        return creator;
-    }
-
-    public void setCreator(User creator) {
-        this.creator = creator;
-    }
-
     public List<Project> getProjectList() {
         return projectList;
     }
@@ -78,19 +58,19 @@ public class Assignment {
         this.projectList = projectList;
     }
 
-    public Exam getExam() {
-        return exam;
-    }
-
-    public void setExam(Exam exam) {
-        this.exam = exam;
-    }
-
     public String getDescription() {
         return description;
     }
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public Exam getExam() {
+        return exam;
+    }
+
+    public void setExam(Exam exam) {
+        this.exam = exam;
     }
 }

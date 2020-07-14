@@ -16,19 +16,11 @@ public class Role {
     @NotNull
     private String name;
 
-    @ManyToMany(targetEntity = User.class)
-    private List<User> users;
-
     public Role() {
     }
 
     public Role(String name){
         this.name = name;
-    }
-
-    public Role(String name, List<User> users) {
-        this.name = name;
-        this.users = users;
     }
 
     public Long getId() {
@@ -45,14 +37,6 @@ public class Role {
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public List<User> getUsers() {
-        return users;
-    }
-
-    public void setUsers(List<User> users) {
-        this.users = users;
     }
 
 }

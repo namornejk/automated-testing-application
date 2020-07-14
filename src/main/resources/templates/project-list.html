@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html   lang="cz"
+        xmlns:th="http://www.thymeleaf.org"
+>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" th:href="@{/images/icons/check.png}" type="image/icon type">
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" type="text/css" th:href="@{/css/main.css}">
+    <link rel="stylesheet" type="text/css" th:href="@{/css/test-list.css}">
+    <link rel="stylesheet" type="text/css" th:href="@{/css/project-list.css}">
+
+    <title th:text="#{application.title}"></title>
+</head>
+<body>
+    <nav>
+        <ul>
+            <li>
+                <a class="nav-title" th:href="@{/teacher/mainWindow}" th:text="#{navbar.title}"></a>
+            </li>
+            <li class="nav-right">
+                <a class="nav-link" th:href="@{/teacher/teacherTestList}" th:text="#{navbar.teacherTestList}"></a>
+                <span>|</span>
+                <a class="nav-link" th:href="@{/teacher/examDetail/{examId}(examId=${examId})}" th:text="#{navbar.assignmentDetail}"></a>
+                <a class="logging-button" th:href="@{/perform_logout}" th:text="#{navbar.logout}"></a>
+            </li>
+        </ul>
+    </nav>
+
+    <div class="page-content">
+        <div class="project-list-header">
+            <h3 class="float-left">Celková úspěšnost</h3>
+            <p class="overall-success float-right" th:text="${overallSuccess} + '%'"></p>
+            <div style="clear: both"></div>
+
+            <div class="select-all float-left">
+                <input type="checkbox" id="select-all" name="select-all">
+                <label for="select-all"> Vybrat vše</label>
+            </div>
+            <button class="btn float-right">Vyhodnotit</button>
+            <div style="clear: both"></div>
+        </div>
+
+        <div class="exam-list">
+            <form>
+                <ul>
+                    <li th:each="project : ${projects}">
+                        <div class="project-list-input left">
+                            <input type="checkbox" th:id="${project.id}" name="projects" th:value="${project.id}">
+                            <h3 th:text="${project.getUser().getFullName()}"></h3>
+                        </div>
+                        <div class="right">
+                            <a class="btn" href=""
+                               th:text="#{test-list.select}"></a>
+                        </div>
+                        <div style="clear: both"></div>
+                    </li>
+                </ul>
+            </form>
+        </div>
+    </div>
+    <script>
+        document.getElementById('select-all').onclick = function() {
+            var checkboxes = document.getElementsByName('projects');
+            for (var checkbox of checkboxes) {
+                checkbox.checked = this.checked;
+            }
+        }
+    </script>
+</body>
+</html>

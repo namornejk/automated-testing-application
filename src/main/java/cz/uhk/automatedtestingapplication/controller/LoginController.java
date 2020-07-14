@@ -44,25 +44,18 @@ public class LoginController {
 
         List<Role> roles1 = new ArrayList<>();
         roles1.add(r1);
-        List<User> users1 = new ArrayList<>();
-        users1.add(u1);
 
         List<Role> roles2 = new ArrayList<>();
         roles2.add(r2);
-        List<User> users2 = new ArrayList<>();
-        users2.add(u2);
 
-        r1.setUsers(users1);
-        u1.setRoles(roles1);
+        u1.setRoleList(roles1);
+        u2.setRoleList(roles2);
 
-        r2.setUsers(users2);
-        u2.setRoles(roles2);
-
-        userDao.save(u1);
         roleDao.save(r1);
+        userDao.save(u1);
 
-        userDao.save(u2);
         roleDao.save(r2);
+        userDao.save(u2);
 
         return "log-in";
     }
@@ -72,16 +65,16 @@ public class LoginController {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         Collection<GrantedAuthority> authorityList = (Collection<GrantedAuthority>) authentication.getAuthorities();
 
+        fileSystemManagementService.firstStartInit();
+
         for (GrantedAuthority authority : authorityList) {
 
             String role = authority.getAuthority();
 
             if(role.equals(rolesFactory.getSTUDENT())){
-                System.out.println(fileSystemManagementService.firstStartInit());
                 return "redirect:/student/studentTestList";
             }
             else if(role.equals(rolesFactory.getTEACHER())) {
-                System.out.println(fileSystemManagementService.firstStartInit());
                 return "redirect:/teacher/mainWindow";
             }
         }

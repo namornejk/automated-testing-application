@@ -49,9 +49,11 @@
         </div>
 
         <div class="action-cards">
-            <a th:href="@{/teacher/assignmentList/{examId}(examId=${exam.id})}">Seznam zadání</a>
-            <a href="#">Odevzdané</a>
-            <a th:href="@{/teacher/deleteExam/{examId}(examId=${exam.id})}" th:attr="onclick='return confirm(\'' + #{exam-detail.confirmDeleteDialog} + '\');'">Odebrat tuto zkoušku</a>
+            <div>
+                <a th:href="@{/teacher/assignmentList/{examId}(examId=${exam.id})}" th:text="#{exam-detail.assignmentList}"></a>
+                <a th:href="@{/teacher/projectList/{examId}(examId=${exam.id})}" th:text="#{exam-detail.submittedExams}"></a>
+                <a th:href="@{/teacher/deleteExam/{examId}(examId=${exam.id})}" th:attr="onclick='return confirm(\'' + #{exam-detail.confirmDeleteDialog} + '\');'" th:text="#{exam-detail.deleteExam}"></a>
+            </div>
         </div>
     </div>
 </body>

@@ -85,6 +85,29 @@
     width: 100%;
     margin-top: 50px;
 
+    div {
+      background-color: @dark-gray;
+      display: inline-block;
+      border-radius: 2px;
+
+      a {
+       padding: 30px;
+        display: block;
+        float: left;
+        color: @super-light-gray;
+
+        transition: ease-out 0.5s;
+      }
+
+      a:hover {
+        background-color: #ff4081;
+
+        transition: ease-out 0.5s;
+      }
+    }
+
+
+    /*
     display: flex;
     flex-direction: row;
     flex-wrap: nowrap;
@@ -105,6 +128,6 @@
     a:hover {
       background-color: #ff4081;
       transition: ease-out 0.5s;
-    }
+    }*/
   }
 }

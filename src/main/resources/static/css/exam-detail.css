@@ -3,21 +3,21 @@
   font-style: normal;
   font-weight: 300;
   font-display: swap;
-  src: url(https://fonts.gstatic.com/s/quicksand/v20/6xK-dSZaM9iE8KbpRA_LJ3z8mH9BOJvgkKEo58i-xw.ttf) format('truetype');
+  src: url(https://fonts.gstatic.com/s/quicksand/v21/6xK-dSZaM9iE8KbpRA_LJ3z8mH9BOJvgkKEo58i-xw.ttf) format('truetype');
 }
 @font-face {
   font-family: 'Quicksand';
   font-style: normal;
   font-weight: 400;
   font-display: swap;
-  src: url(https://fonts.gstatic.com/s/quicksand/v20/6xK-dSZaM9iE8KbpRA_LJ3z8mH9BOJvgkP8o58i-xw.ttf) format('truetype');
+  src: url(https://fonts.gstatic.com/s/quicksand/v21/6xK-dSZaM9iE8KbpRA_LJ3z8mH9BOJvgkP8o58i-xw.ttf) format('truetype');
 }
 @font-face {
   font-family: 'Quicksand';
   font-style: normal;
   font-weight: 700;
   font-display: swap;
-  src: url(https://fonts.gstatic.com/s/quicksand/v20/6xK-dSZaM9iE8KbpRA_LJ3z8mH9BOJvgkBgv58i-xw.ttf) format('truetype');
+  src: url(https://fonts.gstatic.com/s/quicksand/v21/6xK-dSZaM9iE8KbpRA_LJ3z8mH9BOJvgkBgv58i-xw.ttf) format('truetype');
 }
 .page-content .top-section {
   margin: 70px 0 100px 0;
@@ -85,22 +85,42 @@
 .page-content .action-cards {
   width: 100%;
   margin-top: 50px;
-  display: flex;
-  flex-direction: row;
-  flex-wrap: nowrap;
-  justify-content: space-between;
-  align-items: flex-start;
-  align-content: stretch;
+  /*
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    justify-content: space-between;
+    align-items: flex-start;
+    align-content: stretch;
+
+    a {
+      margin: 0;
+      padding: 30px;
+      border-radius: 2px;
+      background-color: @dark-gray;
+      color: @super-light-gray;
+
+      transition: ease-out 0.5s;
+    }
+
+    a:hover {
+      background-color: #ff4081;
+      transition: ease-out 0.5s;
+    }*/
 }
-.page-content .action-cards a {
-  margin: 0;
-  padding: 30px;
-  border-radius: 2px;
+.page-content .action-cards div {
   background-color: #3f3d56;
+  display: inline-block;
+  border-radius: 2px;
+}
+.page-content .action-cards div a {
+  padding: 30px;
+  display: block;
+  float: left;
   color: #eaedf2;
   transition: ease-out 0.5s;
 }
-.page-content .action-cards a:hover {
+.page-content .action-cards div a:hover {
   background-color: #ff4081;
   transition: ease-out 0.5s;
 }

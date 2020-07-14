@@ -1,5 +1,7 @@
 package cz.uhk.automatedtestingapplication.service;
 
+import net.lingala.zip4j.ZipFile;
+import net.lingala.zip4j.exception.ZipException;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
@@ -35,7 +37,6 @@ public class FileSystemManagementService {
 
     public String firstStartInit(){
         this.applicationDir = homeDir + File.separator + this.applicationDirName;
-        System.out.println(this.applicationDir);
 
         File file = new File(this.applicationDir);
         if (!file.exists()) {
@@ -48,24 +49,86 @@ public class FileSystemManagementService {
     }
 
     private void uploadFile(MultipartFile file, Path copyLocation){
-
         try{
             Files.copy(file.getInputStream(), copyLocation, StandardCopyOption.REPLACE_EXISTING);
         } catch (IOException e){ e.printStackTrace(); }
-
     }
 
     public void uploadOriginalProject(long examID, long assignmentID, String assignmentName, MultipartFile file){
         String filePath = applicationDir + File.separator + examID + File.separator + assignmentID + File.separator + "teacher" + File.separator;
-        File dirs = new File(filePath);
+        createDirStructure(filePath);
+
+        Path copyLocation = Paths
+                .get(filePath + assignmentName + ".zip");
+
+        this.uploadFile(file, copyLocation);
+    }
+
+    public void uploadStudentProject(long examID, long assignmentID, String userFirstName, String userLastName, String assignmentName, MultipartFile file){
+        String filePath = applicationDir + File.separator + examID + File.separator + assignmentID + File.separator + "students" + File.separator;
+        createDirStructure(filePath);
+
+        String projectFileName = userFirstName + "_" + userLastName + "_" + assignmentName;
+        Path copyLocation = Paths
+                .get(filePath + projectFileName + ".zip");
+
+        this.uploadFile(file, copyLocation);
+    }
+
+    public void copyProjectIntoWorkPlace(long examID, long assignmentID, String userFirstName, String userLastName, String assignmentName){
+        String destinationFilePath = applicationDir + File.separator + examID + File.separator + assignmentID + File.separator + "workplace" + File.separator;
+        createDirStructure(destinationFilePath);
+
+        String sourceFilePath = applicationDir + File.separator + examID + File.separator + assignmentID + File.separator + "students" + File.separator;
+        String projectFileName = userFirstName + "_" + userLastName + "_" + assignmentName;
+        copyFile(new File(sourceFilePath + projectFileName + ".zip"), new File(destinationFilePath));
+    }
+
+    public void copyFile(File source, File destination){
+        Path sourcePath = source.toPath();
+        Path destPath = destination.toPath();
+
+        try {
+            Files.copy(sourcePath, destPath);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void deleteAssignment(String examID, String assignmentID){
+        String assignmentPath = applicationDir + File.separator + examID + File.separator + assignmentID;
+        deleteDirectory(new File(assignmentPath));
+    }
+
+    public void deleteExam(String examID){
+        String examPath = applicationDir + File.separator + examID;
+        deleteDirectory(new File(examPath));
+    }
+
+    public void deleteDirectory(File directoryToBeDeleted) {
+        File[] allContents = directoryToBeDeleted.listFiles();
+        if (allContents != null) {
+            for (File file : allContents) {
+                deleteDirectory(file);
+            }
+        }
+        directoryToBeDeleted.delete();
+    }
+
+    private void createDirStructure(String path){
+        File dirs = new File(path);
         if (!dirs.exists()) {
             dirs.mkdirs();
         }
+    }
 
-        Path copyLocation = Paths
-                .get(filePath + StringUtils.cleanPath(assignmentName + ".zip"));
-
-        this.uploadFile(file, copyLocation);
+    public void unzip(String sourcePath, String destinationPath){
+        try {
+            ZipFile zipFile = new ZipFile(sourcePath);
+            zipFile.extractAll(destinationPath);
+        } catch (ZipException e) {
+            e.printStackTrace();
+        }
     }
 
     public String getHomeDir() {

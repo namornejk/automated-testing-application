@@ -27,32 +27,21 @@ public class Exam {
     private String password;
 
     @ManyToOne
-    @JoinColumn
-    private User creator;
+    @JoinColumn(name = "user_id")
+    private User user;
 
-    @OneToMany(mappedBy = "exam")
+    @OneToMany(mappedBy = "exam", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Assignment> assignmentList;
 
-    public Exam(String name, String description, User creator){
+    public Exam(String name, String description){
         this.name = name;
         this.description = description;
-        this.creator = creator;
         this.isActivated = false;
     }
 
-    public Exam(String name, String description, User creator, String password){
-        this(name, description, creator);
+    public Exam(String name, String description, String password){
+        this(name, description);
         this.password = password;
-    }
-
-    public Exam(String name, String description, String fileName, Boolean isActivated, String password, User creator, List<Assignment> assignmentList) {
-        this.name = name;
-        this.description = description;
-        this.fileName = fileName;
-        this.isActivated = isActivated;
-        this.password = password;
-        this.creator = creator;
-        this.assignmentList = assignmentList;
     }
 
     public Exam() {
@@ -114,19 +103,19 @@ public class Exam {
         this.password = password;
     }
 
-    public User getCreator() {
-        return creator;
-    }
-
-    public void setCreator(User creator) {
-        this.creator = creator;
-    }
-
     public List<Assignment> getAssignmentList() {
         return assignmentList;
     }
 
     public void setAssignmentList(List<Assignment> assignmentList) {
         this.assignmentList = assignmentList;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
     }
 }

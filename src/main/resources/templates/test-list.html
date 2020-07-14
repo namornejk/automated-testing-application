@@ -41,7 +41,7 @@
             <div class="collapsible-content">
                 <div class="collapsible-padding">
                     <form th:action="@{/teacher/create-exam}" th:method="post">
-                        <p th:text="#{test-list.examNameLable}"></p>
+                        <p th:text="#{test-list.examNameLabel}"></p>
                         <input class="form-field" type="text" th:placeholder="#{test-list.examNamePlaceholder}" th:name="name"><br>
                         <p th:text="#{test-list.examDescriptionLable}"></p>
                         <input class="form-field" type="text" th:placeholder="#{test-list.examDescriptionPlaceholder}" th:name="description"><br>
@@ -62,6 +62,8 @@
                         <p th:text="${exam.description}"></p>
                     </div>
                     <div class="right">
+                        <a class="btn btn-del" th:href="@{/teacher/deleteExam/{examId}(examId=${exam.id})}"
+                           th:text="#{test-list.delete}"></a>
                         <a class="btn" th:href="@{/teacher/examDetail/{examId}(examId=${exam.id})}"
                            th:text="#{test-list.select}"></a>
                     </div>
