@@ -26,7 +26,7 @@ public class User {
     @Column
     private String lastName;
 
-    @OneToMany(fetch = FetchType.EAGER)
+    @ManyToMany(fetch = FetchType.EAGER)
     @NotNull
     private List<Role> roleList;
 
@@ -36,12 +36,30 @@ public class User {
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Project> projectList;
 
+    @ManyToMany(mappedBy = "userList")
+    private List<Assignment> assignmentList;
+
     public User() {
     }
 
     public User(String username, String password){
         this.username = username;
         this.password = password;
+    }
+
+    public User(@NotNull String username, @NotNull String password, String firstName, String lastName){
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.username = username;
+        this.password = password;
+    }
+
+    public User(@NotNull String username, @NotNull String password, String firstName, String lastName, List<Role> roleList){
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.username = username;
+        this.password = password;
+        this.roleList = roleList;
     }
 
     public User(@NotNull String username, @NotNull String password, String firstName, String lastName, @NotNull List<Role> roleList, List<Exam> examList, List<Project> projectList) {
@@ -52,6 +70,17 @@ public class User {
         this.roleList = roleList;
         this.examList = examList;
         this.projectList = projectList;
+    }
+
+    public User(@NotNull String username, @NotNull String password, String firstName, String lastName, @NotNull List<Role> roleList, List<Exam> examList, List<Project> projectList, List<Assignment> assignmentList) {
+        this.username = username;
+        this.password = password;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.roleList = roleList;
+        this.examList = examList;
+        this.projectList = projectList;
+        this.assignmentList = assignmentList;
     }
 
     public String getFullName(){
@@ -120,5 +149,13 @@ public class User {
 
     public void setProjectList(List<Project> projectList) {
         this.projectList = projectList;
+    }
+
+    public List<Assignment> getAssignmentList() {
+        return assignmentList;
+    }
+
+    public void setAssignmentList(List<Assignment> assignmentList) {
+        this.assignmentList = assignmentList;
     }
 }

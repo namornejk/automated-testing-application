@@ -1,5 +1,0 @@
-- Při vkládání zadání nastavit jako povinný přikládaný soubor.
-- Možnost studenta i učitele si změnit heslo.
-- Možnost učitele vytvářet nové účty.
-
-X Vytvoření hesla pro získání přístupu ke zkoušce.

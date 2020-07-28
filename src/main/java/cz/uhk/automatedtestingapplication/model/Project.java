@@ -44,6 +44,13 @@ public class Project {
         this.user = user;
     }
 
+    public Project(String name, String dateTime, User user, Assignment assignment) {
+        this.name = name;
+        this.dateTime = dateTime;
+        this.user = user;
+        this.assignment = assignment;
+    }
+
     public int getNumberOfProjectListSuccessfullTests(){
         if(this.testsuiteList != null) {
             int successfullTests = 0;

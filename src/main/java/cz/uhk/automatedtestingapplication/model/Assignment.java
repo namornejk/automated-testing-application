@@ -14,7 +14,7 @@ public class Assignment {
     @Column
     private String name;
 
-    @Column
+    @Column(columnDefinition = "text")
     private String description;
 
     @ManyToOne
@@ -24,14 +24,18 @@ public class Assignment {
     @OneToMany(mappedBy = "assignment", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Project> projectList;
 
+    @ManyToMany
+    private List<User> userList;
+
     public Assignment() {
     }
 
-    public Assignment(String name, String description, Exam exam, List<Project> projectList) {
+    public Assignment(String name, String description, Exam exam, List<Project> projectList, List<User> userList) {
         this.name = name;
         this.description = description;
         this.exam = exam;
         this.projectList = projectList;
+        this.userList = userList;
     }
 
     public Long getId() {
@@ -72,5 +76,13 @@ public class Assignment {
 
     public void setExam(Exam exam) {
         this.exam = exam;
+    }
+
+    public List<User> getUserList() {
+        return userList;
+    }
+
+    public void setUserList(List<User> userList) {
+        this.userList = userList;
     }
 }

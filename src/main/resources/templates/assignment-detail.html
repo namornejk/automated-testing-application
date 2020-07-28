@@ -10,6 +10,7 @@
     <!-- Custom CSS -->
     <link rel="stylesheet" type="text/css" th:href="@{/css/main.css}">
     <link rel="stylesheet" type="text/css" th:href="@{/css/exam-detail.css}">
+    <link rel="stylesheet" type="text/css" th:href="@{/css/assignment-detail.css}">
 
     <title th:text="#{application.title}"></title>
 </head>
@@ -22,7 +23,7 @@
             <li class="nav-right">
                 <a class="nav-link" th:href="@{/profile/showProfile}" th:text="#{navbar.profile}"></a>
                 <span>|</span>
-                <a class="nav-link" th:href="@{/teacher/teacherTestList}" th:text="#{navbar.examList}"></a>
+                <a class="nav-link" th:href="@{/student/studentTestList}" th:text="#{navbar.examList}"></a>
                 <a class="btn logging-button" th:href="@{/login}" th:text="#{navbar.logout}"></a>
             </li>
         </ul>
@@ -32,29 +33,27 @@
         <div class="top-section">
             <div class="float-left">
                 <h1 th:text="${exam.name}"></h1>
-                <p th:text="${exam.description}"></p>
-
-                <form class="exam-password" th:action="@{/teacher/setExamPassword/{examId}(examId=${exam.id})}" th:method="POST">
-                    <label th:text="#{exam-detail.examPasswordLabel}"></label>
-                    <input class="" type="text" name="examPassword" th:placeholder="#{exam-detail.examPassword}" th:value="${exam.password}" >
-                    <button class="btn-sm" th:text="#{exam-detail.setExamPassword}"></button>
+                <a th:href="@{'/student/downloadProject/' + ${exam.id} + '/' + ${assignment.id}}" class="btn" th:text="#{assignment-detail.downloadProject}"></a>
+                <form id="file-upload" th:action="@{/student/uploadStudentProject}" th:method="post" enctype="multipart/form-data">
+                    <label class="btn" for="file-btn" th:text="#{assignment-detail.uploadProject}"></label>
+                    <input id="file-btn" type="file" name="file"/>
+                    <input type="hidden" name="examId" th:value="${exam.id}">
+                    <input type="hidden" name="assignmentId" th:value="${assignment.id}">
                 </form>
             </div>
 
             <div class="float-right">
-                <form th:action="@{/teacher/activateExam/{examId}(examId=${exam.id})}">
-                    <button class="btn-activate" th:classappend="${exam.isActivated ? 'activated' : 'deactivated'}" th:text="${exam.isActivated} ? #{exam-detail.deactivate} : #{exam-detail.activate}"></button>
-                </form>
+                <input class="btn-activate activated" type="submit" value="Ukončit test" form="file-upload"/>
             </div>
 
             <div style="clear: both"></div>
         </div>
 
+        <p th:text="${assignment.description}"></p>
+
         <div class="action-cards">
             <div>
-                <a th:href="@{/teacher/assignmentList/{examId}(examId=${exam.id})}" th:text="#{exam-detail.assignmentList}"></a>
-                <a th:href="@{/teacher/projectList/{examId}(examId=${exam.id})}" th:text="#{exam-detail.submittedExams}"></a>
-                <a th:href="@{/teacher/deleteExam/{examId}(examId=${exam.id})}" th:attr="onclick='return confirm(\'' + #{exam-detail.confirmDeleteDialog} + '\');'" th:text="#{exam-detail.deleteExam}"></a>
+
             </div>
         </div>
     </div>

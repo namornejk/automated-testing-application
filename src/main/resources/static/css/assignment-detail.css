@@ -19,39 +19,19 @@
   font-display: swap;
   src: url(https://fonts.gstatic.com/s/quicksand/v21/6xK-dSZaM9iE8KbpRA_LJ3z8mH9BOJvgkBgv58i-xw.ttf) format('truetype');
 }
-body {
-  background: #eaedf2 url("/images/gray_shape.png");
-  background-position: center;
-  background-repeat: no-repeat;
-  background-size: cover;
-  background-attachment: fixed;
+.float-left h1 {
+  margin-bottom: 40px;
 }
-.landing .left-panel {
-  float: left;
-  width: 50%;
-  padding-top: 25vh;
-}
-.landing .left-panel .float-right {
-  width: 100%;
-}
-.landing .left-panel .float-right h2 {
-  margin-bottom: 30px;
+.float-left form {
   text-align: left;
-  font-size: 30px;
+  margin-top: 40px;
 }
-.landing .left-panel .float-right p {
-  text-align: left;
-  font-weight: 100;
-  line-height: 1.5;
+#file-btn {
+  width: 0.1px;
+  height: 0.1px;
+  opacity: 0;
+  overflow: hidden;
+  position: absolute;
+  z-index: -1;
 }
-.landing .right-panel {
-  float: right;
-  width: 50%;
-}
-.landing .right-panel svg {
-  max-width: 95%;
-  margin-top: -5vh;
-  height: 80vh;
-  transform: rotate(-1deg);
-}
-/*# sourceMappingURL=index.css.map */
+/*# sourceMappingURL=assignment-detail.css.map */

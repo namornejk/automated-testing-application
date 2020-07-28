@@ -10,6 +10,7 @@
     <!-- Custom CSS -->
     <link rel="stylesheet" type="text/css" th:href="@{/css/main.css}">
     <link rel="stylesheet" type="text/css" th:href="@{/css/profile.css}">
+    <link rel="stylesheet" type="text/css" th:href="@{/css/user-detail.css}">
 
     <title th:text="#{application.title}"></title>
 </head>
@@ -20,22 +21,24 @@
                 <a class="nav-title" th:href="@{/roleBasedSite}" th:text="#{navbar.title}"></a>
             </li>
             <li class="nav-right">
-                <button class="nav-link" type="button" onclick="javascript:history.back()" th:text="#{navbar.back}"></button>
-                <a class="nav-link" th:href="@{/roleBasedSite}" >Domů</a>
+                <a class="nav-link" th:href="@{/profile/showProfile}" th:text="#{navbar.profile}"></a>
+                <span>|</span>
+                <a class="nav-link" th:href="@{/teacher/userManagement}">Správa uživatel</a>
                 <a class="logging-button" th:href="@{/perform_logout}" th:text="#{navbar.logout}"></a>
             </li>
         </ul>
     </nav>
 
     <div class="page-content">
-        <div class="error-message param-message" th:if="${param.error}">
-            Passwords are not the same !
+        <div class="info-message param-message" th:if="${param.userUpdated}">
+            Uživatel byl upraven.
         </div>
 
         <div class="profile-form">
             <div>
-                <h2>Profil</h2>
-                <form th:action="@{/profile/editProfile}" method="post">
+                <h2>Úprava uživatelského účtu</h2>
+                <form th:action="@{/teacher/updateUser}" method="post">
+                    <input type="hidden" name="userId" th:value="${user.id}">
                     <p>Username: </p>
                     <span th:text="${user.username}"></span>
                     <br/>
@@ -45,11 +48,20 @@
                     <label>Příjmení</label>
                     <input class="form-field" type="text" name="lastName" th:value="${user.lastName}">
                     <br/>
-                    <label>Heslo</label>
-                    <input class="form-field" type="password" name="password" >
+                    <label>Role</label>
+                    <ul class="checkbox-list">
+                        <li th:each="role : ${user.getRoleList()}">
+                            <input type="checkbox" th:id="${role.id}" th:name="rolesId" th:value="${role.id}" th:checked="true"/>
+                            <label th:for="${role.id}" th:text="${role.name}"></label>
+                        </li>
+                    </ul>
                     <br/>
-                    <label>Opakuj heslo</label>
-                    <input class="form-field" type="password" name="passwordConf" >
+                    <ul class="checkbox-list">
+                        <li th:each="role : ${roleList}">
+                            <input type="checkbox" th:id="${role.id}" th:name="rolesId" th:value="${role.id}" th:checked="false"/>
+                            <label th:for="${role.id}" th:text="${role.name}"></label>
+                        </li>
+                    </ul>
                     <br/>
                     <button class="btn" th:text="Uložit"></button>
                 </form>

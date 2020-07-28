@@ -19,29 +19,30 @@
   font-display: swap;
   src: url(https://fonts.gstatic.com/s/quicksand/v21/6xK-dSZaM9iE8KbpRA_LJ3z8mH9BOJvgkBgv58i-xw.ttf) format('truetype');
 }
-.main-window-content-padding {
+input {
+  margin-right: 20px;
+}
+.project-list-header {
   padding-top: 10vh;
 }
-.user-management {
-  width: 50%;
-  float: left;
+.project-list-header .select-all {
+  padding-top: 20px;
 }
-.user-management h3 {
-  margin-left: -30%;
+.project-list-header .select-all label {
+  font-size: 20px;
 }
-.user-management svg {
-  width: 100%;
-  margin: 50px 0 0 0;
+.overall-success {
+  font-size: 50px;
 }
-.work-place {
-  width: 50%;
-  float: right;
+.project-list-input input {
+  position: relative;
+  bottom: 5px;
 }
-.work-place h3 {
-  margin-left: 30%;
+.project-list-input h3 {
+  display: inline-block;
 }
-.work-place svg {
-  width: 100%;
-  margin: 40px 0 0 30px;
+.success-rate {
+  display: inline-block;
+  margin-right: 20px;
 }
-/*# sourceMappingURL=main-window.css.map */
+/*# sourceMappingURL=project-list.css.map */

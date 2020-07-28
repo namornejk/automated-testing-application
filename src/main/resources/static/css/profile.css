@@ -19,12 +19,6 @@
   font-display: swap;
   src: url(https://fonts.gstatic.com/s/quicksand/v21/6xK-dSZaM9iE8KbpRA_LJ3z8mH9BOJvgkBgv58i-xw.ttf) format('truetype');
 }
-* {
-  margin: 0 auto;
-  color: #3f3d56;
-  font-family: 'Quicksand';
-  text-align: center;
-}
 body {
   background-color: #eaedf2;
 }
@@ -51,9 +45,6 @@ a {
   letter-spacing: 4px;
   cursor: pointer;
   transition: ease-out 0.5s;
-}
-.btn-del {
-  background-color: #ff4081;
 }
 .btn:hover {
   transition: ease-out 0.5s;
@@ -106,60 +97,24 @@ nav ul .logging-button:hover {
   background-color: #c6c9d1;
   color: #3f3d56;
 }
-.collaps-card {
-  margin-top: 50px;
-}
-.param-message {
-  margin: 20px auto;
-  padding: 10px;
-  width: 40%;
-  animation: 1s ease-out 0s 1 slideInFromTop;
-}
-.error-message {
-  background-color: #ff4081;
-  color: white;
-}
-.info-message {
-  background-color: mediumslateblue;
-  color: white;
-}
-.modal {
-  width: 100%;
-  height: 100%;
-  background-color: rgba(0, 0, 0, 0.7);
-  position: absolute;
-  top: 0;
-  left: 0;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  display: none;
-}
-.modal .modal-content {
-  width: 400px;
-  position: relative;
+.profile-form {
   background-color: white;
-  border-radius: 2px;
-  padding: 60px 60px 30px 60px;
-}
-.modal .modal-content .close-btn {
-  position: absolute;
-  top: 0;
-  right: 10px;
-  font-size: 40px;
-  color: #3f3d56;
-  transform: rotate(45deg);
-  cursor: pointer;
-}
-.form-field {
   width: 100%;
-  margin: 10px 0 20px 0;
-  padding: 10px;
-  box-sizing: border-box;
-  background-color: #eaedf2;
-  border: 0;
   border-radius: 2px;
-  text-align: left;
-  font-size: 20px;
+  margin-top: 10vh;
 }
-/*# sourceMappingURL=main.css.map */
+.profile-form div {
+  padding: 40px;
+}
+h2 {
+  text-align: left;
+  margin-bottom: 20px;
+}
+form {
+  text-align: left;
+}
+p {
+  margin-bottom: 20px;
+  display: inline-block;
+}
+/*# sourceMappingURL=profile.css.map */

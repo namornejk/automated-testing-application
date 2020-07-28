@@ -1,14 +1,10 @@
 package cz.uhk.automatedtestingapplication.controller;
 
-import cz.uhk.automatedtestingapplication.dao.AssignmentDao;
-import cz.uhk.automatedtestingapplication.dao.ExamDao;
-import cz.uhk.automatedtestingapplication.dao.ProjectDao;
-import cz.uhk.automatedtestingapplication.dao.UserDao;
-import cz.uhk.automatedtestingapplication.model.Assignment;
-import cz.uhk.automatedtestingapplication.model.Exam;
-import cz.uhk.automatedtestingapplication.model.Project;
-import cz.uhk.automatedtestingapplication.model.User;
+import cz.uhk.automatedtestingapplication.dao.*;
+import cz.uhk.automatedtestingapplication.model.*;
+import cz.uhk.automatedtestingapplication.model.testResult.Testcase;
 import cz.uhk.automatedtestingapplication.service.FileSystemManagementService;
+import cz.uhk.automatedtestingapplication.service.TestService;
 import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormatter;
 import org.joda.time.format.ISODateTimeFormat;
@@ -16,12 +12,16 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.ModelAndView;
 
 import java.security.Principal;
+import java.text.Normalizer;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Pattern;
 
 @Controller
 @RequestMapping("/teacher")
@@ -29,6 +29,9 @@ public class TeacherController {
 
     @Autowired
     private FileSystemManagementService fileSystemManagementService;
+
+    @Autowired
+    private TestService testService;
 
     @Autowired
     private ExamDao examDao;
@@ -41,6 +44,9 @@ public class TeacherController {
 
     @Autowired
     private UserDao userDao;
+
+    @Autowired
+    private RoleDao roleDao;
 
     // Metoda vytvořená pouze pro vložení testovacích dat do databáze
     @RequestMapping("/db")
@@ -56,12 +62,12 @@ public class TeacherController {
         return "redirect:/teacher/teacherTestList";
     }
 
-    @GetMapping("/mainWindow")
+    @RequestMapping("/mainWindow")
     public String showMainWindow(){
         return "main-window";
     }
 
-    @GetMapping("/teacherTestList")
+    @RequestMapping("/teacherTestList")
     public String showTestList(Model model){
         List<Exam> exams = examDao.findAll();
 
@@ -92,12 +98,14 @@ public class TeacherController {
         return "assignment-list";
     }
 
-    @PostMapping("/create-assignment")
+    @RequestMapping("/create-assignment")
     public String createAssignmentHandler(@RequestParam("examId") long examId,
                                           @RequestParam("name") String assignmentName,
                                           @RequestParam("description") String assignmentDescription,
                                           @RequestParam("file") MultipartFile file,
                                           Principal principal){
+        List<User> userList = new ArrayList<>();
+
         String fileName = file.getOriginalFilename();
         String extension = "";
         int i = fileName.lastIndexOf('.');
@@ -105,12 +113,14 @@ public class TeacherController {
         if (i > 0) extension = fileName.substring(i+1);
 
         if(extension.contains("zip")){
-            Assignment assignment = new Assignment(assignmentName, assignmentDescription, examDao.findById(examId).get(), new ArrayList<Project>());
+            Assignment assignment = new Assignment(assignmentName, assignmentDescription, examDao.findById(examId).get(), new ArrayList<Project>(), userList);
 
             DateTime dt = new DateTime();
             DateTimeFormatter fmt = ISODateTimeFormat.dateTime();
 
-            Project project = new Project(assignmentName, fmt.print(dt));
+            User user = userDao.findByUsername(principal.getName());
+
+            Project project = new Project(assignmentName, fmt.print(dt), user, assignment);
 
             assignmentDao.save(assignment);
             projectDao.save(project);
@@ -124,7 +134,7 @@ public class TeacherController {
         return "redirect:/teacher/assignmentList/" + examId;
     }
 
-    @GetMapping("/deleteAssignment/{examId}/{assignmentId}")
+    @RequestMapping("/deleteAssignment/{examId}/{assignmentId}")
     public String deleteAssignmentHandler(@PathVariable("examId") Long examId,
                                           @PathVariable("assignmentId") Long assignmentId){
         deleteAssignment(examId, assignmentId);
@@ -132,14 +142,14 @@ public class TeacherController {
         return "redirect:/teacher/assignmentList/" + examId;
     }
 
-    @GetMapping("/examDetail/{examId}")
+    @RequestMapping("/examDetail/{examId}")
     public String showExamDetail(@PathVariable("examId") long examId, Model model){
         Exam exam = examDao.findById(examId).get();
         model.addAttribute("exam", exam);
         return "exam-detail";
     }
 
-    @GetMapping("/activateExam/{examId}")
+    @RequestMapping("/activateExam/{examId}")
     public String activateExamHandler(@PathVariable("examId") long examId){
         Exam exam = examDao.getOne(examId);
 
@@ -154,7 +164,7 @@ public class TeacherController {
         return "redirect:/teacher/examDetail/" + examId;
     }
 
-    @GetMapping("/deleteExam/{examId}")
+    @RequestMapping("/deleteExam/{examId}")
     public String deleteExamHandler(@PathVariable("examId") Long examId){
         Exam exam = examDao.findById(examId).get();
 
@@ -164,7 +174,7 @@ public class TeacherController {
         return "redirect:/teacher/teacherTestList";
     }
 
-    @PostMapping("/setExamPassword/{examId}")
+    @RequestMapping("/setExamPassword/{examId}")
     public String setExamPasswordHandler(@PathVariable("examId") long examId,
                                          @RequestParam("examPassword") String examPassword){
         Exam exam = examDao.getOne(examId);
@@ -184,8 +194,24 @@ public class TeacherController {
         user.setFirstName("Karel"); user.setLastName("Novak");
         Project project = new Project("Nazev", "12:00", user);
 
+        List<Assignment> assignmentList = examDao.findById(examId).get().getAssignmentList();
         List<Project> projectList = new ArrayList<>();
-        projectList.add(project);
+
+        for (Assignment a : assignmentList) {
+            List<Project> pl = a.getProjectList();
+            for (Project p : pl) {
+                List<Role> rl = p.getUser().getRoleList();
+
+                boolean isTeacher = false;
+                for (Role r : rl){
+                    if(r.getName().equals("TEACHER"))
+                        isTeacher = true;
+                }
+
+                if(!isTeacher)
+                    projectList.add(p);
+            }
+        }
 
         int succesfullTests = 0;
         int allTests = 0;
@@ -194,18 +220,124 @@ public class TeacherController {
             allTests += p.getNumberOfProjectListTests();
         }
 
-        float success = (succesfullTests / (float)allTests) * 100;
+        float success = 0;
+        if(allTests != 0)
+            success = (succesfullTests / (float)allTests) * 100;
 
         model.addAttribute("projects", projectList);
         model.addAttribute("overallSuccess", success);
+        model.addAttribute("examId", examId);
 
         return "project-list";
+    }
+
+    @RequestMapping("/userManagement")
+    public String showUserManagement(Model model, Principal principal){
+        // TODO
+        User user = userDao.findByUsername(principal.getName());
+        List<User> userList = userDao.findAll();
+        model.addAttribute("roleList", roleDao.findAll());
+        model.addAttribute("userList", userList);
+        return "user-management";
+    }
+
+    @RequestMapping("/userDetail/{userId}")
+    public String showUserDetail(@PathVariable("userId") Long userId, Model model){
+        User user = userDao.findById(userId).get();
+        List<Role> completeRoleList = roleDao.findAll();
+        List<Role> filtredRoleList = new ArrayList<>();
+
+        for (Role r : completeRoleList) {
+            filtredRoleList.add(r);
+        }
+
+        for (Role r1 : completeRoleList) {
+            for (Role r2: user.getRoleList()) {
+                if(r1.getId() == r2.getId())
+                    filtredRoleList.remove(r1);
+            }
+        }
+        model.addAttribute("user", user);
+        model.addAttribute("roleList", filtredRoleList);
+
+        return "user-detail";
+    }
+
+    @RequestMapping("/updateUser")
+    public String updateUserHandler(@RequestParam("userId") Long userId, @RequestParam("firstName") String firstName,
+                                          @RequestParam("lastName") String lastName, @RequestParam("rolesId") List<Long> rolesId,
+                                          ModelMap model){
+        User user = userDao.findById(userId).get();
+
+        List<Role> roleList = new ArrayList<>();
+        for(Long roleId : rolesId){
+            roleList.add(roleDao.findById(roleId).get());
+        }
+
+        user.setFirstName(firstName);
+        user.setLastName(lastName);
+        user.setRoleList(roleList);
+
+        userDao.save(user);
+
+        return "redirect:userDetail/" + user.getId() + "?userUpdated";
+    }
+
+    @RequestMapping("/createUser")
+    public String createUser(@RequestParam("firstName") String firstName, @RequestParam("lastName") String lastName,
+                             @RequestParam("rolesId") List<Long> rolesId){
+
+        List<User> userList = userDao.findAll();
+        List<Role> roleList = new ArrayList<>();
+
+        int i = 1;
+        for (User u : userList){
+            if(u.getLastName().equals(lastName)){
+                i++;
+            }
+        }
+
+        for (Long roleId : rolesId) {
+            roleList.add(roleDao.findById(roleId).get());
+        }
+
+        String nfdNormalizedString = Normalizer.normalize(lastName, Normalizer.Form.NFD).toLowerCase();
+        Pattern pattern = Pattern.compile("\\p{InCombiningDiacriticalMarks}+");
+        String userName = pattern.matcher(nfdNormalizedString).replaceAll("").replaceAll("[^a-zA-Z]", "");
+
+        User user = new User(userName + i, "123456", firstName, lastName, roleList);
+        userDao.save(user);
+        return "redirect:userManagement";
+    }
+
+    @RequestMapping("/deleteUser/{userId}")
+    public String deleteUserHandler(@PathVariable("userId") Long userId, Principal principal){
+        User selectedUser = userDao.findById(userId).get();
+        User loggedInUser = userDao.findByUsername(principal.getName());
+
+        if(selectedUser.getId() != loggedInUser.getId()){
+            userDao.deleteById(userId);
+            return "redirect:/teacher/userManagement";
+        } else {
+            return "redirect:/teacher/userManagement?selfDelete";
+        }
+    }
+
+    @RequestMapping("/evaluateProjects")
+    public String evaluate(@RequestParam("projects") List<Long> projectIdList, @RequestParam("examId") Long examId){
+        List<Project> projectList = projectDao.findAllById(projectIdList);
+
+        Long assignmentId = projectList.get(0).getAssignment().getId();
+        String assignmentName = projectList.get(0).getAssignment().getName();
+
+        testService.testProjects(projectList, examId, assignmentId, assignmentName);
+
+        return "redirect:projectList/" + examId;
     }
 
     private void deleteAssignment(Long examId, Long assignmentId){
         assignmentDao.deleteById(assignmentId);
 
         fileSystemManagementService.deleteAssignment(examId.toString(), assignmentId.toString());
-
     }
 }

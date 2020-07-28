@@ -19,29 +19,10 @@
   font-display: swap;
   src: url(https://fonts.gstatic.com/s/quicksand/v21/6xK-dSZaM9iE8KbpRA_LJ3z8mH9BOJvgkBgv58i-xw.ttf) format('truetype');
 }
-.main-window-content-padding {
-  padding-top: 10vh;
+.checkbox-list {
+  width: fit-content;
+  list-style: none;
+  margin: 10px 0 0 0;
+  padding: 0;
 }
-.user-management {
-  width: 50%;
-  float: left;
-}
-.user-management h3 {
-  margin-left: -30%;
-}
-.user-management svg {
-  width: 100%;
-  margin: 50px 0 0 0;
-}
-.work-place {
-  width: 50%;
-  float: right;
-}
-.work-place h3 {
-  margin-left: 30%;
-}
-.work-place svg {
-  width: 100%;
-  margin: 40px 0 0 30px;
-}
-/*# sourceMappingURL=main-window.css.map */
+/*# sourceMappingURL=user-detail.css.map */

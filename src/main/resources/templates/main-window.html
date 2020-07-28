@@ -17,10 +17,10 @@
 <nav>
     <ul>
         <li>
-            <a class="nav-title" th:href="@{/}" th:text="#{navbar.title}"></a>
+            <a class="nav-title" th:href="@{/roleBasedSite}" th:text="#{navbar.title}"></a>
         </li>
         <li class="nav-right">
-            <a class="nav-link" th:href="@{/profile/showProfile}">Profil</a>
+            <a class="nav-link" th:href="@{/profile/showProfile}" th:text="#{navbar.profile}"></a>
             <a class="logging-button" th:href="@{/perform_logout}" th:text="#{navbar.logout}"></a>
         </li>
     </ul>
@@ -30,7 +30,7 @@
         <div class="main-window-content-padding">
             <a th:href="@{/teacher/userManagement}">
                 <div class="user-management">
-                    <h3>Správa uživatel</h3>
+                    <h3 th:text="#{main-window.userManagement}"></h3>
                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 898.235 629.902">
                         <g id="Group_45" data-name="Group 45" transform="translate(-191 -152.079)">
                             <path id="Path_941" data-name="Path 941" d="M727.966,744.257s7.3-24.57-20.468-38.559Z" transform="translate(62.789 15.395)" fill="#e6e6e6"/>
@@ -113,7 +113,7 @@
             </a>
             <a th:href="@{/teacher/teacherTestList}">
                 <div class="work-place">
-                    <h3>Pracovní prostředí</h3>
+                    <h3 th:text="#{main-window.workspace}"></h3>
                     <svg id="e4bbe722-77af-4dff-9d23-13f94132c30a" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 921.71991 653.40956">
                         <ellipse cx="85.34394" cy="578.40956" rx="85" ry="6" fill="#d0cde1"/>
                         <ellipse cx="343.34394" cy="642.90956" rx="221" ry="10.5" fill="#d0cde1"/>

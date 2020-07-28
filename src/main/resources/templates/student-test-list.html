@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html   lang="cz"
+        xmlns:th="http://www.thymeleaf.org"
+>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" th:href="@{/images/icons/check.png}" type="image/icon type">
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" type="text/css" th:href="@{/css/main.css}">
+    <link rel="stylesheet" type="text/css" th:href="@{/css/test-list.css}">
+
+    <title th:text="#{application.title}"></title>
+</head>
+<body>
+    <nav>
+        <ul>
+            <li>
+                <a class="nav-title" th:href="@{/roleBasedSite}" th:text="#{navbar.title}"></a>
+            </li>
+            <li class="nav-right">
+                <a class="nav-link" th:href="@{/profile/showProfile}" th:text="#{navbar.profile}"></a>
+                <a class="logging-button" th:href="@{/perform_logout}" th:text="#{navbar.logout}"></a>
+            </li>
+        </ul>
+    </nav>
+
+    <div class="page-content">
+        <div class="error-message param-message" th:if="${param.wrongPassword}">
+            You entered wrong password !
+        </div>
+        <div class="error-message param-message" th:if="${param.alreadySubmited}">
+            You have already submited the test !
+        </div>
+        <div class="exam-list">
+            <ul>
+                <li th:each="exam : ${exams}">
+                    <div class="left">
+                        <h3 th:text="${exam.name}"></h3>
+                        <p th:text="${exam.description}"></p>
+                    </div>
+                    <div class="right">
+                        <button class="btn" th:text="#{test-list.select}" th:onclick="|openModal(${exam.id})|"></button>
+                        <form method="post" th:action="@{/student/assignmentDetail}">
+                            <div th:id="'modal-btn-'+${exam.id}" class="modal">
+                                <div class="modal-content">
+                                    <div class="close-btn" th:onclick="|closeModal(${exam.id})|">+</div>
+                                    <input type="hidden" name="examId" th:value="${exam.id}" />
+                                    <input class="form-field" type="text" name="examPassword" placeholder="Heslo" />
+                                    <input class="btn" type="submit" value="OK">
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    <div style="clear: both"></div>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <script>
+        function openModal(examId) {
+            document.getElementById('modal-btn-' + examId).style.display = 'flex';
+        }
+
+        function closeModal(examId) {
+            document.getElementById('modal-btn-' + examId).style.display = 'none';
+        }
+    </script>
+</body>
+</html>

@@ -18,9 +18,11 @@
     <nav>
         <ul>
             <li>
-                <a class="nav-title" th:href="@{/teacher/mainWindow}" th:text="#{navbar.title}"></a>
+                <a class="nav-title" th:href="@{/roleBasedSite}" th:text="#{navbar.title}"></a>
             </li>
             <li class="nav-right">
+                <a class="nav-link" th:href="@{/profile/showProfile}" th:text="#{navbar.profile}"></a>
+                <span>|</span>
                 <a class="nav-link" th:href="@{/teacher/teacherTestList}" th:text="#{navbar.teacherTestList}"></a>
                 <span>|</span>
                 <a class="nav-link" th:href="@{/teacher/examDetail/{examId}(examId=${examId})}" th:text="#{navbar.assignmentDetail}"></a>
@@ -31,20 +33,20 @@
 
     <div class="page-content">
         <div class="project-list-header">
-            <h3 class="float-left">Celková úspěšnost</h3>
+            <h3 class="float-left" th:text="#{project-list.overallSuccess}"></h3>
             <p class="overall-success float-right" th:text="${overallSuccess} + '%'"></p>
             <div style="clear: both"></div>
 
             <div class="select-all float-left">
                 <input type="checkbox" id="select-all" name="select-all">
-                <label for="select-all"> Vybrat vše</label>
+                <label for="select-all" th:text="#{project-list.selectAll}"></label>
             </div>
-            <button class="btn float-right">Vyhodnotit</button>
+            <button class="btn float-right" type="submit" form="projects-form" th:text="#{project-list.evaluate}"></button>
             <div style="clear: both"></div>
         </div>
 
         <div class="exam-list">
-            <form>
+            <form id="projects-form" th:action="@{/teacher/evaluateProjects}" method="post">
                 <ul>
                     <li th:each="project : ${projects}">
                         <div class="project-list-input left">
@@ -58,6 +60,7 @@
                         <div style="clear: both"></div>
                     </li>
                 </ul>
+                <input type="hidden" name="examId" th:value="${examId}" />
             </form>
         </div>
     </div>

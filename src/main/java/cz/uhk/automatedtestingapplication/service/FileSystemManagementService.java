@@ -4,7 +4,6 @@ import net.lingala.zip4j.ZipFile;
 import net.lingala.zip4j.exception.ZipException;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
-import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
@@ -20,7 +19,6 @@ public class FileSystemManagementService {
     @Value("${app.upload.dir:${user.home}}")
     private String homeDir;
     private static final String applicationDirName = "automated_testing";
-    private String applicationDir;
 
     /*
         Path to original assignment project
@@ -33,12 +31,12 @@ public class FileSystemManagementService {
             - user.home/automated_testing/exam_id/assignment_id/students/workplace/
      */
 
-    public FileSystemManagementService(){}
+    public FileSystemManagementService(){
+
+    }
 
     public String firstStartInit(){
-        this.applicationDir = homeDir + File.separator + this.applicationDirName;
-
-        File file = new File(this.applicationDir);
+        File file = new File(buildApplicationDir());
         if (!file.exists()) {
             if (file.mkdirs()) {
                 return "Success";
@@ -48,6 +46,14 @@ public class FileSystemManagementService {
         return "File already exists";
     }
 
+    private String buildApplicationDir(){
+        return this.homeDir + File.separator + this.applicationDirName;
+    }
+
+    private String buildTeacherDir(Long examID, Long assignmentID){
+        return buildApplicationDir() + File.separator + examID + File.separator + assignmentID + File.separator + "teacher" + File.separator;
+    }
+
     private void uploadFile(MultipartFile file, Path copyLocation){
         try{
             Files.copy(file.getInputStream(), copyLocation, StandardCopyOption.REPLACE_EXISTING);
@@ -55,7 +61,7 @@ public class FileSystemManagementService {
     }
 
     public void uploadOriginalProject(long examID, long assignmentID, String assignmentName, MultipartFile file){
-        String filePath = applicationDir + File.separator + examID + File.separator + assignmentID + File.separator + "teacher" + File.separator;
+        String filePath = buildApplicationDir() + File.separator + examID + File.separator + assignmentID + File.separator + "teacher" + File.separator;
         createDirStructure(filePath);
 
         Path copyLocation = Paths
@@ -64,24 +70,26 @@ public class FileSystemManagementService {
         this.uploadFile(file, copyLocation);
     }
 
-    public void uploadStudentProject(long examID, long assignmentID, String userFirstName, String userLastName, String assignmentName, MultipartFile file){
-        String filePath = applicationDir + File.separator + examID + File.separator + assignmentID + File.separator + "students" + File.separator;
+    public void uploadStudentProject(long examID, long assignmentID, String username, String assignmentName, MultipartFile file){
+        String filePath = buildApplicationDir() + File.separator + examID + File.separator + assignmentID + File.separator + "students" + File.separator;
         createDirStructure(filePath);
 
-        String projectFileName = userFirstName + "_" + userLastName + "_" + assignmentName;
+        String projectFileName = username + "_" + assignmentName;
         Path copyLocation = Paths
                 .get(filePath + projectFileName + ".zip");
 
         this.uploadFile(file, copyLocation);
     }
 
-    public void copyProjectIntoWorkPlace(long examID, long assignmentID, String userFirstName, String userLastName, String assignmentName){
-        String destinationFilePath = applicationDir + File.separator + examID + File.separator + assignmentID + File.separator + "workplace" + File.separator;
+    public String unzipProjectIntoWorkPlace(long examID, long assignmentID, String username, String assignmentName){
+        String destinationFilePath = buildApplicationDir() + File.separator + examID + File.separator + assignmentID + File.separator + "workplace" + File.separator;
         createDirStructure(destinationFilePath);
 
-        String sourceFilePath = applicationDir + File.separator + examID + File.separator + assignmentID + File.separator + "students" + File.separator;
-        String projectFileName = userFirstName + "_" + userLastName + "_" + assignmentName;
-        copyFile(new File(sourceFilePath + projectFileName + ".zip"), new File(destinationFilePath));
+        String sourceFilePath = buildApplicationDir() + File.separator + examID + File.separator + assignmentID + File.separator + "students" + File.separator;
+        String projectFileName = username + "_" + assignmentName;
+        unzip((sourceFilePath + projectFileName + ".zip"), destinationFilePath);
+
+        return destinationFilePath;
     }
 
     public void copyFile(File source, File destination){
@@ -96,12 +104,12 @@ public class FileSystemManagementService {
     }
 
     public void deleteAssignment(String examID, String assignmentID){
-        String assignmentPath = applicationDir + File.separator + examID + File.separator + assignmentID;
+        String assignmentPath = buildApplicationDir() + File.separator + examID + File.separator + assignmentID;
         deleteDirectory(new File(assignmentPath));
     }
 
     public void deleteExam(String examID){
-        String examPath = applicationDir + File.separator + examID;
+        String examPath = buildApplicationDir() + File.separator + examID;
         deleteDirectory(new File(examPath));
     }
 
@@ -131,6 +139,12 @@ public class FileSystemManagementService {
         }
     }
 
+    public File getTeacherProject(Long examId, Long assignmentId){
+        File file = new File(buildTeacherDir(examId, assignmentId));
+        File[] fileArray = file.listFiles();
+        return fileArray[0];
+    }
+
     public String getHomeDir() {
         return homeDir;
     }
@@ -142,13 +156,4 @@ public class FileSystemManagementService {
     public static String getApplicationDirName() {
         return applicationDirName;
     }
-
-    public String getApplicationDir() {
-        return applicationDir;
-    }
-
-    public void setApplicationDir(String applicationDir) {
-        this.applicationDir = applicationDir;
-    }
-
 }

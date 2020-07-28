@@ -32,7 +32,7 @@ public class ProfileController {
 
     @PostMapping("/editProfile")
     public String editProfile(@RequestParam("firstName") String firstName, @RequestParam("lastName") String lastName,
-                              @RequestParam("password") String password, @RequestParam("passwordConf") String passwordConf,
+                              @RequestParam(value = "password", required = false) String password, @RequestParam(value = "passwordConf", required = false) String passwordConf,
                               Principal principal){
 
         if(password.equals(passwordConf)){
@@ -41,7 +41,7 @@ public class ProfileController {
             BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
             String hashedPassword = passwordEncoder.encode(password);
 
-            if(!password.equals("")){
+            if(password != null){
                 userDao.updateUserWithPassword(firstName, lastName, hashedPassword, username);
             } else {
                 userDao.updateUserWithNoPassword(firstName, lastName, username);

@@ -16,11 +16,19 @@ public class Role {
     @NotNull
     private String name;
 
+    @ManyToMany(mappedBy = "roleList")
+    private List<User> userList;
+
     public Role() {
     }
 
     public Role(String name){
         this.name = name;
+    }
+
+    public Role(@NotNull String name, List<User> userList) {
+        this.name = name;
+        this.userList = userList;
     }
 
     public Long getId() {
@@ -37,6 +45,14 @@ public class Role {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public List<User> getUserList() {
+        return userList;
+    }
+
+    public void setUserList(List<User> userList) {
+        this.userList = userList;
     }
 
 }

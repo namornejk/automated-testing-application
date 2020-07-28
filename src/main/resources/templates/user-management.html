@@ -10,6 +10,7 @@
     <!-- Custom CSS -->
     <link rel="stylesheet" type="text/css" th:href="@{/css/main.css}">
     <link rel="stylesheet" type="text/css" th:href="@{/css/test-list.css}">
+    <link rel="stylesheet" type="text/css" th:href="@{/css/user-management.css}">
 
     <title th:text="#{application.title}"></title>
 </head>
@@ -27,29 +28,33 @@
     </nav>
 
     <div class="page-content">
-        <form th:action="@{/teacher/db}" th:method="post">
-            <input class="btn" type="submit" value="Vložit test data">
-        </form>
-
+        <div class="error-message param-message" th:if="${param.userUpdated}">
+            Není možné smazat sám sebe.
+        </div>
         <div class="collaps-card">
             <div class="collapsible">
                 <div class="collapsible-padding">
-                    <h3 th:text="#{test-list.createNewExam}"></h3>
+                    <h3>Create new user</h3>
                     <img src="/images/icons/arrow.png" >
                     <div style="clear: both"></div>
                 </div>
             </div>
             <div class="collapsible-content">
                 <div class="collapsible-padding">
-                    <form th:action="@{/teacher/create-exam}" th:method="post">
-                        <p th:text="#{test-list.examNameLabel}"></p>
-                        <input class="form-field" type="text" th:placeholder="#{test-list.examNamePlaceholder}" th:name="name"><br>
-                        <p th:text="#{test-list.examDescriptionLable}"></p>
-                        <input class="form-field" type="text" th:placeholder="#{test-list.examDescriptionPlaceholder}" th:name="description"><br>
-                        <p th:text="#{test-list.examPassword}"></p>
-                        <input class="form-field" type="text" th:placeholder="#{test-list.examDescriptionPlaceholder}" th:name="examPassword"><br>
+                    <form th:action="@{/teacher/createUser}" th:method="post">
+                        <p>Jméno</p>
+                        <input class="form-field" type="text" th:name="firstName"><br>
+                        <p>Příjmení</p>
+                        <input class="form-field" type="text" th:name="lastName"><br>
+                        <p>Role</p>
+                        <ul class="checkbox-list">
+                            <li th:each="role : ${roleList}">
+                                <input type="checkbox" th:id="${role.id}" th:name="rolesId" th:value="${role.id}" />
+                                <label th:for="${role.id}" th:text="${role.name}"></label>
+                            </li>
+                        </ul>
 
-                        <input class="btn" type="submit" th:value="#{test-list.create}">
+                        <input class="btn" type="submit" value="Vytvořit">
                     </form>
                 </div>
             </div>
@@ -57,16 +62,16 @@
 
         <div class="exam-list">
             <ul>
-                <li th:each="exam : ${exams}">
+                <li th:each="user : ${userList}">
                     <div class="left">
-                        <h3 th:text="${exam.name}"></h3>
-                        <p th:text="${exam.description}"></p>
+                        <h3 th:text="${user.firstName} + ' ' + ${user.lastName}"></h3>
+                        <p th:text="${user.username} "></p>
                     </div>
                     <div class="right">
-                        <a class="btn btn-del" th:href="@{/teacher/deleteExam/{examId}(examId=${exam.id})}"
-                           th:text="#{test-list.delete}"></a>
-                        <a class="btn" th:href="@{/teacher/examDetail/{examId}(examId=${exam.id})}"
-                           th:text="#{test-list.select}"></a>
+                        <a class="btn btn-del" th:href="@{/teacher/deleteUser/{userId}(userId=${user.id})}"
+                        >Smazat</a>
+                        <a class="btn" th:href="@{/teacher/userDetail/{userId}(userId=${user.id})}"
+                        >Upravit</a>
                     </div>
                     <div style="clear: both"></div>
                 </li>
