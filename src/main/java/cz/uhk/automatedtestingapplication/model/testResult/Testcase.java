@@ -7,7 +7,6 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 @Entity
 @Table(name = "Testcases")
-@XmlRootElement
 public class Testcase {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -23,7 +22,7 @@ public class Testcase {
     @JoinColumn(name = "testsuite_id")
     private Testsuite testsuite;
 
-    @OneToOne(mappedBy = "testcase", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @OneToOne(mappedBy = "testcase", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     private Failure failure;
 
     public Testcase(){

@@ -6,7 +6,6 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 @Entity
 @Table(name = "Property")
-@XmlRootElement
 public class Property {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)

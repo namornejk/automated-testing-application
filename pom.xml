@@ -11,6 +11,7 @@
     <groupId>cz.uhk</groupId>
     <artifactId>automated-testing-application</artifactId>
     <version>0.0.1-SNAPSHOT</version>
+    <packaging>jar</packaging>
     <name>automated-testing-application</name>
     <description>Demo project for Spring Boot</description>
 

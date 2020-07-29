@@ -32,10 +32,10 @@ public class Testsuite {
     @JoinColumn(name = "project_id")
     private Project project;
 
-    @OneToOne(mappedBy = "testsuite", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @OneToOne(mappedBy = "testsuite", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     private Properties properties;
 
-    @OneToMany(mappedBy = "testsuite", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "testsuite", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     private List<Testcase> testcase;
 
     public Testsuite(){

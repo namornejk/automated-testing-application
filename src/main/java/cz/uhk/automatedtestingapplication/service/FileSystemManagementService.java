@@ -82,7 +82,7 @@ public class FileSystemManagementService {
     }
 
     public String unzipProjectIntoWorkPlace(long examID, long assignmentID, String username, String assignmentName){
-        String destinationFilePath = buildApplicationDir() + File.separator + examID + File.separator + assignmentID + File.separator + "workplace" + File.separator;
+        String destinationFilePath = buildApplicationDir() + File.separator + examID + File.separator + assignmentID + File.separator + "workplace";
         createDirStructure(destinationFilePath);
 
         String sourceFilePath = buildApplicationDir() + File.separator + examID + File.separator + assignmentID + File.separator + "students" + File.separator;

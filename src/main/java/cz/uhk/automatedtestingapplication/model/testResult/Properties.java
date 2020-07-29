@@ -7,7 +7,6 @@ import java.util.List;
 
 @Entity
 @Table(name = "Properties")
-@XmlRootElement
 public class Properties {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -17,23 +16,23 @@ public class Properties {
     @JoinColumn(name = "testsuite_id")
     private Testsuite testsuite;
 
-    @OneToMany(mappedBy = "properties", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private List<Property> propertieList;
+    @OneToMany(mappedBy = "properties", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+    private List<Property> property;
 
     public Properties(){}
 
-    public Properties(Testsuite testsuite, List<Property> propertieList) {
+    public Properties(Testsuite testsuite, List<Property> property) {
         this.testsuite = testsuite;
-        this.propertieList = propertieList;
+        this.property = property;
     }
 
     @XmlElement
-    public List<Property> getProperties() {
-        return propertieList;
+    public List<Property> getProperty() {
+        return property;
     }
 
-    public void setProperties(List<Property> propertieList) {
-        this.propertieList = propertieList;
+    public void setProperty(List<Property> propertyList) {
+        this.property = property;
     }
 
     public Long getId() {
@@ -50,13 +49,5 @@ public class Properties {
 
     public void setTestsuite(Testsuite testsuite) {
         this.testsuite = testsuite;
-    }
-
-    public List<Property> getPropertieList() {
-        return propertieList;
-    }
-
-    public void setPropertieList(List<Property> propertieList) {
-        this.propertieList = propertieList;
     }
 }

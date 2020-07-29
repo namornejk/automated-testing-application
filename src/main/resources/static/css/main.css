@@ -162,4 +162,7 @@ nav ul .logging-button:hover {
   text-align: left;
   font-size: 20px;
 }
+.back-button {
+  cursor: pointer;
+}
 /*# sourceMappingURL=main.css.map */

@@ -30,10 +30,10 @@ public class User {
     @NotNull
     private List<Role> roleList;
 
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     private List<Exam> examList;
 
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     private List<Project> projectList;
 
     @ManyToMany(mappedBy = "userList")
@@ -81,6 +81,13 @@ public class User {
         this.examList = examList;
         this.projectList = projectList;
         this.assignmentList = assignmentList;
+    }
+
+    @PreRemove
+    private void removeGroupsFromUsers() {
+        for (Assignment a : assignmentList) {
+            a.getUserList().remove(this);
+        }
     }
 
     public String getFullName(){

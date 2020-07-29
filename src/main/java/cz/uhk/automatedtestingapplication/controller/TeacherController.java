@@ -10,6 +10,7 @@ import org.joda.time.format.DateTimeFormatter;
 import org.joda.time.format.ISODateTimeFormat;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.parameters.P;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
@@ -120,7 +121,7 @@ public class TeacherController {
 
             User user = userDao.findByUsername(principal.getName());
 
-            Project project = new Project(assignmentName, fmt.print(dt), user, assignment);
+            Project project = new Project(assignmentName, fmt.print(dt), user, assignment, true);
 
             assignmentDao.save(assignment);
             projectDao.save(project);
@@ -189,26 +190,14 @@ public class TeacherController {
     @RequestMapping("/projectList/{examId}")
     public String showProjectList(@PathVariable("examId") Long examId,
                                   Model model){
-        // Testovací projekt
-        User user = new User("karel", "123");
-        user.setFirstName("Karel"); user.setLastName("Novak");
-        Project project = new Project("Nazev", "12:00", user);
 
         List<Assignment> assignmentList = examDao.findById(examId).get().getAssignmentList();
         List<Project> projectList = new ArrayList<>();
 
         for (Assignment a : assignmentList) {
-            List<Project> pl = a.getProjectList();
-            for (Project p : pl) {
-                List<Role> rl = p.getUser().getRoleList();
-
-                boolean isTeacher = false;
-                for (Role r : rl){
-                    if(r.getName().equals("TEACHER"))
-                        isTeacher = true;
-                }
-
-                if(!isTeacher)
+            List<Project> aProjectList = a.getProjectList();
+            for (Project p : aProjectList) {
+                if(!p.isTeacherProject())
                     projectList.add(p);
             }
         }
@@ -305,7 +294,10 @@ public class TeacherController {
         Pattern pattern = Pattern.compile("\\p{InCombiningDiacriticalMarks}+");
         String userName = pattern.matcher(nfdNormalizedString).replaceAll("").replaceAll("[^a-zA-Z]", "");
 
-        User user = new User(userName + i, "123456", firstName, lastName, roleList);
+        String password = "123";
+        BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+        String hashedPassword = passwordEncoder.encode(password);
+        User user = new User(userName + i, hashedPassword, firstName, lastName, roleList);
         userDao.save(user);
         return "redirect:userManagement";
     }
@@ -316,7 +308,9 @@ public class TeacherController {
         User loggedInUser = userDao.findByUsername(principal.getName());
 
         if(selectedUser.getId() != loggedInUser.getId()){
-            userDao.deleteById(userId);
+            User user = userDao.findById(userId).get();
+
+            userDao.delete(user);
             return "redirect:/teacher/userManagement";
         } else {
             return "redirect:/teacher/userManagement?selfDelete";

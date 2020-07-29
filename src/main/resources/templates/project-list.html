@@ -54,6 +54,7 @@
                             <h3 th:text="${project.getUser().getFullName()}"></h3>
                         </div>
                         <div class="right">
+                            <span th:text="${project.getSuccessRate()}"></span>
                             <a class="btn" href=""
                                th:text="#{test-list.select}"></a>
                         </div>

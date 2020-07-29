@@ -14,10 +14,13 @@ public class Project {
     private Long id;
 
     @Column
-    private String name;    // studentFirstName_studentSecondName_assignmentName.zip
+    private String name;
 
     @Column
     private String dateTime;
+
+    @Column
+    private boolean isTeacherProject;
 
     @ManyToOne
     @JoinColumn(name = "user_id")
@@ -27,7 +30,7 @@ public class Project {
     @JoinColumn(name = "assignment_id")
     private Assignment assignment;
 
-    @OneToMany(mappedBy = "project", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "project", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     private List<Testsuite> testsuiteList;
 
     public Project() {
@@ -44,11 +47,12 @@ public class Project {
         this.user = user;
     }
 
-    public Project(String name, String dateTime, User user, Assignment assignment) {
+    public Project(String name, String dateTime, User user, Assignment assignment, boolean isTeacherProject) {
         this.name = name;
         this.dateTime = dateTime;
         this.user = user;
         this.assignment = assignment;
+        this.isTeacherProject = isTeacherProject;
     }
 
     public int getNumberOfProjectListSuccessfullTests(){
@@ -119,5 +123,24 @@ public class Project {
 
     public void setAssignment(Assignment assignment) {
         this.assignment = assignment;
+    }
+
+    public boolean isTeacherProject() {
+        return isTeacherProject;
+    }
+
+    public void setTeacherProject(boolean teacherProject) {
+        isTeacherProject = teacherProject;
+    }
+
+    public String getSuccessRate(){
+        int allTests = 0, successfulTests = 0;
+
+        for (Testsuite t : testsuiteList) {
+            allTests = t.getTests();
+            successfulTests = t.getSuccessfullTests();
+        }
+
+        return successfulTests + "/" + allTests;
     }
 }

@@ -19,7 +19,8 @@ public class XmlService {
 
             Unmarshaller jaxbUnmarshaller = jaxbContext.createUnmarshaller();
 
-            return (Testsuite)jaxbUnmarshaller.unmarshal(file);
+            Testsuite testsuite = (Testsuite)jaxbUnmarshaller.unmarshal(file);
+            return testsuite;
         } catch (JAXBException e) {
             e.printStackTrace();
         }

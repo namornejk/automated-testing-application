@@ -1,9 +1,8 @@
 package cz.uhk.automatedtestingapplication.service;
 
-import cz.uhk.automatedtestingapplication.dao.ProjectDao;
-import cz.uhk.automatedtestingapplication.dao.TestsuiteDao;
+import cz.uhk.automatedtestingapplication.dao.*;
 import cz.uhk.automatedtestingapplication.model.Project;
-import cz.uhk.automatedtestingapplication.model.testResult.Testsuite;
+import cz.uhk.automatedtestingapplication.model.testResult.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
@@ -27,18 +26,25 @@ public class TestService {
 
     @Autowired
     private TestsuiteDao testsuiteDao;
+    @Autowired
+    private TestcaseDao testcaseDao;
+    @Autowired
+    private PropertyDao propertyDao;
+    @Autowired
+    private PropertiesDao propertiesDao;
+    @Autowired
+    private FailureDao failureDao;
 
     public void testProjects(List<Project> projectList, long examID, long assignmentID, String assignmentName){
         System.out.println("Starting testProjects() loop -------------");
         for (Project project : projectList) {
             List<Testsuite> testsuiteList = testProject(examID, assignmentID, project.getUser().getUsername(), assignmentName);
-            for(Testsuite t : testsuiteList){
-                t.setProject(project);
-                testsuiteDao.save(t);
-            }
-            project.setTestsuiteList(testsuiteList);
+            saveAllParsedResults(testsuiteList, project);
 
             System.out.println("Saving Project to DB");
+            List<Testsuite> oldTestSuite = project.getTestsuiteList();
+            oldTestSuite.addAll(testsuiteList);
+            project.setTestsuiteList(oldTestSuite);
             projectDao.save(project);
         }
         System.out.println("End testProjects() loop -------------");
@@ -46,7 +52,13 @@ public class TestService {
 
     public List<Testsuite> testProject(long examID, long assignmentID, String username, String assignmentName){
         System.out.println("Unzipping file into workspace");
-        String projectPath = fileSystemManagementService.unzipProjectIntoWorkPlace(examID, assignmentID, username, assignmentName);
+        String workplacePath = fileSystemManagementService.unzipProjectIntoWorkPlace(examID, assignmentID, username, assignmentName);
+
+        File workplace = new File(workplacePath);
+        String[] folders = workplace.list();
+
+        String projectPath = workplacePath + File.separator + folders[0];
+
         runTestsInProject(projectPath);
 
         return getTestsResults(projectPath);
@@ -55,8 +67,9 @@ public class TestService {
     public void runTestsInProject(String projectPath){
         System.out.println("Starting runTestsInProject() ------");
         try{
+            System.out.println("Path to test: " + projectPath);
             ProcessBuilder builder = new ProcessBuilder(
-                    "cmd.exe", "/c", "cd \"" + projectPath + "\" && mvn clean test");
+                    "cmd.exe", "/c", "c: && cd \"" + projectPath + "\" && mvn clean test");
 
             builder.redirectErrorStream(true);
             System.out.println("Starting process in cmd");
@@ -69,7 +82,6 @@ public class TestService {
                 if (line == null) { break; }
                 System.out.println(line);
             }
-            process.destroy();
         } catch (IOException e){e.printStackTrace();}
         System.out.println("End runTestsInProject() ------");
     }
@@ -77,10 +89,7 @@ public class TestService {
     public List<Testsuite> getTestsResults(String projectPath){
         List<Testsuite> testsuiteList = new ArrayList<>();
 
-        File projectFile = new File(projectPath);
-        String[] projectFileName = projectFile.list();
-
-        String reportsDirPath = projectPath + projectFileName[0] + File.separator + "target" + File.separator + "surefire-reports";
+        String reportsDirPath = projectPath + File.separator + "target" + File.separator + "surefire-reports";
         File reportsDir = new File(reportsDirPath);
 
         FilenameFilter filter = new FilenameFilter() {
@@ -100,5 +109,30 @@ public class TestService {
         }
         System.out.println("End xml parsing loop ---");
         return testsuiteList;
+    }
+
+    public void saveAllParsedResults(List<Testsuite> testsuiteList, Project project){
+        List<Testsuite> oldTestsuiteList = project.getTestsuiteList();
+        if(!oldTestsuiteList.isEmpty()){
+            oldTestsuiteList.clear();
+            project.setTestsuiteList(oldTestsuiteList);
+            projectDao.save(project);
+        }
+
+        for(Testsuite testsuite : testsuiteList){
+            testsuite.setProject(project);
+            testsuiteDao.save(testsuite);
+
+            for (Testcase testCase : testsuite.getTestcase()) {
+                testCase.setTestsuite(testsuite);
+                testcaseDao.save(testCase);
+
+                if(testCase.getFailure() != null){
+                    Failure failure = testCase.getFailure();
+                    failure.setTestcase(testCase);
+                    failureDao.save(failure);
+                }
+            }
+        }
     }
 }

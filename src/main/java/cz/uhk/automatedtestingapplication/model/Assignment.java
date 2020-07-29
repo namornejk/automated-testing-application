@@ -21,7 +21,7 @@ public class Assignment {
     @JoinColumn(name = "exam_id")
     private Exam exam;
 
-    @OneToMany(mappedBy = "assignment", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "assignment", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     private List<Project> projectList;
 
     @ManyToMany

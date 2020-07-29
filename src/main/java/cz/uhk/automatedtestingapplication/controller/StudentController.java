@@ -77,7 +77,7 @@ public class StudentController {
             DateTime dt = new DateTime();
             DateTimeFormatter fmt = ISODateTimeFormat.dateTime();
 
-            Project project = new Project(user.getUsername() + "_" + assignment.getName(), fmt.print(dt), user, assignment);
+            Project project = new Project(user.getUsername() + "_" + assignment.getName(), fmt.print(dt), user, assignment, false);
             projectDao.save(project);
 
             fileSystemManagementService.uploadStudentProject(examId, assignmentId, user.getUsername(), assignment.getName(), file);

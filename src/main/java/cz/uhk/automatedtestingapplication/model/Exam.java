@@ -30,7 +30,7 @@ public class Exam {
     @JoinColumn(name = "user_id")
     private User user;
 
-    @OneToMany(mappedBy = "exam", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "exam", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     private List<Assignment> assignmentList;
 
     public Exam(String name, String description){
