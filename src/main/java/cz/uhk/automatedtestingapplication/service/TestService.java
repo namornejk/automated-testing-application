@@ -36,22 +36,18 @@ public class TestService {
     private FailureDao failureDao;
 
     public void testProjects(List<Project> projectList, long examID, long assignmentID, String assignmentName){
-        System.out.println("Starting testProjects() loop -------------");
         for (Project project : projectList) {
             List<Testsuite> testsuiteList = testProject(examID, assignmentID, project.getUser().getUsername(), assignmentName);
             saveAllParsedResults(testsuiteList, project);
 
-            System.out.println("Saving Project to DB");
             List<Testsuite> oldTestSuite = project.getTestsuiteList();
             oldTestSuite.addAll(testsuiteList);
             project.setTestsuiteList(oldTestSuite);
             projectDao.save(project);
         }
-        System.out.println("End testProjects() loop -------------");
     }
 
     public List<Testsuite> testProject(long examID, long assignmentID, String username, String assignmentName){
-        System.out.println("Unzipping file into workspace");
         String workplacePath = fileSystemManagementService.unzipProjectIntoWorkPlace(examID, assignmentID, username, assignmentName);
 
         File workplace = new File(workplacePath);
@@ -65,14 +61,11 @@ public class TestService {
     }
 
     public void runTestsInProject(String projectPath){
-        System.out.println("Starting runTestsInProject() ------");
         try{
-            System.out.println("Path to test: " + projectPath);
             ProcessBuilder builder = new ProcessBuilder(
                     "cmd.exe", "/c", "c: && cd \"" + projectPath + "\" && mvn clean test");
 
             builder.redirectErrorStream(true);
-            System.out.println("Starting process in cmd");
             Process process = builder.start();
 
             BufferedReader r = new BufferedReader(new InputStreamReader(process.getInputStream()));
@@ -80,10 +73,8 @@ public class TestService {
             while (true) {
                 line = r.readLine();
                 if (line == null) { break; }
-                System.out.println(line);
             }
         } catch (IOException e){e.printStackTrace();}
-        System.out.println("End runTestsInProject() ------");
     }
 
     public List<Testsuite> getTestsResults(String projectPath){
@@ -101,13 +92,12 @@ public class TestService {
 
         String[] reports = reportsDir.list(filter);
 
-        System.out.println("Starting xml parsing loop ---");
         for(String fileName : reports){
             File report = new File(reportsDirPath + File.separator + fileName);
 
             testsuiteList.add(xmlService.parseTestsuite(report));
         }
-        System.out.println("End xml parsing loop ---");
+
         return testsuiteList;
     }
 

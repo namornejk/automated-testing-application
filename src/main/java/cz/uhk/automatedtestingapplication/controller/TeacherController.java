@@ -222,7 +222,6 @@ public class TeacherController {
 
     @RequestMapping("/userManagement")
     public String showUserManagement(Model model, Principal principal){
-        // TODO
         User user = userDao.findByUsername(principal.getName());
         List<User> userList = userDao.findAll();
         model.addAttribute("roleList", roleDao.findAll());
