@@ -18,6 +18,9 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.servlet.http.HttpServletResponse;
+import java.io.BufferedOutputStream;
+import java.io.FileInputStream;
 import java.security.Principal;
 import java.text.Normalizer;
 import java.util.ArrayList;
@@ -326,6 +329,47 @@ public class TeacherController {
         testService.testProjects(projectList, examId, assignmentId, assignmentName);
 
         return "redirect:projectList/" + examId;
+    }
+
+    @RequestMapping("/projectDetail/{projectId}")
+    public String projectDetail(@PathVariable("projectId") Long projectId, Model model){
+        Project project = projectDao.findById(projectId).get();
+        User user = project.getUser();
+
+        model.addAttribute("project", project);
+        model.addAttribute("user", user);
+        model.addAttribute("examId", project.getAssignment().getExam().getId());
+        return "project-detail";
+    }
+
+    @RequestMapping("/downloadStudentProject/{projectId}")
+    @ResponseBody
+    public void downloadProject(@PathVariable("projectId") Long projectId,
+                                HttpServletResponse response, Principal principal){
+        User user = userDao.findByUsername(principal.getName());
+        Project project = projectDao.findById(projectId).get();
+
+        response.setContentType("application/zip");
+        response.setHeader("Content-Disposition", String.format("attachment; filename=\"" + project.getUser().getUsername() + ".zip\""));
+        response.setHeader("Content-Transfer-Encoding", "binary");
+
+        try {
+            BufferedOutputStream bos = new BufferedOutputStream(response.getOutputStream());
+            FileInputStream fis = new FileInputStream(fileSystemManagementService.getStudentProject(
+                    project.getAssignment().getExam().getId(),
+                    project.getAssignment().getId(),
+                    project.getUser().getUsername()));
+
+            int length;
+            byte[] buf = new byte[1024];
+            while ((length = fis.read(buf)) > 0){
+                bos.write(buf, 0, length);
+            }
+            bos.close();
+            response.flushBuffer();
+        } catch (Exception e){
+            e.printStackTrace();
+        }
     }
 
     private void deleteAssignment(Long examId, Long assignmentId){

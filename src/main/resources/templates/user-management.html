@@ -34,7 +34,7 @@
         <div class="collaps-card">
             <div class="collapsible">
                 <div class="collapsible-padding">
-                    <h3>Create new user</h3>
+                    <h3 th:text="#{user-management.createNewUser}"></h3>
                     <img src="/images/icons/arrow.png" >
                     <div style="clear: both"></div>
                 </div>
@@ -42,11 +42,11 @@
             <div class="collapsible-content">
                 <div class="collapsible-padding">
                     <form th:action="@{/teacher/createUser}" th:method="post">
-                        <p>Jméno</p>
+                        <p th:text="#{user-management.firstName}"></p>
                         <input class="form-field" type="text" th:name="firstName"><br>
-                        <p>Příjmení</p>
+                        <p th:text="#{user-management.lastName}"></p>
                         <input class="form-field" type="text" th:name="lastName"><br>
-                        <p>Role</p>
+                        <p th:text="#{user-management.roles}">Role</p>
                         <ul class="checkbox-list">
                             <li th:each="role : ${roleList}">
                                 <input type="checkbox" th:id="${role.id}" th:name="rolesId" th:value="${role.id}" />
@@ -54,7 +54,7 @@
                             </li>
                         </ul>
 
-                        <input class="btn" type="submit" value="Vytvořit">
+                        <input class="btn" type="submit" th:value="#{user-management.create}">
                     </form>
                 </div>
             </div>
@@ -69,9 +69,9 @@
                     </div>
                     <div class="right">
                         <a class="btn btn-del" th:href="@{/teacher/deleteUser/{userId}(userId=${user.id})}"
-                        >Smazat</a>
+                        th:text="#{user-management.delete}"></a>
                         <a class="btn" th:href="@{/teacher/userDetail/{userId}(userId=${user.id})}"
-                        >Upravit</a>
+                        th:text="#{user-management.edit}"></a>
                     </div>
                     <div style="clear: both"></div>
                 </li>

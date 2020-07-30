@@ -55,7 +55,7 @@
                         </div>
                         <div class="right">
                             <span th:text="${project.getSuccessRate()}"></span>
-                            <a class="btn" href=""
+                            <a class="btn" th:href="@{/teacher/projectDetail/{projectId}(projectId=${project.id})}"
                                th:text="#{test-list.select}"></a>
                         </div>
                         <div style="clear: both"></div>

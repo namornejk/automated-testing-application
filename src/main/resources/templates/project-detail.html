@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html   lang="cz"
+        xmlns:th="http://www.thymeleaf.org"
+>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" th:href="@{/images/icons/check.png}" type="image/icon type">
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" type="text/css" th:href="@{/css/main.css}">
+    <link rel="stylesheet" type="text/css" th:href="@{/css/exam-detail.css}">
+    <link rel="stylesheet" type="text/css" th:href="@{/css/test-list.css}">
+    <link rel="stylesheet" type="text/css" th:href="@{/css/project-detail.css}">
+
+    <title th:text="#{application.title}"></title>
+</head>
+<body>
+    <nav>
+        <ul>
+            <li>
+                <a class="nav-title" th:href="@{/roleBasedSite}" th:text="#{navbar.title}"></a>
+            </li>
+            <li class="nav-right">
+                <a class="nav-link" th:href="@{/profile/showProfile}" th:text="#{navbar.profile}"></a>
+                <span>|</span>
+                <a class="nav-link" th:href="@{/teacher/teacherTestList}" th:text="#{navbar.teacherTestList}"></a>
+                <span>|</span>
+                <a class="nav-link" th:href="@{/teacher/examDetail/{examId}(examId=${examId})}" th:text="#{navbar.assignmentDetail}"></a>
+                <span>|</span>
+                <a class="nav-link" th:href="@{/teacher/projectList/{examId}(examId=${examId})}" th:text="#{navbar.projectList}"></a>
+                <a class="logging-button" th:href="@{/perform_logout}" th:text="#{navbar.logout}"></a>
+            </li>
+        </ul>
+        </ul>
+    </nav>
+
+    <div class="page-content">
+        <div class="top-section">
+            <div class="float-left">
+                <h1 th:text="${user.getFullName()}"></h1>
+                <div class="project-summary">
+                    <span th:text="#{project-detail.uploadTime}"></span><span th:text="'&nbsp;' + ${project.getFormatedDateTime()}"></span>
+                    <br />
+                    <span th:text="#{project-detail.examName}"></span><span th:text="'&nbsp;' + ${project.getAssignment().getExam().name}"></span>
+                    <br />
+                    <span th:text="#{project-detail.assignmentName}"></span><span th:text="'&nbsp;' + ${project.getAssignment().name}"></span>
+                </div>
+            </div>
+
+            <div class="float-right">
+                <form th:action="@{/teacher/downloadStudentProject/{projectId}(projectId=${project.id})}">
+                    <button class="btn-activate deactivated" th:text="#{project-detail.downloadProject}"></button>
+                </form>
+            </div>
+
+            <div style="clear: both"></div>
+        </div>
+
+        <div>
+            <div class="test-numbers">
+                <span th:text="#{project-detail.testCount}"></span><span th:text="${project.getNumberOfAllTests()}"></span>|
+                <span th:text="#{project-detail.testsOK}"></span><span th:text="${project.getNumberOfAllSuccessfulTests()}"></span>|
+                <span th:text="#{project-detail.failedTests}"></span><span th:text="${project.getNumberOfAllFailedTests()}"></span>|
+                <span th:text="#{project-detail.skippedTests}"></span><span th:text="${project.getNumberOfAllSkippedTests()}"></span>|
+                <span th:text="#{project-detail.errors}"></span><span th:text="${project.getNumberOfAllErrors()}"></span>
+                <br />
+            </div>
+
+            <ul style="list-style: none">
+                <li th:each="testSuite : ${project.getTestsuiteList()}">
+                    <div class="collaps-card">
+                        <div class="collapsible">
+                            <div class="collapsible-padding">
+                                <h3 th:text="${testSuite.name}"></h3>
+                                <img src="/images/icons/arrow.png" >
+                                <div style="clear: both"></div>
+                            </div>
+                        </div>
+                        <div class="collapsible-content">
+                            <div class="collapsible-padding">
+                                <div class="testcase-list">
+                                    <ul style="list-style: none">
+                                        <li th:each="testcase : ${testSuite.getTestcase()}">
+                                            <div class="left">
+                                                <h3 th:text="${testcase.name}"></h3>
+                                                <p th:text="${testcase.getFailure()} != null ? ${testcase.getFailure().message} : ''"></p>
+                                            </div>
+                                            <div class="right">
+                                                <div class="testcase-signal" th:classappend="${testcase.getFailure() != null ? 'fail' : 'pass'}" th:text="${testcase.getFailure()} != null ? #{project-detail.fail} : #{project-detail.pass}"></div>
+                                            </div>
+                                            <div style="clear: both"></div>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <script>
+        var coll = document.getElementsByClassName("collapsible");
+        var i;
+
+        for (i = 0; i < coll.length; i++) {
+            coll[i].addEventListener("click", function() {
+                this.classList.toggle("active");
+                var content = this.nextElementSibling;
+                if (content.style.maxHeight){
+                    content.style.maxHeight = null;
+                } else {
+                    content.style.maxHeight = content.scrollHeight + "px";
+                }
+            });
+        }
+    </script>
+</body>
+</html>

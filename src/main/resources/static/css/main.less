@@ -192,3 +192,70 @@ nav {
 .back-button {
   cursor: pointer;
 }
+
+.collaps-card {
+  background-color: white;
+}
+
+.collapsible {
+  color: white;
+  cursor: pointer;
+  width: 100%;
+  border-radius: 2px;
+  text-align: left;
+  outline: none;
+}
+
+.collapsible-padding {
+  padding: 40px;
+}
+
+.collapsible-content {
+  width: 100%;
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.2s ease-out;
+}
+
+h3 {
+  font-size: 30px;
+  letter-spacing: 4px;
+  font-weight: 400;
+}
+
+.collapsible {
+  h3 {
+    float: left;
+    display: inline-block;
+    text-align: left;
+  }
+
+  img {
+    float: right;
+    margin-top: 10px;
+    display: inline-block;
+    text-align: right;
+    width: 30px;
+  }
+}
+
+.collapsible-content {
+  form {
+    p {
+      margin-top: 10px;
+      text-align: left;
+    }
+  }
+
+  .form-field {
+    width: 100%;
+    margin-top: 10px;
+    padding: 10px;
+    box-sizing: border-box;
+    background-color: @super-light-gray;
+    border: 0;
+    border-radius: 2px;
+    text-align: left;
+    font-size: 20px;
+  }
+}

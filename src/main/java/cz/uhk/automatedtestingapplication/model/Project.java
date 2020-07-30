@@ -1,6 +1,10 @@
 package cz.uhk.automatedtestingapplication.model;
 
 import cz.uhk.automatedtestingapplication.model.testResult.Testsuite;
+import org.joda.time.DateTime;
+import org.joda.time.format.DateTimeFormat;
+import org.joda.time.format.DateTimeFormatter;
+import org.joda.time.format.ISODateTimeFormat;
 
 import javax.persistence.*;
 import java.util.List;
@@ -105,6 +109,13 @@ public class Project {
         return dateTime;
     }
 
+    public String getFormatedDateTime(){
+        DateTimeFormatter parser    = ISODateTimeFormat.dateTimeParser();
+        DateTime dateTimeHere     = parser.parseDateTime(dateTime);
+        DateTimeFormatter fmt = DateTimeFormat.forPattern("HH:mm:ss dd.MM.yyyy");
+        return fmt.print(dateTimeHere);
+    }
+
     public void setDateTime(String dateTime) {
         this.dateTime = dateTime;
     }
@@ -137,10 +148,60 @@ public class Project {
         int allTests = 0, successfulTests = 0;
 
         for (Testsuite t : testsuiteList) {
-            allTests = t.getTests();
-            successfulTests = t.getSuccessfullTests();
+            allTests += t.getTests();
+            successfulTests += t.getSuccessfullTests();
         }
 
         return successfulTests + "/" + allTests;
+    }
+
+    public Integer getNumberOfAllTests(){
+        int numberOfAllTests = 0;
+
+        for (Testsuite t : testsuiteList) {
+            numberOfAllTests += t.getTests();
+        }
+
+        return numberOfAllTests;
+    }
+
+    public Integer getNumberOfAllSuccessfulTests(){
+        int numberOfAllSuccessfulTests = 0;
+
+        for (Testsuite t : testsuiteList) {
+            numberOfAllSuccessfulTests += t.getSuccessfullTests();
+        }
+
+        return numberOfAllSuccessfulTests;
+    }
+
+    public Integer getNumberOfAllFailedTests(){
+        int numberOfAllFailedTests = 0;
+
+        for (Testsuite t : testsuiteList) {
+            numberOfAllFailedTests += t.getFailures();
+        }
+
+        return numberOfAllFailedTests;
+    }
+
+    public Integer getNumberOfAllSkippedTests(){
+        int numberOfAllSkippedTests = 0;
+
+        for (Testsuite t : testsuiteList) {
+            numberOfAllSkippedTests += t.getSkipped();
+        }
+
+        return numberOfAllSkippedTests;
+    }
+
+    public Integer getNumberOfAllErrors(){
+        int numberOfAllErrors = 0;
+
+        for (Testsuite t : testsuiteList) {
+            numberOfAllErrors += t.getErrors();
+        }
+
+        return numberOfAllErrors;
     }
 }

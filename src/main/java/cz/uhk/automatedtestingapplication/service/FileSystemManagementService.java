@@ -54,6 +54,10 @@ public class FileSystemManagementService {
         return buildApplicationDir() + File.separator + examID + File.separator + assignmentID + File.separator + "teacher" + File.separator;
     }
 
+    private String buildStudentsDir(Long examID, Long assignmentID){
+        return buildApplicationDir() + File.separator + examID + File.separator + assignmentID + File.separator + "students" + File.separator;
+    }
+
     private void uploadFile(MultipartFile file, Path copyLocation){
         try{
             Files.copy(file.getInputStream(), copyLocation, StandardCopyOption.REPLACE_EXISTING);
@@ -140,9 +144,19 @@ public class FileSystemManagementService {
     }
 
     public File getTeacherProject(Long examId, Long assignmentId){
-        File file = new File(buildTeacherDir(examId, assignmentId));
-        File[] fileArray = file.listFiles();
+        File teacherDir = new File(buildTeacherDir(examId, assignmentId));
+        File[] fileArray = teacherDir.listFiles();
         return fileArray[0];
+    }
+
+    public File getStudentProject(Long examId, Long assignmentId, String username){
+        File studentDir = new File(buildStudentsDir(examId, assignmentId));
+        for (File f : studentDir.listFiles()) {
+            if(f.getName().contains(username)){
+                return f;
+            }
+        }
+        return null;
     }
 
     public String getHomeDir() {
