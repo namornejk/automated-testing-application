@@ -27,12 +27,11 @@
     </nav>
 
     <div class="page-content">
-        <div class="error-message param-message" th:if="${param.wrongPassword}">
-            You entered wrong password !
-        </div>
-        <div class="error-message param-message" th:if="${param.alreadySubmited}">
-            You have already submited the test !
-        </div>
+        <div class="error-message param-message" th:if="${param.examNotSubmitted}" th:text="#{messages.examNotSubmitted}"></div>
+        <div class="error-message param-message" th:if="${param.wrongArchiveFormat}" th:text="#{messages.wrongArchiveFormat}"></div>
+        <div class="info-message param-message" th:if="${param.successfulUpload}" th:text="#{messages.successfulProjectUpload}"></div>
+        <div class="error-message param-message" th:if="${param.wrongPassword}" th:text="#{messages.wrongPassword}"></div>
+        <div class="error-message param-message" th:if="${param.alreadySubmited}" th:text="#{messages.alreadySubmittedTest}"></div>
         <div class="exam-list">
             <ul>
                 <li th:each="exam : ${exams}">
@@ -41,6 +40,7 @@
                         <p th:text="${exam.description}"></p>
                     </div>
                     <div class="right">
+                        <a class="btn" th:href="@{/student/projectDetail/{examId}(examId=${exam.id})}" th:text="#{student-test-list.showResults}"></a>
                         <button class="btn" th:text="#{test-list.select}" th:onclick="|openModal(${exam.id})|"></button>
                         <form method="post" th:action="@{/student/assignmentDetail}">
                             <div th:id="'modal-btn-'+${exam.id}" class="modal">

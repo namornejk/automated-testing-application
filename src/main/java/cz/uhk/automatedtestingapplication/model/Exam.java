@@ -14,7 +14,7 @@ public class Exam {
     @Column
     private String name;
 
-    @Column
+    @Column(columnDefinition = "text")
     private String description;
 
     @Column

@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -35,41 +36,32 @@ public class LoginController {
 
     @RequestMapping("/login")
     public String login(){
+        if(userDao.count() == 0){
+            createStartingUser();
+        }
         return "log-in";
     }
 
-    @RequestMapping("/createUsers")
-    public String createUsers(){
-        //password: aaa
-        User u1 = new User("bruno1", "$2y$12$KJyTJr0X1btaLzq1BQmTtebN.HmSd5BCJHmt9Ecqg0E5xTJmNAbjy", "Bruno", "Ježek");
+    private void createStartingUser(){
+        BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+        String hashedPassword = passwordEncoder.encode("root");
+
+        User rootUser = new User("root", hashedPassword, "Root", "Root");
         Role r1 = new Role("TEACHER");
-        //password: aaa
-        User u2 = new User("tomas1", "$2y$12$FQ2ej666Ce94SuCPslmD6u/ipxyOcYSRK4LRp7334UHlm9ZC6./JG", "Tomáš", "Kudrna");
         Role r2 = new Role("STUDENT");
 
-        List<Role> roles1 = new ArrayList<>();
-        roles1.add(r1);
+        List<Role> roles = new ArrayList<>();
+        roles.add(r1);
+        roles.add(r2);
 
-        List<Role> roles2 = new ArrayList<>();
-        roles2.add(r2);
+        rootUser.addRole(r1);
 
-        u1.setRoleList(roles1);
-        u2.setRoleList(roles2);
-
-        roleDao.save(r1);
-        userDao.save(u1);
-
-        roleDao.save(r2);
-        userDao.save(u2);
-
-        return "redirect:login";
+        roleDao.saveAll(roles);
+        userDao.save(rootUser);
     }
 
     @RequestMapping("/roleBasedSite")
     public String loginHandler(Model model, Principal principal){
-        //Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        //Collection<GrantedAuthority> authorityList = (Collection<GrantedAuthority>) authentication.getAuthorities();
-
         User user = userDao.findByUsername(principal.getName());
         fileSystemManagementService.firstStartInit();
 

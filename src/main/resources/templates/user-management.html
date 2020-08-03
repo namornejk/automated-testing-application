@@ -28,9 +28,10 @@
     </nav>
 
     <div class="page-content">
-        <div class="error-message param-message" th:if="${param.userUpdated}">
-            Není možné smazat sám sebe.
-        </div>
+        <div class="error-message param-message" th:if="${param.tooLongUserName}" th:text="#{messages.tooLongUserName}"></div>
+        <div class="error-message param-message" th:if="${param.inputMissing}" th:text="#{messages.inputMissing}"></div>
+        <div class="error-message param-message" th:if="${param.selfDelete}" th:text="#{messages.selfDelete}"></div>
+        <div class="info-message param-message" th:if="${param.userUpdated}" th:text="#{messages.userUpdated}"></div>
         <div class="collaps-card">
             <div class="collapsible">
                 <div class="collapsible-padding">

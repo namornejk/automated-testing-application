@@ -30,9 +30,9 @@
     </nav>
 
     <div class="page-content">
-        <div class="info-message param-message" th:if="${param.userUpdated}">
-            Uživatel byl upraven.
-        </div>
+        <div class="error-message param-message" th:if="${param.tooLongUserName}" th:text="#{messages.tooLongUserName}"></div>
+        <div class="error-message param-message" th:if="${param.inputMissing}" th:text="#{messages.inputMissing}"></div>
+        <div class="info-message param-message" th:if="${param.userUpdated}" th:text="#{messages.userUpdated}"></div>
 
         <div class="profile-form">
             <div>

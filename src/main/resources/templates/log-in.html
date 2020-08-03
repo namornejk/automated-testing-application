@@ -28,13 +28,8 @@
         </div>
 
         <div class="page-content" style="position:relative">
-            <div class="error-message param-message" th:if="${param.error}">
-                Invalid username and password.
-            </div>
-            <div class="info-message param-message" th:if="${param.logout}">
-                You have been logged out.
-            </div>
-            <a class="btn" th:href="@{/createUsers}">Create users</a>
+            <div class="error-message param-message" th:if="${param.error}" th:text="#{messages.wrongUsernameAndPassword}"></div>
+            <div class="info-message param-message" th:if="${param.logout}" th:text="#{messages.logoutSuccessful}"></div>
             <form class="login-card" th:action="@{/authenticateTheUser}" method="post">
                 <h2 th:text="#{log-in.title}"></h2>
 

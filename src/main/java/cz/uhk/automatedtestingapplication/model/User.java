@@ -2,6 +2,7 @@ package cz.uhk.automatedtestingapplication.model;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -164,5 +165,14 @@ public class User {
 
     public void setAssignmentList(List<Assignment> assignmentList) {
         this.assignmentList = assignmentList;
+    }
+
+    public void addRole(Role role){
+        if(roleList == null){
+            roleList = new ArrayList<>();
+            roleList.add(role);
+        } else {
+            roleList.add(role);
+        }
     }
 }

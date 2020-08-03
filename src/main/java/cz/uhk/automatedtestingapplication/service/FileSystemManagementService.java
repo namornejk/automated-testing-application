@@ -85,12 +85,18 @@ public class FileSystemManagementService {
         this.uploadFile(file, copyLocation);
     }
 
-    public String unzipProjectIntoWorkPlace(long examID, long assignmentID, String username, String assignmentName){
-        String destinationFilePath = buildApplicationDir() + File.separator + examID + File.separator + assignmentID + File.separator + "workplace";
+    public String unzipProjectIntoWorkPlace(long examID, long assignmentID, String ownerUsername, String assignmentName,
+                                            String testerUsername){
+        String destinationFilePath = buildApplicationDir() + File.separator
+                + examID + File.separator
+                + assignmentID + File.separator
+                + "workplace" + File.separator
+                + testerUsername;
+
         createDirStructure(destinationFilePath);
 
         String sourceFilePath = buildApplicationDir() + File.separator + examID + File.separator + assignmentID + File.separator + "students" + File.separator;
-        String projectFileName = username + "_" + assignmentName;
+        String projectFileName = ownerUsername + "_" + assignmentName;
         unzip((sourceFilePath + projectFileName + ".zip"), destinationFilePath);
 
         return destinationFilePath;
@@ -161,6 +167,12 @@ public class FileSystemManagementService {
 
     public String getHomeDir() {
         return homeDir;
+    }
+
+    public String getHomeDriveLetter(){
+        String[] driveAndOther = homeDir.split(":");
+
+        return driveAndOther[0];
     }
 
     public void setHomeDir(String homeDir) {

@@ -27,10 +27,8 @@
     </nav>
 
     <div class="page-content">
-        <form th:action="@{/teacher/db}" th:method="post">
-            <input class="btn" type="submit" value="Vložit test data">
-        </form>
-
+        <div class="error-message param-message" th:if="${param.inputMissing}" th:text="#{messages.inputMissing}"></div>
+        <div class="error-message param-message" th:if="${param.tooLongName}" th:text="#{messages.tooLongName}"></div>
         <div class="collaps-card">
             <div class="collapsible">
                 <div class="collapsible-padding">
@@ -41,13 +39,13 @@
             </div>
             <div class="collapsible-content">
                 <div class="collapsible-padding">
-                    <form th:action="@{/teacher/create-exam}" th:method="post">
+                    <form th:action="@{/teacher/createExam}" th:method="post">
                         <p th:text="#{test-list.examNameLabel}"></p>
                         <input class="form-field" type="text" th:placeholder="#{test-list.examNamePlaceholder}" th:name="name"><br>
                         <p th:text="#{test-list.examDescriptionLable}"></p>
-                        <input class="form-field" type="text" th:placeholder="#{test-list.examDescriptionPlaceholder}" th:name="description"><br>
+                        <input class="form-field" type="text-area" th:placeholder="#{test-list.examDescriptionPlaceholder}" th:name="description"><br>
                         <p th:text="#{test-list.examPassword}"></p>
-                        <input class="form-field" type="text" th:placeholder="#{test-list.examDescriptionPlaceholder}" th:name="examPassword"><br>
+                        <input class="form-field" type="text" th:placeholder="#{test-list.examPasswordPlaceholder}" th:name="examPassword"><br>
 
                         <input class="btn" type="submit" th:value="#{test-list.create}">
                     </form>

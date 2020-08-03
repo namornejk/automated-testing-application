@@ -32,6 +32,7 @@
     </nav>
 
     <div class="page-content">
+        <div class="error-message param-message" th:if="${param.noProjectSelected}" th:text="#{messages.noProjectSelected}"></div>
         <div class="project-list-header">
             <h3 class="float-left" th:text="#{project-list.overallSuccess}"></h3>
             <p class="overall-success float-right" th:text="${overallSuccess} + '%'"></p>

@@ -4,8 +4,6 @@ import cz.uhk.automatedtestingapplication.dao.*;
 import cz.uhk.automatedtestingapplication.model.Project;
 import cz.uhk.automatedtestingapplication.model.testResult.*;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.scheduling.annotation.Async;
-import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import org.springframework.stereotype.Service;
 
 import java.io.*;
@@ -29,15 +27,13 @@ public class TestService {
     @Autowired
     private TestcaseDao testcaseDao;
     @Autowired
-    private PropertyDao propertyDao;
-    @Autowired
-    private PropertiesDao propertiesDao;
-    @Autowired
     private FailureDao failureDao;
 
-    public void testProjects(List<Project> projectList, long examID, long assignmentID, String assignmentName){
+    public void testProjects(List<Project> projectList, long examID, long assignmentID, String assignmentName,
+                             String testerUsername){
         for (Project project : projectList) {
-            List<Testsuite> testsuiteList = testProject(examID, assignmentID, project.getUser().getUsername(), assignmentName);
+            List<Testsuite> testsuiteList = testProject(examID, assignmentID, project.getUser().getUsername(),
+                    assignmentName, testerUsername);
             saveAllParsedResults(testsuiteList, project);
 
             List<Testsuite> oldTestSuite = project.getTestsuiteList();
@@ -47,8 +43,10 @@ public class TestService {
         }
     }
 
-    public List<Testsuite> testProject(long examID, long assignmentID, String username, String assignmentName){
-        String workplacePath = fileSystemManagementService.unzipProjectIntoWorkPlace(examID, assignmentID, username, assignmentName);
+    public List<Testsuite> testProject(long examID, long assignmentID, String username, String assignmentName,
+                                       String testerUsername){
+        String workplacePath = fileSystemManagementService.unzipProjectIntoWorkPlace(examID, assignmentID, username,
+                assignmentName, testerUsername);
 
         File workplace = new File(workplacePath);
         String[] folders = workplace.list();
@@ -56,14 +54,19 @@ public class TestService {
         String projectPath = workplacePath + File.separator + folders[0];
 
         runTestsInProject(projectPath);
+        List<Testsuite> testResults = getTestsResults(projectPath);
 
-        return getTestsResults(projectPath);
+        fileSystemManagementService.deleteDirectory(workplace);
+
+        return testResults;
     }
 
     public void runTestsInProject(String projectPath){
+        String homeDriveLetter = fileSystemManagementService.getHomeDriveLetter();
+
         try{
             ProcessBuilder builder = new ProcessBuilder(
-                    "cmd.exe", "/c", "c: && cd \"" + projectPath + "\" && mvn clean test");
+                    "cmd.exe", "/c", homeDriveLetter + ": && cd \"" + projectPath + "\" && mvn clean test");
 
             builder.redirectErrorStream(true);
             Process process = builder.start();

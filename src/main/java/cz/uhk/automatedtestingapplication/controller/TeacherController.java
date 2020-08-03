@@ -52,20 +52,6 @@ public class TeacherController {
     @Autowired
     private RoleDao roleDao;
 
-    // Metoda vytvořená pouze pro vložení testovacích dat do databáze
-    @RequestMapping("/db")
-    public String db(Principal principal){
-        String username = principal.getName();
-        User user = userDao.findByUsername(username);
-
-        Exam e1 = new Exam("PRO1", "První pondělní zápočet z PRO1 pro skupinu A.");
-        Exam e2 = new Exam("PGRF", "První středeční zápočet z PGRF pro skupinu B.");
-
-        examDao.save(e1);
-        examDao.save(e2);
-        return "redirect:/teacher/teacherTestList";
-    }
-
     @RequestMapping("/mainWindow")
     public String showMainWindow(){
         return "main-window";
@@ -80,15 +66,27 @@ public class TeacherController {
         return "test-list";
     }
 
-    @RequestMapping("/create-exam")
-    public String createExamHandler(@RequestParam("name") String name, @RequestParam("description") String description,
+    @RequestMapping("/createExam")
+    public String createExamHandler(@RequestParam("name") String name,
+                                    @RequestParam("description") String description,
                                     @RequestParam("examPassword") String examPassword){
 
-        Exam e = new Exam(name, description, examPassword.equals("") == true ? "123" : examPassword);
+        if((name == null || description == null)
+        || (name.equals("") || description.equals(""))){
+            return "redirect:/teacher/teacherTestList?inputMissing";
+        } else if(name.length() > 254){
+            return "redirect:/teacher/teacherTestList?tooLongName";
+        }
+        Exam e;
+        if(examPassword.equals(""))
+            e = new Exam(name, description);
+        else
+            e = new Exam(name, description, examPassword);
+
 
         examDao.save(e);
 
-        return "redirect:assignmentList/" + e.getId();
+        return "redirect:/teacher/teacherTestList";
     }
 
     @RequestMapping("/assignmentList/{examId}")
@@ -102,12 +100,20 @@ public class TeacherController {
         return "assignment-list";
     }
 
-    @RequestMapping("/create-assignment")
+    @RequestMapping("/createAssignment")
     public String createAssignmentHandler(@RequestParam("examId") long examId,
                                           @RequestParam("name") String assignmentName,
                                           @RequestParam("description") String assignmentDescription,
                                           @RequestParam("file") MultipartFile file,
                                           Principal principal){
+
+        if((assignmentName == null || assignmentDescription == null || file == null)
+                || (assignmentName.equals("") || assignmentDescription.equals(""))){
+            return "redirect:/teacher/assignmentList/" + examId + "?inputMissing";
+        } else if(assignmentName.length() > 254){
+            return "redirect:/teacher/assignmentList/" + examId + "?tooLongName";
+        }
+
         List<User> userList = new ArrayList<>();
 
         String fileName = file.getOriginalFilename();
@@ -134,8 +140,11 @@ public class TeacherController {
             examDao.save(exam);
 
             fileSystemManagementService.uploadOriginalProject(examId, assignment.getId(), assignmentName, file);
+
+            return "redirect:/teacher/assignmentList/" + examId + "?successfulUpload";
+        } else {
+            return "redirect:/teacher/assignmentList/" + examId + "?wrongArchiveFormat";
         }
-        return "redirect:/teacher/assignmentList/" + examId;
     }
 
     @RequestMapping("/deleteAssignment/{examId}/{assignmentId}")
@@ -258,6 +267,13 @@ public class TeacherController {
     public String updateUserHandler(@RequestParam("userId") Long userId, @RequestParam("firstName") String firstName,
                                           @RequestParam("lastName") String lastName, @RequestParam("rolesId") List<Long> rolesId,
                                           ModelMap model){
+        if((firstName == null || lastName == null || rolesId == null)
+                || (firstName.equals("") || lastName.equals("") || rolesId.isEmpty())){
+            return "redirect:/teacher/userDetail/" + userId + "?inputMissing";
+        } else if (firstName.length() > 254 || lastName.length() > 254){
+            return "redirect:/teacher/userDetail/" + userId + "?tooLongUserName";
+        }
+
         User user = userDao.findById(userId).get();
 
         List<Role> roleList = new ArrayList<>();
@@ -271,12 +287,20 @@ public class TeacherController {
 
         userDao.save(user);
 
-        return "redirect:userDetail/" + user.getId() + "?userUpdated";
+        return "redirect:/teacher/userDetail/" + user.getId() + "?userUpdated";
     }
 
     @RequestMapping("/createUser")
-    public String createUser(@RequestParam("firstName") String firstName, @RequestParam("lastName") String lastName,
+    public String createUserHandler(@RequestParam("firstName") String firstName,
+                             @RequestParam("lastName") String lastName,
                              @RequestParam("rolesId") List<Long> rolesId){
+
+        if((firstName == null || lastName == null || rolesId == null)
+        || (firstName.equals("") || lastName.equals("") || rolesId.isEmpty())){
+            return "redirect:/teacher/userManagement?inputMissing";
+        } else if (firstName.length() > 254 || lastName.length() > 254){
+            return "redirect:/teacher/userManagement?tooLongUserName";
+        }
 
         List<User> userList = userDao.findAll();
         List<Role> roleList = new ArrayList<>();
@@ -296,9 +320,8 @@ public class TeacherController {
         Pattern pattern = Pattern.compile("\\p{InCombiningDiacriticalMarks}+");
         String userName = pattern.matcher(nfdNormalizedString).replaceAll("").replaceAll("[^a-zA-Z]", "");
 
-        String password = "123";
         BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
-        String hashedPassword = passwordEncoder.encode(password);
+        String hashedPassword = passwordEncoder.encode("123");
         User user = new User(userName + i, hashedPassword, firstName, lastName, roleList);
         userDao.save(user);
         return "redirect:userManagement";
@@ -320,19 +343,26 @@ public class TeacherController {
     }
 
     @RequestMapping("/evaluateProjects")
-    public String evaluate(@RequestParam("projects") List<Long> projectIdList, @RequestParam("examId") Long examId){
-        List<Project> projectList = projectDao.findAllById(projectIdList);
+    public String evaluate(@RequestParam("projects") List<Long> projectIdList,
+                           @RequestParam("examId") Long examId, Principal principal){
+        if(projectIdList != null){
+            if(!projectIdList.isEmpty()){
+                List<Project> projectList = projectDao.findAllById(projectIdList);
 
-        Long assignmentId = projectList.get(0).getAssignment().getId();
-        String assignmentName = projectList.get(0).getAssignment().getName();
+                Long assignmentId = projectList.get(0).getAssignment().getId();
+                String assignmentName = projectList.get(0).getAssignment().getName();
 
-        testService.testProjects(projectList, examId, assignmentId, assignmentName);
+                testService.testProjects(projectList, examId, assignmentId, assignmentName, principal.getName());
 
-        return "redirect:projectList/" + examId;
+                return "redirect:projectList/" + examId;
+            }
+        }
+        return "redirect:projectList/" + examId + "?noProjectSelected";
+
     }
 
     @RequestMapping("/projectDetail/{projectId}")
-    public String projectDetail(@PathVariable("projectId") Long projectId, Model model){
+    public String showProjectDetail(@PathVariable("projectId") Long projectId, Model model){
         Project project = projectDao.findById(projectId).get();
         User user = project.getUser();
 
@@ -340,36 +370,6 @@ public class TeacherController {
         model.addAttribute("user", user);
         model.addAttribute("examId", project.getAssignment().getExam().getId());
         return "project-detail";
-    }
-
-    @RequestMapping("/downloadStudentProject/{projectId}")
-    @ResponseBody
-    public void downloadProject(@PathVariable("projectId") Long projectId,
-                                HttpServletResponse response, Principal principal){
-        User user = userDao.findByUsername(principal.getName());
-        Project project = projectDao.findById(projectId).get();
-
-        response.setContentType("application/zip");
-        response.setHeader("Content-Disposition", String.format("attachment; filename=\"" + project.getUser().getUsername() + ".zip\""));
-        response.setHeader("Content-Transfer-Encoding", "binary");
-
-        try {
-            BufferedOutputStream bos = new BufferedOutputStream(response.getOutputStream());
-            FileInputStream fis = new FileInputStream(fileSystemManagementService.getStudentProject(
-                    project.getAssignment().getExam().getId(),
-                    project.getAssignment().getId(),
-                    project.getUser().getUsername()));
-
-            int length;
-            byte[] buf = new byte[1024];
-            while ((length = fis.read(buf)) > 0){
-                bos.write(buf, 0, length);
-            }
-            bos.close();
-            response.flushBuffer();
-        } catch (Exception e){
-            e.printStackTrace();
-        }
     }
 
     private void deleteAssignment(Long examId, Long assignmentId){

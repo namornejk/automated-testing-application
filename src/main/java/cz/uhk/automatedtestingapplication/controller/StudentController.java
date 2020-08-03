@@ -54,7 +54,8 @@ public class StudentController {
     public String showTestList(Model model){
         List<Exam> exams = new ArrayList<>();
         for (Exam e : examDao.findAllActivatedExams()) {
-            if (!e.getAssignmentList().isEmpty()) exams.add(e);
+            if (!e.getAssignmentList().isEmpty())
+                exams.add(e);
         }
 
         model.addAttribute("exams", exams);
@@ -81,8 +82,12 @@ public class StudentController {
             projectDao.save(project);
 
             fileSystemManagementService.uploadStudentProject(examId, assignmentId, user.getUsername(), assignment.getName(), file);
+
+            return "redirect:studentTestList?successfulUpload";
+        } else {
+            return "redirect:studentTestList?wrongArchiveFormat";
         }
-        return "redirect:studentTestList";
+
     }
 
     @RequestMapping("/assignmentDetail")
@@ -111,12 +116,9 @@ public class StudentController {
                 userAssignment.getUserList().add(user);
                 assignmentDao.save(userAssignment);
             } else {
-                for (Project p : user.getProjectList()) {
-                    if (p.getAssignment().getId() == userAssignment.getId()){
-                        return "redirect:studentTestList?alreadySubmited";
-                    }
-                }
+                return "redirect:studentTestList?alreadySubmited";
             }
+
             model.addAttribute("exam", userExam);
             model.addAttribute("assignment", userAssignment);
             return "assignment-detail";
@@ -160,5 +162,26 @@ public class StudentController {
                 e.printStackTrace();
             }    
         }
+    }
+
+    @RequestMapping("/projectDetail/{examId}")
+    public String showProjectDetail(@PathVariable("examId") Long examId, Model model, Principal principal){
+        List<Assignment> assignmentList = examDao.findById(examId).get().getAssignmentList();
+
+        for (Assignment a : assignmentList) {
+            for (Project p : a.getProjectList()) {
+                if(p.getUser().getUsername().equals(principal.getName())){
+                    Project project = projectDao.findById(p.getId()).get();
+
+                    User user = project.getUser();
+
+                    model.addAttribute("project", project);
+                    model.addAttribute("user", user);
+                    model.addAttribute("examId", project.getAssignment().getExam().getId());
+                    return "student-project-detail";
+                }
+            }
+        }
+        return "redirect:/student/studentTestList?examNotSubmitted";
     }
 }

@@ -24,11 +24,7 @@
             <li class="nav-right">
                 <a class="nav-link" th:href="@{/profile/showProfile}" th:text="#{navbar.profile}"></a>
                 <span>|</span>
-                <a class="nav-link" th:href="@{/teacher/teacherTestList}" th:text="#{navbar.teacherTestList}"></a>
-                <span>|</span>
-                <a class="nav-link" th:href="@{/teacher/examDetail/{examId}(examId=${examId})}" th:text="#{navbar.assignmentDetail}"></a>
-                <span>|</span>
-                <a class="nav-link" th:href="@{/teacher/projectList/{examId}(examId=${examId})}" th:text="#{navbar.projectList}"></a>
+                <a class="nav-link" th:href="@{/student/studentTestList}" th:text="#{navbar.studentTestList}"></a>
                 <a class="logging-button" th:href="@{/perform_logout}" th:text="#{navbar.logout}"></a>
             </li>
         </ul>
