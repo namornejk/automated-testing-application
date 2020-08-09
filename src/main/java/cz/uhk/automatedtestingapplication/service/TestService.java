@@ -65,11 +65,20 @@ public class TestService {
         String homeDriveLetter = fileSystemManagementService.getHomeDriveLetter();
 
         try{
-            ProcessBuilder builder = new ProcessBuilder(
-                    "cmd.exe", "/c", homeDriveLetter + ": && cd \"" + projectPath + "\" && mvn clean test");
+            String operatingSystem = System.getProperty("os.name");
+            Process process;
 
-            builder.redirectErrorStream(true);
-            Process process = builder.start();
+            if(operatingSystem.toUpperCase().contains("WINDOWS")){
+                ProcessBuilder builder = new ProcessBuilder(
+                        "cmd.exe", "/c", homeDriveLetter + ": && cd \"" + projectPath + "\" && mvn clean test");
+
+                builder.redirectErrorStream(true);
+                process = builder.start();
+            } else {
+                // Unix systems go here
+                process = Runtime.getRuntime().exec("cd " + projectPath + " && mvn clean test");
+            }
+
 
             BufferedReader r = new BufferedReader(new InputStreamReader(process.getInputStream()));
             String line;

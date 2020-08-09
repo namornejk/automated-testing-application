@@ -33,7 +33,7 @@
         <div class="top-section">
             <div class="float-left">
                 <h1 th:text="${exam.name}"></h1>
-                <a th:href="@{'/student/downloadProject/' + ${exam.id} + '/' + ${assignment.id}}" class="btn" th:text="#{assignment-detail.downloadProject}"></a>
+                <a th:href="@{'/downloadTeacherProject/' + ${exam.id} + '/' + ${assignment.id}}" class="btn" th:text="#{assignment-detail.downloadProject}"></a>
                 <form id="file-upload" th:action="@{/student/uploadStudentProject}" th:method="post" enctype="multipart/form-data">
                     <label class="btn" for="file-btn" th:text="#{assignment-detail.uploadProject}"></label>
                     <input id="file-btn" type="file" name="file"/>

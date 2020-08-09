@@ -1,6 +1,5 @@
 package cz.uhk.automatedtestingapplication.controller;
 
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import cz.uhk.automatedtestingapplication.dao.AssignmentDao;
 import cz.uhk.automatedtestingapplication.dao.ExamDao;
 import cz.uhk.automatedtestingapplication.dao.ProjectDao;
@@ -10,7 +9,7 @@ import cz.uhk.automatedtestingapplication.model.Exam;
 import cz.uhk.automatedtestingapplication.model.Project;
 import cz.uhk.automatedtestingapplication.model.User;
 import cz.uhk.automatedtestingapplication.service.FileSystemManagementService;
-import cz.uhk.automatedtestingapplication.service.StudentService;
+import cz.uhk.automatedtestingapplication.service.AssignmentService;
 import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormatter;
 import org.joda.time.format.ISODateTimeFormat;
@@ -22,7 +21,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.BufferedOutputStream;
-import java.io.File;
 import java.io.FileInputStream;
 import java.security.Principal;
 import java.util.ArrayList;
@@ -33,7 +31,7 @@ import java.util.List;
 public class StudentController {
 
     @Autowired
-    private StudentService studentService;
+    private AssignmentService assignmentService;
 
     @Autowired
     private FileSystemManagementService fileSystemManagementService;
@@ -102,17 +100,18 @@ public class StudentController {
         }else {
             User user = userDao.findByUsername(principal.getName());
             Assignment userAssignment = null;
-            boolean isAlreadySignedIn = false;
+            boolean isAlreadySubmitted = false;
 
-            for (Assignment a : user.getAssignmentList()) {
-                if (a.getExam().getId() == examId) {
-                    isAlreadySignedIn = true;
-                    userAssignment = a;
+            for (Assignment a : userExam.getAssignmentList()) {
+                for (Project p : a.getProjectList()) {
+                    if (p.getUser().getUsername().equals(user.getUsername())) {
+                        isAlreadySubmitted = true;
+                    }
                 }
             }
 
-            if (!isAlreadySignedIn) {
-                userAssignment = studentService.getRandomAssignment(userExam.getAssignmentList());
+            if (!isAlreadySubmitted) {
+                userAssignment = assignmentService.getRandomAssignment(userExam.getAssignmentList());
                 userAssignment.getUserList().add(user);
                 assignmentDao.save(userAssignment);
             } else {
@@ -122,45 +121,6 @@ public class StudentController {
             model.addAttribute("exam", userExam);
             model.addAttribute("assignment", userAssignment);
             return "assignment-detail";
-        }
-    }
-
-    @RequestMapping("/downloadProject/{examId}/{assignmentId}")
-    @ResponseBody
-    public void downloadProject(@PathVariable("examId") Long examId, @PathVariable("assignmentId") Long assignmentId,
-                                HttpServletResponse response, Principal principal){
-        User user = userDao.findByUsername(principal.getName());
-        Assignment assignment = assignmentDao.findById(assignmentId).get();
-        boolean isAuthorized = false;
-        boolean isAlreadySubmitted = false;
-
-        for (Project p : user.getProjectList()) {
-            if (p.getAssignment().getId() == assignmentId) isAlreadySubmitted = true;
-        }
-
-        for (Assignment a : user.getAssignmentList()) {
-            if(a.getId() == assignmentId) isAuthorized = true;
-        }
-
-        if (isAuthorized && !isAlreadySubmitted){
-            response.setContentType("application/zip");
-            response.setHeader("Content-Disposition", String.format("attachment; filename=\"" + examDao.findById(examId).get().getName() + ".zip\""));
-            response.setHeader("Content-Transfer-Encoding", "binary");
-
-            try {
-                BufferedOutputStream bos = new BufferedOutputStream(response.getOutputStream());
-                FileInputStream fis = new FileInputStream(fileSystemManagementService.getTeacherProject(examId, assignmentId));
-
-                int length;
-                byte[] buf = new byte[1024];
-                while ((length = fis.read(buf)) > 0){
-                    bos.write(buf, 0, length);
-                }
-                bos.close();
-                response.flushBuffer();
-            } catch (Exception e){
-                e.printStackTrace();
-            }    
         }
     }
 

@@ -7,7 +7,7 @@ import java.util.List;
 import java.util.Random;
 
 @Service
-public class StudentService {
+public class AssignmentService {
 
     public Assignment getRandomAssignment(List<Assignment> assignmentList){
         Random random = new Random();
