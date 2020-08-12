@@ -64,14 +64,17 @@ public class FileSystemManagementService {
         } catch (IOException e){ e.printStackTrace(); }
     }
 
-    public void uploadOriginalProject(long examID, long assignmentID, String assignmentName, MultipartFile file){
+    public void uploadOriginalProject(long examID, long assignmentID, String assignmentName, MultipartFile projectFile, MultipartFile testFile){
         String filePath = buildApplicationDir() + File.separator + examID + File.separator + assignmentID + File.separator + "teacher" + File.separator;
         createDirStructure(filePath);
 
-        Path copyLocation = Paths
-                .get(filePath + assignmentName + ".zip");
+        Path projectCopyLocation = Paths
+                .get(filePath + assignmentName + "_project.zip");
+        Path testCopyLocation = Paths
+                .get(filePath + "tests.zip");
 
-        this.uploadFile(file, copyLocation);
+        this.uploadFile(projectFile, projectCopyLocation);
+        this.uploadFile(testFile, testCopyLocation);
     }
 
     public void uploadStudentProject(long examID, long assignmentID, String username, String assignmentName, MultipartFile file){
@@ -100,6 +103,19 @@ public class FileSystemManagementService {
         unzip((sourceFilePath + projectFileName + ".zip"), destinationFilePath);
 
         return destinationFilePath;
+    }
+
+    public String unzipTestsIntoProject(long examID, long assignmentID, String projectPath){
+        File workplaceUserDir = new File(projectPath);
+        String[] folders = workplaceUserDir.list();
+        String projectName = folders[0];
+
+        String destinationPath = projectPath + File.separator + projectName + File.separator + "src" + File.separator + "test";
+
+        String sourceFilePath = buildApplicationDir() + File.separator + examID + File.separator + assignmentID + File.separator + "teacher" + File.separator;
+        unzip((sourceFilePath + "tests.zip"), destinationPath);
+
+        return destinationPath;
     }
 
     public void copyFile(File source, File destination){
@@ -152,7 +168,29 @@ public class FileSystemManagementService {
     public File getTeacherProject(Long examId, Long assignmentId){
         File teacherDir = new File(buildTeacherDir(examId, assignmentId));
         File[] fileArray = teacherDir.listFiles();
-        return fileArray[0];
+
+        File teacherProjectFile = null;
+        for (File f : fileArray) {
+            if(f.getName().contains("_project.zip")){
+                teacherProjectFile = f;
+            }
+        }
+
+        return teacherProjectFile;
+    }
+
+    public File getTestFile(Long examId, Long assignmentId){
+        File teacherDir = new File(buildTeacherDir(examId, assignmentId));
+        File[] fileArray = teacherDir.listFiles();
+
+        File testFile = null;
+        for (File f : fileArray) {
+            if(f.getName().contains("_tests.zip")){
+                testFile = f;
+            }
+        }
+
+        return testFile;
     }
 
     public File getStudentProject(Long examId, Long assignmentId, String username){

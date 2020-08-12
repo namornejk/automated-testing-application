@@ -48,6 +48,8 @@ public class TestService {
         String workplacePath = fileSystemManagementService.unzipProjectIntoWorkPlace(examID, assignmentID, username,
                 assignmentName, testerUsername);
 
+        fileSystemManagementService.unzipTestsIntoProject(examID, assignmentID, workplacePath);
+
         File workplace = new File(workplacePath);
         String[] folders = workplace.list();
 

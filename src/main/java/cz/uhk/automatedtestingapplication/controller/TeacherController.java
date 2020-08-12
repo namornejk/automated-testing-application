@@ -16,11 +16,7 @@ import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.servlet.ModelAndView;
 
-import javax.servlet.http.HttpServletResponse;
-import java.io.BufferedOutputStream;
-import java.io.FileInputStream;
 import java.security.Principal;
 import java.text.Normalizer;
 import java.util.ArrayList;
@@ -104,10 +100,11 @@ public class TeacherController {
     public String createAssignmentHandler(@RequestParam("examId") long examId,
                                           @RequestParam("name") String assignmentName,
                                           @RequestParam("description") String assignmentDescription,
-                                          @RequestParam("file") MultipartFile file,
+                                          @RequestParam("projectFile") MultipartFile projectFile,
+                                          @RequestParam("testFile") MultipartFile testFile,
                                           Principal principal){
 
-        if((assignmentName == null || assignmentDescription == null || file == null)
+        if((assignmentName == null || assignmentDescription == null || projectFile == null || testFile == null)
                 || (assignmentName.equals("") || assignmentDescription.equals(""))){
             return "redirect:/teacher/assignmentList/" + examId + "?inputMissing";
         } else if(assignmentName.length() > 254){
@@ -116,13 +113,7 @@ public class TeacherController {
 
         List<User> userList = new ArrayList<>();
 
-        String fileName = file.getOriginalFilename();
-        String extension = "";
-        int i = fileName.lastIndexOf('.');
-
-        if (i > 0) extension = fileName.substring(i+1);
-
-        if(extension.contains("zip")){
+        if(isZipFile(projectFile.getOriginalFilename()) && isZipFile(testFile.getOriginalFilename())){
             Assignment assignment = new Assignment(assignmentName, assignmentDescription, examDao.findById(examId).get(), new ArrayList<Project>(), userList);
 
             DateTime dt = new DateTime();
@@ -139,7 +130,7 @@ public class TeacherController {
             exam.getAssignmentList().add(assignment);
             examDao.save(exam);
 
-            fileSystemManagementService.uploadOriginalProject(examId, assignment.getId(), assignmentName, file);
+            fileSystemManagementService.uploadOriginalProject(examId, assignment.getId(), assignmentName, projectFile, testFile);
 
             return "redirect:/teacher/assignmentList/" + examId + "?successfulUpload";
         } else {
@@ -343,7 +334,7 @@ public class TeacherController {
     }
 
     @RequestMapping("/evaluateProjects")
-    public String evaluate(@RequestParam("projects") List<Long> projectIdList,
+    public String testProjectsHandler(@RequestParam("projects") List<Long> projectIdList,
                            @RequestParam("examId") Long examId, Principal principal){
         if(projectIdList != null){
             if(!projectIdList.isEmpty()){
@@ -376,5 +367,17 @@ public class TeacherController {
         assignmentDao.deleteById(assignmentId);
 
         fileSystemManagementService.deleteAssignment(examId.toString(), assignmentId.toString());
+    }
+
+    private boolean isZipFile(String fileName){
+        String extension = "";
+        int i = fileName.lastIndexOf('.');
+
+        if (i > 0) extension = fileName.substring(i+1);
+
+        if(extension.contains("zip"))
+            return true;
+        else
+            return false;
     }
 }
