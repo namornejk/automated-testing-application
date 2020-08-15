@@ -1,0 +1,75 @@
+@font-face {
+  font-family: 'Quicksand';
+  font-style: normal;
+  font-weight: 300;
+  font-display: swap;
+  src: url(https://fonts.gstatic.com/s/quicksand/v21/6xK-dSZaM9iE8KbpRA_LJ3z8mH9BOJvgkKEo58i-xw.ttf) format('truetype');
+}
+@font-face {
+  font-family: 'Quicksand';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url(https://fonts.gstatic.com/s/quicksand/v21/6xK-dSZaM9iE8KbpRA_LJ3z8mH9BOJvgkP8o58i-xw.ttf) format('truetype');
+}
+@font-face {
+  font-family: 'Quicksand';
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url(https://fonts.gstatic.com/s/quicksand/v21/6xK-dSZaM9iE8KbpRA_LJ3z8mH9BOJvgkBgv58i-xw.ttf) format('truetype');
+}
+.project-summary span {
+  float: left;
+}
+.test-numbers span {
+  margin: 0 15px;
+}
+.test-suits {
+  list-style: none;
+  padding: 0;
+}
+.testcase-list {
+  background-color: white;
+  border-radius: 2px;
+}
+.testcase-list ul {
+  list-style: none;
+  padding: 0;
+  margin: 20px 0 40px 0;
+  text-align: left;
+}
+.testcase-list ul li {
+  padding: 40px;
+}
+.testcase-list ul li .left {
+  float: left;
+}
+.testcase-list ul li .left h3 {
+  text-align: left;
+}
+.testcase-list ul li .left p {
+  margin-top: 10px;
+  text-align: left;
+}
+.testcase-list ul li .right {
+  float: right;
+  margin-top: 10px;
+  box-sizing: border-box;
+}
+.testcase-list ul li .right button {
+  margin-top: 20px;
+}
+.testcase-signal {
+  padding: 10px;
+  width: fit-content;
+  color: white;
+  border-radius: 2px;
+}
+.pass {
+  background-color: cadetblue;
+}
+.fail {
+  background-color: #ff4081;
+}
+/*# sourceMappingURL=project-detail.css.map */
