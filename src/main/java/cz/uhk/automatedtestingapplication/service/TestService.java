@@ -1,6 +1,8 @@
 package cz.uhk.automatedtestingapplication.service;
 
 import cz.uhk.automatedtestingapplication.dao.*;
+import cz.uhk.automatedtestingapplication.model.Assignment;
+import cz.uhk.automatedtestingapplication.model.Exam;
 import cz.uhk.automatedtestingapplication.model.Project;
 import cz.uhk.automatedtestingapplication.model.testResult.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,11 +31,9 @@ public class TestService {
     @Autowired
     private FailureDao failureDao;
 
-    public void testProjects(List<Project> projectList, long examID, long assignmentID, String assignmentName,
-                             String testerUsername){
+    public void testProjects(List<Project> projectList, String testerUsername){
         for (Project project : projectList) {
-            List<Testsuite> testsuiteList = testProject(examID, assignmentID, project.getUser().getUsername(),
-                    assignmentName, testerUsername);
+            List<Testsuite> testsuiteList = testProject(project, testerUsername);
             saveAllParsedResults(testsuiteList, project);
 
             List<Testsuite> oldTestSuite = project.getTestsuiteList();
@@ -43,12 +43,14 @@ public class TestService {
         }
     }
 
-    public List<Testsuite> testProject(long examID, long assignmentID, String username, String assignmentName,
-                                       String testerUsername){
-        String workplacePath = fileSystemManagementService.unzipProjectIntoWorkPlace(examID, assignmentID, username,
-                assignmentName, testerUsername);
+    public List<Testsuite> testProject(Project project, String testerUsername){
+        Assignment assignment = project.getAssignment();
+        Exam exam = assignment.getExam();
 
-        fileSystemManagementService.unzipTestsIntoProject(examID, assignmentID, workplacePath);
+        String workplacePath = fileSystemManagementService.unzipProjectIntoWorkPlace(exam.getId(), assignment.getId(), project.getUser().getUsername(),
+                assignment.getName(), testerUsername);
+
+        fileSystemManagementService.unzipTestsIntoProject(exam.getId(), assignment.getId(), workplacePath);
 
         File workplace = new File(workplacePath);
         String[] folders = workplace.list();

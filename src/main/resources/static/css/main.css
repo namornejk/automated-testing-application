@@ -40,6 +40,9 @@ a {
 .float-left {
   float: left;
 }
+.float-left a {
+  float: left;
+}
 .btn {
   padding: 15px 25px;
   margin: 25px 0;
@@ -212,6 +215,20 @@ h3 {
   padding: 10px;
   box-sizing: border-box;
   background-color: #eaedf2;
+  border: 0;
+  border-radius: 2px;
+  text-align: left;
+  font-size: 20px;
+}
+.filterInput {
+  background-image: url('/images/searchicon.svg');
+  background-position: 10px 12px;
+  background-repeat: no-repeat;
+  width: 100%;
+  margin: 40px 0 20px 0;
+  padding: 10px 10px 10px 40px;
+  box-sizing: border-box;
+  background-color: white;
   border: 0;
   border-radius: 2px;
   text-align: left;

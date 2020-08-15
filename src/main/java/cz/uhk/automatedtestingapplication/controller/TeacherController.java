@@ -340,10 +340,7 @@ public class TeacherController {
             if(!projectIdList.isEmpty()){
                 List<Project> projectList = projectDao.findAllById(projectIdList);
 
-                Long assignmentId = projectList.get(0).getAssignment().getId();
-                String assignmentName = projectList.get(0).getAssignment().getName();
-
-                testService.testProjects(projectList, examId, assignmentId, assignmentName, principal.getName());
+                testService.testProjects(projectList, principal.getName());
 
                 return "redirect:projectList/" + examId;
             }

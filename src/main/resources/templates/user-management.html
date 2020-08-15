@@ -61,8 +61,10 @@
             </div>
         </div>
 
+        <input type="text" id="filterInput" class="filterInput" onkeyup="filterNames()" th:placeholder="#{user-management.searchNames}">
+
         <div class="exam-list">
-            <ul>
+            <ul id="filteredUL">
                 <li th:each="user : ${userList}">
                     <div class="left">
                         <h3 th:text="${user.firstName} + ' ' + ${user.lastName}"></h3>
@@ -94,6 +96,25 @@
                     content.style.maxHeight = content.scrollHeight + "px";
                 }
             });
+        }
+
+        function filterNames() {
+            let input, filter, ul, li, div, h3, i, txtValue;
+            input = document.getElementById('filterInput');
+            filter = input.value.toUpperCase();
+            ul = document.getElementById("filteredUL");
+            li = ul.getElementsByTagName('li');
+
+            for (i = 0; i < li.length; i++) {
+                div = li[i].getElementsByTagName("div")[0];
+                h3 = div.getElementsByTagName("h3")[0];
+                txtValue = h3.textContent || h3.innerText;
+                if (txtValue.toUpperCase().indexOf(filter) > -1) {
+                    li[i].style.display = "";
+                } else {
+                    li[i].style.display = "none";
+                }
+            }
         }
     </script>
 </body>
