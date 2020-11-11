@@ -36,9 +36,9 @@ public class TestService {
             List<Testsuite> testsuiteList = testProject(project, testerUsername);
             saveAllParsedResults(testsuiteList, project);
 
-            List<Testsuite> oldTestSuite = project.getTestsuiteList();
-            oldTestSuite.addAll(testsuiteList);
-            project.setTestsuiteList(oldTestSuite);
+            List<Testsuite> oldTestsuite = project.getTestsuiteList();
+            oldTestsuite.addAll(testsuiteList);
+            project.setTestsuiteList(oldTestsuite);
             projectDao.save(project);
         }
     }
