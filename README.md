@@ -25,7 +25,7 @@ která si sama databázi nepřipraví.
 Nezapomeňte, že v případě užití v produkčním nasazení je důležité změnit přihlašovací jméno a heslo.
 
 SQL script
-
+```
 CREATE DATABASE  IF NOT EXISTS `automated-testing-application` /*!40100 DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci */ /*!80016 DEFAULT ENCRYPTION='N' */;
 USE `automated-testing-application`;
 -- MySQL dump 10.13  Distrib 8.0.18, for Win64 (x86_64)
@@ -410,3 +410,4 @@ UNLOCK TABLES;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
 -- Dump completed on 2020-11-15 18:53:48
+```
